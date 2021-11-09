@@ -41,7 +41,7 @@ jobs:
             build_id=${{ github.run_number }}
             short_sha="$(git rev-parse --short HEAD)"
             new_version=${chart_version}.${build_id}+g${short_sha}
-            helm package ./heartex/$chart -d ${{ env.SYNC_DIR }} --version $new_version
+            helm package ./heartex/$chart -d ${{ env.SYNC_DIR }} -u --version $new_version
           done
 
       - name: Build helm index
