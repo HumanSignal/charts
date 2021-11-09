@@ -1,0 +1,38 @@
+{{- if .Values.ci }}
+{{- if not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
+LABEL_STUDIO_HOST=http{{ if $.Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.global.contextPath }}
+{{- else }}
+LABEL_STUDIO_HOST={{ .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
+{{- end }}
+{{- else }}
+Get the application URL by running these commands:
+{{- if .Values.app.ingress.enabled }}
+{{- if not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
+Please visit http{{ if $.Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.app.ingress.path }} to use Label Studio
+{{- else }}
+Please visit {{ .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }} to use Label Studio
+{{- end }}
+{{- else if contains "NodePort" .Values.app.service.type }}
+After running these commands, please visit http://$NODE_IP:$NODE_PORT to use Label Studio:
+
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "ls-app.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+{{- else if contains "LoadBalancer" .Values.app.service.type }}
+After running these commands, please visit http://$SERVICE_IP:{{ .Values.app.service.port }} to use Label Studio:
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "ls-app.fullname" . }}'
+
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "ls-app.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+{{- else if contains "ClusterIP" .Values.app.service.type }}
+After running these commands, please visit http://127.0.0.1:8080 to use Label Studio:
+
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app.kubernetes.io/name={{ include "ls-app.name" . }},app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $POD_NAME -o jsonpath="{.spec.containers[1].ports[0].containerPort}")
+  kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:$CONTAINER_PORT
+{{- end }}
+
+{{/* run deprecations */}}
+{{ include "ls.deprecations" . }}
+{{/* run checkConfig */}}
+{{ include "ls.checkConfig" . }}
+{{- end }}

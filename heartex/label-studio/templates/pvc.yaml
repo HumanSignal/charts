@@ -1,0 +1,36 @@
+{{- if .Values.global.persistence.enabled }}
+{{- if and (eq .Values.global.persistence.type "volume") (not .Values.global.persistence.config.volume.existingClaim) }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "ls-pvc.fullname" . }}
+  {{- if eq .Values.global.persistence.config.volume.resourcePolicy "keep" }}
+  annotations:
+    helm.sh/resource-policy: keep
+  {{- end }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+  {{- include "ls-pvc.labels" . | nindent 4 }}
+  {{- if .Values.global.persistence.config.volume.annotations }}
+  annotations:
+    {{- if .Values.global.persistence.config.volume.annotations }}
+    {{- include "tplvalues.render" ( dict "value" .Values.global.persistence.config.volume.annotations "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  accessModes:
+  {{- range .Values.global.persistence.config.volume.accessModes }}
+    - {{ . | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.global.persistence.config.volume.size | quote }}
+  {{- if .Values.global.persistence.config.volume.storageClass -}}
+    {{- if (eq "-" .Values.global.persistence.config.volume.storageClass) -}}
+  storageClassName: ""
+    {{- else }}
+  storageClassName: {{ .Values.global.persistence.config.volume.storageClass }}
+    {{- end -}}
+  {{- end -}}
+{{- end }}
+{{- end }}

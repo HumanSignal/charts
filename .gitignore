@@ -1,0 +1,7 @@
+*.tgz
+.idea/
+.vscode
+.DS_Store
+charts-repo/
+# helm subcharts
+helm/**/charts

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "ls-app.fullname" . }}-chart-info
+  labels:
+    {{- include "ls-app.labels" . | nindent 4 }}
+data:
+  lsVersion: "{{ coalesce .Values.global.image.tag .Chart.AppVersion }}"
+  lsChartVersion: "{{ .Chart.Version }}"

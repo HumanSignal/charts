@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "ls-app.fullname" . }}-test-js-components"
+  labels:
+    {{- include "ls-app.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded
+spec:
+  containers:
+    - name: ls-frontend
+      image: curlimages/curl
+      imagePullPolicy: IfNotPresent
+      args: [ '-L',
+              '--connect-timeout', '5',
+              '--max-time', '5',
+              '--retry', '5',
+              '--retry-delay', '2',
+              '--retry-max-time', '30',
+              '--retry-all-errors',
+              'http://{{ include "ls-app.fullname" . }}:{{ .Values.app.service.port }}{{ if ne .Values.global.contextPath "/" }}{{ .Values.global.contextPath }}{{ end }}/label-studio-frontend/js/main.js']
+    - name: react-app
+      image: curlimages/curl
+      imagePullPolicy: IfNotPresent
+      args: [ '-L',
+              '--connect-timeout', '5',
+              '--max-time', '5',
+              '--retry', '5',
+              '--retry-delay', '2',
+              '--retry-max-time', '30',
+              '--retry-all-errors',
+              'http://{{ include "ls-app.fullname" . }}:{{ .Values.app.service.port }}{{ if ne .Values.global.contextPath "/" }}{{ .Values.global.contextPath }}{{ end }}/react-app/index.js']
+    - name: dm
+      image: curlimages/curl
+      imagePullPolicy: IfNotPresent
+      args: [ '-L',
+              '--connect-timeout', '5',
+              '--max-time', '5',
+              '--retry', '5',
+              '--retry-delay', '2',
+              '--retry-max-time', '30',
+              '--retry-all-errors',
+              'http://{{ include "ls-app.fullname" . }}:{{ .Values.app.service.port }}{{ if ne .Values.global.contextPath "/" }}{{ .Values.global.contextPath }}{{ end }}/dm/js/main.js']
+  restartPolicy: Never

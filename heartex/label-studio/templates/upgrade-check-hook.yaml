@@ -1,0 +1,99 @@
+{{- if .Values.upgradeCheck.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "ls-app.fullname" . }}-upgrade-check
+  labels:
+    {{- include "ls-app.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-11"
+    "helm.sh/hook-delete-policy": before-hook-creation
+data:
+  runcheck: |
+    {{- include (print $.Template.BasePath "/_runcheck.tpl") . | nindent 4 }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "ls-app.fullname" . }}-upgrade-check
+  labels:
+    {{- include "ls-app.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-upgrade
+    "helm.sh/hook-weight": "-10"
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  backoffLimit: 2
+  template:
+    metadata:
+      labels:
+        {{- include "ls-app.selectorLabels" . | nindent 8 }}
+      {{- with .Values.app.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ls-app.serviceAccountName" . }}
+      {{- if .Values.app.podSecurityContext.enabled }}
+      securityContext: {{- omit .Values.app.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      automountServiceAccountToken: {{ .Values.app.automountServiceAccountToken }}
+      restartPolicy: Never
+      containers:
+        - name: run-check
+          image: "{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.global.image.pullPolicy }}
+          {{- if .Values.app.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          command: [ '/bin/sh', '/scripts/runcheck' ]
+          env:
+            - name: LS_VERSION
+              value: '{{ coalesce .Values.global.image.tag .Chart.AppVersion }}'
+            - name: CHART_VERSION
+              value: '{{ .Chart.Version }}'
+          volumeMounts:
+            - name: chart-info
+              mountPath: /chart-info
+            - name: scripts
+              mountPath: /scripts
+          resources:
+            {{- toYaml .Values.upgradeCheck.resources | nindent 12 }}
+      {{- with .Values.app.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.app.topologySpreadConstraints }}
+      topologySpreadConstraints: {{- include "tplvalues.render" (dict "value" .Values.app.topologySpreadConstraints "context" $) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.app.dnsPolicy }}
+      dnsPolicy: {{ .Values.app.dnsPolicy }}
+      {{- end }}
+      {{- if .Values.app.enableServiceLinks }}
+      enableServiceLinks: {{ .Values.app.enableServiceLinks }}
+      {{- end }}
+      {{- if .Values.app.shareProcessNamespace }}
+      shareProcessNamespace: {{ .Values.app.shareProcessNamespace }}
+      {{- end }}
+      {{- with .Values.app.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.app.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: chart-info
+          configMap:
+            name: {{ include "ls-app.fullname" . }}-chart-info
+            optional: true
+        - name: scripts
+          configMap:
+            name: {{ include "ls-app.fullname" . }}-upgrade-check
+{{- end }}
