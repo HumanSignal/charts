@@ -24,6 +24,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: '2'
 
       - name: Helm package
         id: helm_package
