@@ -32,7 +32,7 @@ jobs:
         run: |
           set -eux
           # gather only changed charts
-          CHANGED_CHARTS=$(git diff --dirstat=files,0 HEAD~1 -- heartex | sed -E 's/^[ 0-9.]+% //g' | cut -d'/' -f2-)
+          CHANGED_CHARTS=$(git diff --dirstat=files,0 HEAD~1 -- heartex | sed -E 's/^[ 0-9.]+% //g' | cut -d'/' -f2- | cut -d'/' -f1)
           echo -e "Changed charts:\n$CHANGED_CHARTS"
           for chart in $CHANGED_CHARTS; do
             # 0.0.1-dev.<build-id>+g<gitcommitsha>
