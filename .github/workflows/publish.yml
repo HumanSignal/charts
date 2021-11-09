@@ -65,4 +65,4 @@ jobs:
           set -eux
           aws s3 cp ${{ env.SYNC_DIR }} s3://${{ env.HELM_CHARTS_BUCKET }}/ --recursive
           # Make sure index.yaml is synced last
-          aws s3 cp "${{ env.INDEX_DIR }}/index.yaml" s3://${{ env.HELM_CHARTS_BUCKET }}/
+          aws s3 cp "${{ env.SYNC_DIR }}/index.yaml" s3://${{ env.HELM_CHARTS_BUCKET }}/
