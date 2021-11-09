@@ -1,0 +1,61 @@
+name: "Upload Chart"
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'heartex/**'
+      - '.github/workflows/publish.yml'
+
+env:
+  HELM_CHARTS_BUCKET: "heartex-charts"
+  HELM_CHARTS_REPO: "https://charts.heartex.com"
+  SYNC_DIR: sync
+  INDEX_DIR: index
+  AWS_REGION: us-east-1
+
+jobs:
+  upload_chart:
+    name: "Upload Chart"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hmarr/debug-action@v2
+
+      - name: Helm package
+        id: helm_package
+        run: |
+          set -eux
+          # gather only changed charts
+          CHANGED_CHARTS=$(git diff --dirstat=files,0 HEAD~1 -- heartex | sed -E 's/^[ 0-9.]+% //g' | cut -d'/' -f2-)
+          echo -e "Changed charts:\n$CHANGED_CHARTS"
+          for chart in $CHANGED_CHARTS; do
+            # 0.0.1-dev.<build-id>+g<gitcommitsha>
+            # bump versions for changed charts
+            chart_version=$(cat heartex/$chart/Chart.yaml | yq eval '.version' -)
+            build_id=${{ env.GITHUB_RUN_NUMBER }}
+            short_sha="$(git rev-parse --short HEAD)"
+            new_version=${chart_version}.${build_id}+g${short_sha}
+            helm package ./heartex/$chart -d ${{ env.SYNC_DIR }} --version $new_version
+          done
+
+      - name: Build helm index
+        id: helm_index
+        run: |
+          set -eux
+          aws s3 cp "${{ env.HELM_CHARTS_BUCKET }}/index.yaml" "${{ env.INDEX_DIR }}/index.yaml"
+          helm repo index ${{ env.SYNC_DIR }} --url "${{ env.HELM_REPO_DEV }}" --merge "${{ env.INDEX_DIR }}/index.yaml"
+
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.CHARTS_UPLOAD_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CHARTS_UPLOAD_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Publish to S3
+        run: |
+          set -eux
+          aws s3 cp ${{ env.SYNC_DIR }} s3://${{ env.HELM_CHARTS_BUCKET }}/ --recursive
+          # Make sure index.yaml is synced last
+          aws s3 cp "${{ env.INDEX_DIR }}/index.yaml" s3://${{ env.HELM_CHARTS_BUCKET }}/
