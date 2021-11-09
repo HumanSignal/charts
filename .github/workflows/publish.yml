@@ -56,7 +56,7 @@ jobs:
         run: |
           set -eux
           aws s3 cp s3://${{ env.HELM_CHARTS_BUCKET }}/index.yaml "${{ env.INDEX_DIR }}/index.yaml"
-          helm repo index ${{ env.SYNC_DIR }} --url "${{ env.HELM_REPO_DEV }}" --merge "${{ env.INDEX_DIR }}/index.yaml"
+          helm repo index ${{ env.SYNC_DIR }} --url "${{ env.HELM_CHARTS_REPO }}" --merge "${{ env.INDEX_DIR }}/index.yaml"
 
       - name: Publish to S3
         run: |
