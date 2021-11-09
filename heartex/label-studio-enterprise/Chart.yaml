@@ -1,0 +1,24 @@
+apiVersion: v2
+name: label-studio-enterprise
+description: A Helm chart for label-studio-enterprise
+home: https://labelstud.io/
+type: application
+icon: https://raw.githubusercontent.com/heartexlabs/label-studio/master/images/logo.png
+# Chart version
+version: 0.0.19
+# Label Studio Enterprise release version
+appVersion: "20211106.105913-release-7c08ee9"
+kubeVersion: ">= 1.14.0-0"
+dependencies:
+  - name: redis
+    version: "14.8.8"
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled
+  - name: postgresql
+    version: "10.9.1"
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: minio
+    version: "8.1.9"
+    repository: https://charts.bitnami.com/bitnami
+    condition: minio.enabled

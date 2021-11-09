@@ -1,0 +1,23 @@
+global:
+  imagePullSecrets:
+    - name: heartex-pull-key
+
+#  extraEnvironmentVars: {}
+
+#  extraEnvironmentSecrets: {}
+
+app:
+  logLevel: DEBUG
+  debug: true
+  ingress:
+    enabled: false
+
+rqworker:
+  logLevel: DEBUG
+  debug: true
+
+postgresql:
+  enabled: true
+
+redis:
+  enabled: true

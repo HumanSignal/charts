@@ -1,0 +1,322 @@
+# Default values for Label Studio Enterprise.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# https://labelstud.io/guide/install_enterprise.html#Start-using-Docker-Compose
+
+global:
+  # Image pull secret to use for registry authentication.
+  # Alternatively, you can specify the value as an array of strings.
+  imagePullSecrets: []
+
+  image:
+    repository: heartexlabs/label-studio-enterprise
+    pullPolicy: IfNotPresent
+    tag: ""
+
+  djangoConfig:
+    db: "default"
+    settings_module: "htx.settings.label_studio"
+
+  # [Enterprise Only] This value refers to a Kubernetes secret that you have
+  # created that contains your enterprise license.
+  enterpriseLicense:
+    # The name of the Kubernetes secret that holds the enterprise license. The
+    # secret must be in the same namespace that Label Studio Enterprise is installed into.
+    secretName: ""
+    # The key within the Kubernetes secret that holds the enterprise license.
+    secretKey: "license"
+
+  pgConfig:
+    host: ""
+    port: 5432
+    dbName: ""
+    userName: ""
+    password:
+      secretName: ""
+      secretKey: ""
+
+  # Redis location, for example redis://[:password]@localhost:6379/1
+  redisConfig:
+    host: ""
+    password:
+      secretName: ""
+      secretKey: ""
+
+  extraEnvironmentVars: { }
+  extraEnvironmentSecrets: { }
+
+  contextPath: /
+
+app:
+  enabled: true
+
+  deploymentStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+
+  replicas: 1
+
+  NameOverride: ""
+  FullnameOverride: ""
+
+  resources:
+    requests:
+      memory: 384Mi
+      cpu: 250m
+    limits:
+      memory: 1024Mi
+      cpu: 750m
+
+  logLevel: "INFO"
+
+  debug: ""
+
+  # extraEnvironmentVars is a list of extra environment variables to set in the
+  # app deployment.
+  extraEnvironmentVars: { }
+  # KUBERNETES_SERVICE_HOST: kubernetes.default.svc
+
+  # extraEnvironmentSecrets is a list of extra environment variables to set in the
+  # app deployment.
+  extraEnvironmentSecrets: { }
+  # MYSQL_PASSWORD:
+  #   secretName: mysql_secret
+  #   secretKey: password
+
+  # nodeSelector labels for pod assignment, formatted as a multi-line string or YAML map.
+  # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+  # Example:
+  # nodeSelector:
+  #   beta.kubernetes.io/arch: amd64
+  nodeSelector: { }
+
+  # Extra k8s annotations to attach to the rqworker pods
+  # This can either be YAML or a YAML-formatted multi-line templated string map
+  # of the annotations to apply to the rqworker pods
+  annotations: { }
+
+  # Extra k8s labels to attach to Label Studio Enterprise.
+  # Provide a YAML map of k8s labels.
+  extraLabels: { }
+
+  affinity: { }
+
+  # Toleration Settings for rqworker pods
+  # Provide either a multi-line string or YAML matching the Toleration array
+  # in a PodSpec.
+  tolerations: []
+
+  # Used to define custom readinessProbe settings
+  readinessProbe:
+    enabled: true
+    path: /version
+    # When a probe fails, Kubernetes will try failureThreshold times before giving up
+    failureThreshold: 2
+    # Number of seconds after the container has started before probe initiates
+    initialDelaySeconds: 10
+    # How often (in seconds) to perform the probe
+    periodSeconds: 10
+    # Minimum consecutive successes for the probe to be considered successful after having failed
+    successThreshold: 1
+    # Number of seconds after which the probe times out.
+    timeoutSeconds: 5
+  # Used to enable a livenessProbe for the pods
+  livenessProbe:
+    enabled: true
+    path: "/health"
+    # When a probe fails, Kubernetes will try failureThreshold times before giving up
+    failureThreshold: 3
+    # Number of seconds after the container has started before probe initiates
+    initialDelaySeconds: 60
+    # How often (in seconds) to perform the probe
+    periodSeconds: 10
+    # Minimum consecutive successes for the probe to be considered successful after having failed
+    successThreshold: 1
+    # Number of seconds after which the probe times out.
+    timeoutSeconds: 5
+
+  service:
+    enabled: true
+    type: ClusterIP
+    port: 80
+    targetPort: 8085
+    portName: service
+
+  ingress:
+    enabled: true
+    # For Kubernetes >= 1.18 you should specify the ingress-controller using the field ingressClassName
+    # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
+    className: ""
+    annotations: { }
+    # kubernetes.io/ingress.class: nginx # deprecated
+    # kubernetes.io/tls-acme: "true"
+    host: app.heartex.local
+    # You may need to set this to '/*' in order to use this with ALB ingress controllers.
+    path: /
+    ## Extra paths to prepend to the host configuration. This is useful when working with annotation based services.
+    extraPaths: []
+    # - path: /*
+    #   backend:
+    #     serviceName: ssl-redirect
+    #     servicePort: use-annotation
+    tls: [ ]
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - app.heartex.local
+
+  # Definition of the serviceAccount used to run Label Studio Enterprise
+  serviceAccount:
+    # Specifies whether to create a service account
+    create: true
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # Extra k8s annotations for the serviceAccount definition. This can either be
+    # YAML or a YAML-formatted multi-line templated string map of the
+    # k8s annotations to apply to the serviceAccount.
+    annotations: {}
+
+rqworker:
+  enabled: true
+
+  NameOverride: ""
+  FullnameOverride: ""
+
+  deploymentStrategy:
+    type: Recreate
+
+  replicas: 1
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+      cpu: 500m
+
+  logLevel: "INFO"
+
+  debug: ""
+
+  # extraEnvironmentVars is a list of extra environment variables to set in the
+  # rqworker deployment.
+  extraEnvironmentVars: { }
+  # KUBERNETES_SERVICE_HOST: kubernetes.default.svc
+
+  # extraEnvironmentSecrets is a list of extra environment variables to set in the
+  # rqworker deployment.
+  extraEnvironmentSecrets: { }
+  # MYSQL_PASSWORD:
+  #   secretName: mysql_secret
+  #   secretKey: password
+
+  # nodeSelector labels for pod assignment, formatted as a multi-line string or YAML map.
+  # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+  # Example:
+  # nodeSelector:
+  #   beta.kubernetes.io/arch: amd64
+  nodeSelector: { }
+
+  # Extra k8s annotations to attach to the rqworker pods
+  # This can either be YAML or a YAML-formatted multi-line templated string map
+  # of the k8s annotations to apply to the rqworker pods
+  annotations: { }
+
+  # Extra k8s labels to attach to the rqworker
+  # This should be a YAML map of the labels to apply to the rqworker
+  extraLabels: { }
+
+  affinity: { }
+
+  # Toleration Settings for rqworker pods
+  # Provide either a multi-line string or YAML matching the Toleration array
+  # in a PodSpec.
+  tolerations: []
+
+  # Used to define custom readinessProbe settings
+  readinessProbe:
+    enabled: false
+    path: /version
+    # When a probe fails, Kubernetes will try failureThreshold times before giving up
+    failureThreshold: 2
+    # Number of seconds after the container has started before probe initiates
+    initialDelaySeconds: 35
+    # How often (in seconds) to perform the probe
+    periodSeconds: 5
+    # Minimum consecutive successes for the probe to be considered successful after having failed
+    successThreshold: 1
+    # Number of seconds after which the probe times out.
+    timeoutSeconds: 3
+  # Used to enable a livenessProbe for the pods
+  livenessProbe:
+    enabled: false
+    path: "/health"
+    # When a probe fails, Kubernetes will try failureThreshold times before giving up
+    failureThreshold: 2
+    # Number of seconds after the container has started before probe initiates
+    initialDelaySeconds: 60
+    # How often (in seconds) to perform the probe
+    periodSeconds: 5
+    # Minimum consecutive successes for the probe to be considered successful after having failed
+    successThreshold: 1
+    # Number of seconds after which the probe times out.
+    timeoutSeconds: 3
+
+  # Definition of the serviceAccount used to run rqworker for Label Studio Enterprise
+  serviceAccount:
+    # Specifies whether to create a service account
+    create: true
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # Extra k8s annotations for the serviceAccount definition. This can either be
+    # YAML or a YAML-formatted multi-line templated string map of the
+    # annotations to apply to the serviceAccount.
+    annotations: { }
+
+minio:
+  enabled: true
+  accessKey:
+    password: "minio"
+  secretKey:
+    password: "minio123"
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  mode: standalone # change to "distributed" for Production setup
+  persistence:
+    enabled: false # change to "true" for Production setup and uncomment next lines
+#  volumePermissions:
+#    enabled: true
+
+# This is for development purposes only. Do not run production environment using these variables.
+postgresql:
+  enabled: false
+  image:
+    tag: 12.7.0
+  postgresqlUsername: postgres
+  postgresqlPassword: "postgres"
+  postgresqlDatabase: postgres
+  servicePort: 5432
+  persistence:
+    enabled: false
+  requests:
+    memory: 250Mi
+    cpu: 256m
+
+redis:
+  enabled: false
+  architecture: standalone
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 256m

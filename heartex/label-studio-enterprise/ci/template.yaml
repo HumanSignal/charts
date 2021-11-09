@@ -1,0 +1,38 @@
+# This file used as a seed-template for rapid deployments from feature-branches and/or pull-requests.
+# It should be consistent with any changes in values.yaml of the main lse Chart.
+
+global:
+  imagePullSecrets:
+    - name: heartex-pull-key
+
+  extraEnvironmentVars:
+    SUPER_PASSWORD: HeartexSup42
+    SILK_PROFILER: 1
+    SESSION_COOKIE_SECURE: 1
+    SKIP_EMAIL_VERIFICATION_FOR_DOMAINS: heartex.e2e
+    LS_LAMBDA_REGION_CUSTOM_METRICS: "us-east-2"
+    LS_LAMBDA_ROLE_CUSTOM_METRICS: "arn:aws:iam::490065312183:role/CustomLambdaExecuteRole"
+
+#  extraEnvironmentSecrets: {}
+
+app:
+  logLevel: DEBUG
+  debug: true
+  ingress:
+#    host: <template>.dev.heartex.com # replaced during deployment
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "200m"
+    tls:
+      - secretName: dev.heartex.com
+        hosts: []
+#          - <REDACTED>.dev.heartex.com  # replaced during deployment
+
+rqworker:
+  logLevel: DEBUG
+  debug: true
+
+postgresql:
+  enabled: true
+
+redis:
+  enabled: true

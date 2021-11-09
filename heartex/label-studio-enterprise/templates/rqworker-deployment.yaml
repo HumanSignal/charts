@@ -1,0 +1,101 @@
+{{- if .Values.rqworker.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "lse-rqworker.fullname" . }}
+  labels:
+  {{- include "lse-rqworker.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.rqworker.replicas }}
+  selector:
+    matchLabels:
+      {{- include "lse-rqworker.selectorLabels" . | nindent 6 }}
+  {{- with .Values.rqworker.deploymentStrategy }}
+  strategy:
+  {{ toYaml . | trim | indent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      {{- with .Values.rqworker.annotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+    {{- include "lse-rqworker.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "lse-rqworker.serviceAccountName" . }}
+      containers:
+        - name: lse-rqworker
+          image: "{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
+          workingDir: /label-studio-enterprise
+          args: [ "python3", "/label-studio-enterprise/label_studio_enterprise/manage.py", "rqworker", "default" ]
+          imagePullPolicy: {{ .Values.global.image.pullPolicy }}
+          env:
+            {{ template "lse.common.envs" . }}
+            {{- if .Values.rqworker.logLevel }}
+            - name: LOG_LEVEL
+              value: "{{ .Values.rqworker.logLevel }}"
+            {{- end }}
+            {{- if .Values.rqworker.debug }}
+            - name: DEBUG
+              value: "true"
+            {{- end }}
+            {{- if .Values.rqworker.extraEnvironmentVars -}}
+            {{- range $key, $value := .Values.rqworker.extraEnvironmentVars }}
+            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.rqworker.extraEnvironmentSecrets -}}
+            {{- range $key, $value := .Values.rqworker.extraEnvironmentSecrets }}
+            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $value.secretName }}
+                  key: {{ $value.secretKey }}
+            {{- end }}
+            {{- end }}
+          ports:
+            - name: service
+              containerPort: 8000
+              protocol: TCP
+          {{- if .Values.rqworker.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.rqworker.readinessProbe.path | quote }}
+              port: 8000
+            failureThreshold: {{ .Values.rqworker.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.rqworker.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.rqworker.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.rqworker.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.rqworker.readinessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- if .Values.rqworker.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.rqworker.livenessProbe.path | quote }}
+              port: 8000
+            failureThreshold: {{ .Values.rqworker.livenessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.rqworker.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.rqworker.livenessProbe.periodSeconds }}
+            successThreshold: {{ .Values.rqworker.livenessProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.rqworker.livenessProbe.timeoutSeconds }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.rqworker.resources | nindent 12 }}
+      {{- with .Values.rqworker.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.rqworker.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.rqworker.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
