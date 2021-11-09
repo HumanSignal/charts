@@ -13,8 +13,8 @@ $ helm install my-release heartex/<chart>
 ## Before you begin
 
 ### Prerequisites
-- Kubernetes 1.19+
-- Helm 3.3.0+
+- Kubernetes 1.19.x+
+- Helm 3.7.x+
 
 ### Setup a Kubernetes Cluster
 
