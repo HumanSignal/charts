@@ -38,7 +38,7 @@ jobs:
             # 0.0.1-dev.<build-id>+g<gitcommitsha>
             # bump versions for changed charts
             chart_version=$(cat heartex/$chart/Chart.yaml | yq eval '.version' -)
-            build_id=${{ env.GITHUB_RUN_NUMBER }}
+            build_id=${{ github.run_number }}
             short_sha="$(git rev-parse --short HEAD)"
             new_version=${chart_version}.${build_id}+g${short_sha}
             helm package ./heartex/$chart -d ${{ env.SYNC_DIR }} --version $new_version

@@ -36,3 +36,6 @@ postgresql:
 
 redis:
   enabled: true
+
+
+
