@@ -35,12 +35,12 @@ jobs:
           CHANGED_CHARTS=$(git diff --dirstat=files,0 HEAD~1 -- heartex | sed -E 's/^[ 0-9.]+% //g' | cut -d'/' -f2- | cut -d'/' -f1)
           echo -e "Changed charts:\n$CHANGED_CHARTS"
           for chart in $CHANGED_CHARTS; do
-            # 0.0.1-dev.<build-id>+g<gitcommitsha>
+            # 0.0.1-dev.<build-id>+<gitcommitsha>
             # bump versions for changed charts
             chart_version=$(cat heartex/$chart/Chart.yaml | yq eval '.version' -)
             build_id=${{ github.run_number }}
             short_sha="$(git rev-parse --short HEAD)"
-            new_version=${chart_version}.${build_id}+g${short_sha}
+            new_version=${chart_version}.${build_id}+${short_sha}
             helm package ./heartex/$chart -d ${{ env.SYNC_DIR }} -u --version $new_version
           done
 
@@ -58,7 +58,7 @@ jobs:
           aws s3 cp s3://${{ env.HELM_CHARTS_BUCKET }}/index.yaml "${{ env.INDEX_DIR }}/index.yaml"
           helm repo index ${{ env.SYNC_DIR }} --url "${{ env.HELM_CHARTS_REPO }}" --merge "${{ env.INDEX_DIR }}/index.yaml"
           echo "==> Merged index:"
-          cat "${{ env.INDEX_DIR }}/index.yaml"
+          cat "${{ env.SYNC_DIR }}/index.yaml"
 
       - name: Publish to S3
         run: |
