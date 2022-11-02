@@ -1,8 +1,6 @@
-# Default values for Label Studio Enterprise.
+# Default values for Label Studio.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
-# https://labelstud.io/guide/install_enterprise.html#Start-using-Docker-Compose
 
 global:
   # Image pull secret to use for registry authentication.
@@ -10,22 +8,13 @@ global:
   imagePullSecrets: []
 
   image:
-    repository: heartexlabs/label-studio-enterprise
+    repository: heartexlabs/label-studio
     pullPolicy: IfNotPresent
     tag: ""
 
   djangoConfig:
-    db: "default"
-    settings_module: "htx.settings.label_studio"
-
-  # [Enterprise Only] This value refers to a Kubernetes secret that you have
-  # created that contains your enterprise license.
-  enterpriseLicense:
-    # The name of the Kubernetes secret that holds the enterprise license. The
-    # secret must be in the same namespace that Label Studio Enterprise is installed into.
-    secretName: ""
-    # The key within the Kubernetes secret that holds the enterprise license.
-    secretKey: "license"
+    db: ""
+    settings_module: ""
 
   pgConfig:
     host: ""
@@ -35,18 +24,92 @@ global:
     password:
       secretName: ""
       secretKey: ""
+    ssl:
+      pgSslMode: ""
+      pgSslSecretName: ""
+      pgSslRootCertSecretKey: ""
+      pgSslCertSecretKey: ""
+      pgSslKeySecretKey: ""
 
   # Redis location, for example redis://[:password]@localhost:6379/1
+  # Supported only in LSE
   redisConfig:
     host: ""
     password:
       secretName: ""
       secretKey: ""
+    ssl:
+      redisSslCertReqs: ""
+      redisSslSecretName: ""
+      redisSslCaCertsSecretKey: ""
+      redisSslCertFileSecretKey: ""
+      redisSslKeyFileSecretKey: ""
 
-  extraEnvironmentVars: { }
+  extraEnvironmentVars: {}
   extraEnvironmentSecrets: { }
 
   contextPath: /
+
+  persistence:
+    enabled: true
+    type: volume # s3, azure, gcs
+    config:
+      s3:
+        accessKey: ""
+        secretKey: ""
+        accessKeyExistingSecret: ""
+        accessKeyExistingSecretKey: ""
+        secretKeyExistingSecret: ""
+        secretKeyExistingSecretKey: ""
+        region: ""
+        bucket: ""
+        folder: ""
+        urlExpirationSecs: "86400"
+      volume:
+        ## If defined, storageClassName: <storageClass>
+        ## If set to "-", storageClassName: "", which disables dynamic provisioning
+        ## If undefined (the default) or set to null, no storageClassName spec is
+        ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+        ##   GKE, AWS & OpenStack)
+        ##
+        storageClass: ""
+        size: 10Gi
+        accessMode: ReadWriteOnce
+        accessModes: [ ]
+        annotations: { }
+        existingClaim: ""
+        resourcePolicy: ""
+      azure:
+        storageAccountName: ""
+        storageAccountKey: ""
+        storageAccountNameExistingSecret: ""
+        storageAccountNameExistingSecretKey: ""
+        storageAccountKeyExistingSecret: ""
+        storageAccountKeyExistingSecretKey: ""
+        containerName: ""
+        folder: ""
+        urlExpirationSecs: "86400"
+      gcs:
+        projectID: ""
+        applicationCredentialsJSON: ""
+        applicationCredentialsJSONExistingSecret: ""
+        applicationCredentialsJSONExistingSecretKey: ""
+        bucket: ""
+        folder: ""
+        urlExpirationSecs: "86400"
+
+  featureFlags: { }
+  upgradeCheck:
+    enabled: false
+    resources:
+      requests: {}
+      ## Example:
+      ##  memory: ""
+      ##  cpu: ""
+      limits: {}
+      ## Example:
+      ##  memory: ""
+      ##  cpu: ""
 
 app:
   enabled: true
@@ -63,12 +126,52 @@ app:
   FullnameOverride: ""
 
   resources:
-    requests:
-      memory: 384Mi
-      cpu: 250m
-    limits:
-      memory: 1024Mi
-      cpu: 750m
+    requests: {}
+    ## Example:
+    ##  memory: "1500Mi"
+    ##  cpu: "2"
+    limits: {}
+    ## Example:
+    ##  memory: "4000Mi"
+    ##  cpu: "4"
+
+  initContainer:
+    resources:
+      requests: {}
+        ## Example:
+        ## memory: 384Mi
+        ## cpu: 250m
+      limits: {}
+        ## Example:
+        ## memory: 512Mi
+        ## cpu: 500m
+
+  nginx:
+    resources:
+      requests: {}
+        ## Example:
+        ## memory: 384Mi
+        ## cpu: 250m
+      limits: {}
+        ## Example:
+        ## memory: 1G
+        ## cpu: 1000m
+    livenessProbe:
+      enabled: true
+      path: "/nginx_health"
+      failureThreshold: 2
+      initialDelaySeconds: 60
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 3
+    readinessProbe:
+      enabled: true
+      path: "/version"
+      failureThreshold: 2
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
 
   logLevel: "INFO"
 
@@ -93,9 +196,19 @@ app:
   #   beta.kubernetes.io/arch: amd64
   nodeSelector: { }
 
-  # Extra k8s annotations to attach to the rqworker pods
+  topologySpreadConstraints: [ ]
+
+  dnsPolicy: "ClusterFirst"
+
+  enableServiceLinks: false
+
+  shareProcessNamespace: false
+
+  automountServiceAccountToken: true
+
+  # Extra k8s annotations to attach to the app pods
   # This can either be YAML or a YAML-formatted multi-line templated string map
-  # of the annotations to apply to the rqworker pods
+  # of the annotations to apply to the app pods
   annotations: { }
 
   # Extra k8s labels to attach to Label Studio Enterprise.
@@ -104,19 +217,19 @@ app:
 
   affinity: { }
 
-  # Toleration Settings for rqworker pods
+  # Toleration Settings for app pods
   # Provide either a multi-line string or YAML matching the Toleration array
   # in a PodSpec.
   tolerations: []
 
   # Used to define custom readinessProbe settings
   readinessProbe:
-    enabled: true
+    enabled: false
     path: /version
     # When a probe fails, Kubernetes will try failureThreshold times before giving up
     failureThreshold: 2
     # Number of seconds after the container has started before probe initiates
-    initialDelaySeconds: 10
+    initialDelaySeconds: 60
     # How often (in seconds) to perform the probe
     periodSeconds: 10
     # Minimum consecutive successes for the probe to be considered successful after having failed
@@ -139,11 +252,13 @@ app:
     timeoutSeconds: 5
 
   service:
-    enabled: true
     type: ClusterIP
     port: 80
     targetPort: 8085
     portName: service
+    annotations: { }
+    sessionAffinity: "None"
+    sessionAffinityConfig: { }
 
   ingress:
     enabled: true
@@ -151,21 +266,23 @@ app:
     # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
     className: ""
     annotations: { }
-    # kubernetes.io/ingress.class: nginx # deprecated
-    # kubernetes.io/tls-acme: "true"
+    ## Examples:
+    ## kubernetes.io/tls-acme: "true"
     host: app.heartex.local
     # You may need to set this to '/*' in order to use this with ALB ingress controllers.
     path: /
     ## Extra paths to prepend to the host configuration. This is useful when working with annotation based services.
     extraPaths: []
-    # - path: /*
-    #   backend:
-    #     serviceName: ssl-redirect
-    #     servicePort: use-annotation
+    ## Examples:
+    ## - path: /*
+    ##   backend:
+    ##     serviceName: ssl-redirect
+    ##     servicePort: use-annotation
     tls: [ ]
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - app.heartex.local
+    ## Examples:
+    ##  - secretName: chart-example-tls
+    ##    hosts:
+    ##      - app.heartex.local
 
   # Definition of the serviceAccount used to run Label Studio Enterprise
   serviceAccount:
@@ -179,6 +296,28 @@ app:
     # k8s annotations to apply to the serviceAccount.
     annotations: {}
 
+  # Array to add extra volumes
+  extraVolumes: [ ]
+  # Array to add extra mounts (normally used with extraVolumes)
+  extraVolumeMounts: [ ]
+
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+  ## @param app.podSecurityContext.enabled Enable pod Security Context
+  ##
+  podSecurityContext:
+    enabled: false
+
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+  ## @param containerSecurityContext.enabled Enable container Security Context
+  ## @param containerSecurityContext.runAsNonRoot Avoid running as root User
+  ## @param containerSecurityContext.allowPrivilegeEscalation Controls whether a process can gain more privileges than its parent process
+  ##
+  containerSecurityContext:
+    enabled: true
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    runAsUser: 1001
+
 rqworker:
   enabled: true
 
@@ -189,13 +328,22 @@ rqworker:
     type: Recreate
 
   replicas: 1
+
+  queues:
+    high:
+      NameOverride: ""
+      FullnameOverride: ""
+      replicas: 1
+
   resources:
-    requests:
-      memory: 256Mi
-      cpu: 100m
-    limits:
-      memory: 512Mi
-      cpu: 500m
+    requests: {}
+      ## Example:
+      ## memory: "512Mi"
+      ## cpu: "500m"
+    limits: {}
+      ## Example:
+      ## memory: "1500Mi"
+      ## cpu: "1"
 
   logLevel: "INFO"
 
@@ -219,6 +367,16 @@ rqworker:
   # nodeSelector:
   #   beta.kubernetes.io/arch: amd64
   nodeSelector: { }
+
+  topologySpreadConstraints: [ ]
+
+  dnsPolicy: "ClusterFirst"
+
+  enableServiceLinks: false
+
+  shareProcessNamespace: false
+
+  automountServiceAccountToken: true
 
   # Extra k8s annotations to attach to the rqworker pods
   # This can either be YAML or a YAML-formatted multi-line templated string map
@@ -243,7 +401,7 @@ rqworker:
     # When a probe fails, Kubernetes will try failureThreshold times before giving up
     failureThreshold: 2
     # Number of seconds after the container has started before probe initiates
-    initialDelaySeconds: 35
+    initialDelaySeconds: 60
     # How often (in seconds) to perform the probe
     periodSeconds: 5
     # Minimum consecutive successes for the probe to be considered successful after having failed
@@ -277,46 +435,54 @@ rqworker:
     # annotations to apply to the serviceAccount.
     annotations: { }
 
-minio:
-  enabled: true
-  accessKey:
-    password: "minio"
-  secretKey:
-    password: "minio123"
-  resources:
-    requests:
-      cpu: 250m
-      memory: 256Mi
-  mode: standalone # change to "distributed" for Production setup
-  persistence:
-    enabled: false # change to "true" for Production setup and uncomment next lines
-#  volumePermissions:
-#    enabled: true
+  # Array to add extra volumes
+  extraVolumes: [ ]
+  # Array to add extra mounts (normally used with extraVolumes)
+  extraVolumeMounts: [ ]
 
-# This is for development purposes only. Do not run production environment using these variables.
-postgresql:
-  enabled: false
-  image:
-    tag: 12.7.0
-  postgresqlUsername: postgres
-  postgresqlPassword: "postgres"
-  postgresqlDatabase: postgres
-  servicePort: 5432
-  persistence:
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+  ## @param rqworker.podSecurityContext.enabled Enable pod Security Context
+  ##
+  podSecurityContext:
     enabled: false
-  requests:
-    memory: 250Mi
-    cpu: 256m
+
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+  ## @param containerSecurityContext.enabled Enable container Security Context
+  ## @param containerSecurityContext.runAsNonRoot Avoid running as root User
+  ## @param containerSecurityContext.allowPrivilegeEscalation Controls whether a process can gain more privileges than its parent process
+  ##
+  containerSecurityContext:
+    enabled: true
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    runAsUser: 1001
+
+#  [Enterprise Only]
+enterprise:
+  enabled: false
+  # This value refers to a Kubernetes secret that you have
+  # created that contains your enterprise license.
+  enterpriseLicense:
+    # The name of the Kubernetes secret that holds the enterprise license. The
+    # secret must be in the same namespace that Label Studio Enterprise is installed into.
+    secretName: ""
+    # The key within the Kubernetes secret that holds the enterprise license.
+    secretKey: "license"
+
+postgresql:
+  enabled: true
+  architecture: standalone
+  image:
+    tag: 13.8.0
+  auth:
+    username: "labelstudio"
+    password: "labelstudio"
+    database: "labelstudio"
 
 redis:
   enabled: false
   architecture: standalone
   auth:
     enabled: false
-  master:
-    persistence:
-      enabled: false
-    resources:
-      requests:
-        memory: 250Mi
-        cpu: 256m
+
+ci: false

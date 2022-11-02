@@ -1,6 +1,6 @@
 {{- if .Values.app.ingress.enabled -}}
 {{- $extraPaths := .Values.app.ingress.extraPaths -}}
-{{- $fullName := include "lse-app.fullname" . -}}
+{{- $fullName := include "ls-app.fullname" . -}}
 {{- $svcPort := .Values.app.service.port -}}
 {{- if and .Values.app.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.app.ingress.annotations "kubernetes.io/ingress.class") }}
@@ -18,7 +18,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "lse-app.labels" . | nindent 4 }}
+    {{- include "ls-app.labels" . | nindent 4 }}
   {{- with .Values.app.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
