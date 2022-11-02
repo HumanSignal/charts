@@ -261,14 +261,14 @@ app:
     sessionAffinityConfig: { }
 
   ingress:
-    enabled: true
+    enabled: false
     # For Kubernetes >= 1.18 you should specify the ingress-controller using the field ingressClassName
     # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
     className: ""
     annotations: { }
     ## Examples:
     ## kubernetes.io/tls-acme: "true"
-    host: app.heartex.local
+    host: ""
     # You may need to set this to '/*' in order to use this with ALB ingress controllers.
     path: /
     ## Extra paths to prepend to the host configuration. This is useful when working with annotation based services.

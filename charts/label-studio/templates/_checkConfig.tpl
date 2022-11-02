@@ -32,7 +32,7 @@ Due to gotpl scoping, we can't make use of `range`, so we have to add action lin
 
 {{/* other checks */}}
 {{- $messages = append $messages (include "ls.checkConfig.pgConfig" .) -}}
-{{- $messages = append $messages (include "ls.checkConfig.labelStudioHostisSet" .) -}}
+{{/*{{- $messages = append $messages (include "ls.checkConfig.labelStudioHostisSet" .) -}}*/}}
 {{- $messages = append $messages (include "ls.checkConfig.labelStudioHostScheme" .) -}}
 {{- $messages = append $messages (include "ls.checkConfig.azureConfig" .) -}}
 {{- $messages = append $messages (include "ls.checkConfig.gcsConfig" .) -}}
