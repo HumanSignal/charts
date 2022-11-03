@@ -1,5 +1,6 @@
 {{- if and $.Values.enterprise.enabled $.Values.rqworker.enabled -}}
 {{- range $queue_name, $val := $.Values.rqworker.queues }}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
