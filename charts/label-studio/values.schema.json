@@ -23,18 +23,6 @@
           },
           "additionalProperties": false
         },
-        "djangoConfig": {
-          "type": "object",
-          "properties": {
-            "db": {
-              "type": "string"
-            },
-            "settings_module": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        },
         "pgConfig": {
           "type": "object",
           "properties": {
@@ -284,39 +272,39 @@
         "featureFlags": {
           "type": "object",
           "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "upgradeCheck": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
         },
-        "upgradeCheck": {
+        "resources": {
           "type": "object",
           "properties": {
-            "enabled": {
-              "type": "boolean"
-            },
-            "resources": {
+            "requests": {
               "type": "object",
               "properties": {
-                "requests": {
-                  "type": "object",
-                  "properties": {
-                    "memory": {
-                      "type": "string"
-                    },
-                    "cpu": {
-                      "type": "string"
-                    }
-                  },
-                  "additionalProperties": false
+                "memory": {
+                  "type": "string"
                 },
-                "limits": {
-                  "type": "object",
-                  "properties": {
-                    "memory": {
-                      "type": "string"
-                    },
-                    "cpu": {
-                      "type": "string"
-                    }
-                  },
-                  "additionalProperties": false
+                "cpu": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "limits": {
+              "type": "object",
+              "properties": {
+                "memory": {
+                  "type": "string"
+                },
+                "cpu": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false

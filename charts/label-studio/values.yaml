@@ -12,10 +12,6 @@ global:
     pullPolicy: IfNotPresent
     tag: ""
 
-  djangoConfig:
-    db: ""
-    settings_module: ""
-
   pgConfig:
     host: ""
     port: 5432
@@ -99,17 +95,18 @@ global:
         urlExpirationSecs: "86400"
 
   featureFlags: { }
-  upgradeCheck:
-    enabled: false
-    resources:
-      requests: {}
-      ## Example:
-      ##  memory: ""
-      ##  cpu: ""
-      limits: {}
-      ## Example:
-      ##  memory: ""
-      ##  cpu: ""
+
+upgradeCheck:
+  enabled: false
+  resources:
+    requests: {}
+    ## Example:
+    ##  memory: ""
+    ##  cpu: ""
+    limits: {}
+    ## Example:
+    ##  memory: ""
+    ##  cpu: ""
 
 app:
   enabled: true

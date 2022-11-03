@@ -202,19 +202,19 @@ Create the name of the rqworker service account to use
 Set's common environment variables
 */}}
 {{- define "ls.common.envs" -}}
-          {{- if not .Values.global.extraEnvironmentVars.LICENSE }}
-          {{- if (and .Values.enterprise.enterpriseLicense.secretName .Values.enterprise.enterpriseLicense.secretKey) }}
+            {{- if not .Values.global.extraEnvironmentVars.LICENSE }}
+            {{- if (and .Values.enterprise.enterpriseLicense.secretName .Values.enterprise.enterpriseLicense.secretKey) }}
             - name: LICENSE
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.enterprise.enterpriseLicense.secretName }}
                   key: {{ .Values.enterprise.enterpriseLicense.secretKey }}
-          {{- end }}
-          {{- end }}
-            - name: SKIP_DB_MIGRATIONS
-              value: "{{ .Values.global.skipDbMigrations | default "true" }}"
+            {{- end }}
+            {{- end }}
+            {{- if not .Values.global.extraEnvironmentVars.DJANGO_DB }}
             - name: DJANGO_DB
-              value: {{ .Values.global.djangoConfig.db | default "default" }}
+              value: "default"
+            {{- end }}
             {{- if (and .Values.postgresql.enabled .Values.postgresql.auth.database ) }}
             - name: POSTGRE_NAME
               value: {{ .Values.postgresql.auth.database }}

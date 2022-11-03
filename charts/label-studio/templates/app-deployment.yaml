@@ -74,6 +74,8 @@ spec:
           {{- end }}
           args: [ "label-studio-uwsgi" ]
           env:
+            - name: SKIP_DB_MIGRATIONS
+              value: "true"
             {{- template "ls.common.envs" . }}
             {{- if .Values.app.extraEnvironmentVars -}}
             {{- range $key, $value := .Values.app.extraEnvironmentVars }}

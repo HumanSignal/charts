@@ -1,4 +1,4 @@
-{{- if .Values.global.upgradeCheck.enabled }}
+{{- if .Values.upgradeCheck.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -63,7 +63,7 @@ spec:
             - name: scripts
               mountPath: /scripts
           resources:
-            {{- toYaml .Values.global.upgradeCheck.resources | nindent 12 }}
+            {{- toYaml .Values.upgradeCheck.resources | nindent 12 }}
       {{- with .Values.app.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
