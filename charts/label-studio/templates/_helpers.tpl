@@ -7,9 +7,6 @@ Expand the name
 {{- define "ls-rqworker.name" -}}
 {{- default "ls-rqworker" .Values.rqworker.NameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
-{{- define "ls-rqworker-high.name" -}}
-{{- default "ls-rqworker-high" .Values.rqworker.NameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
 {{- define "ls-pvc.name" -}}
 {{- "ls-pvc" | trunc 63 | trimSuffix "-" }}
 {{- end }}
@@ -51,19 +48,6 @@ If release name contains chart name it will be used as a full name.
 {{- .Values.rqworker.FullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- $name := default "ls-rqworker" .Values.rqworker.FullnameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-{{- end }}
-
-{{- define "ls-rqworker-high.fullname" -}}
-{{- if .Values.rqworker.queues.high.FullnameOverride }}
-{{- .Values.rqworker.queues.high.FullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default "ls-rqworker-high" .Values.rqworker.queues.high.FullnameOverride }}
 {{- if contains $name .Release.Name }}
 {{- .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -174,28 +158,6 @@ Selector labels for ls-rqworker
 */}}
 {{- define "ls-rqworker.selectorLabels" -}}
 app.kubernetes.io/part-of: label-studio
-app.kubernetes.io/name: {{ include "ls-rqworker.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{/*
-Common labels for ls-rqworker-high
-*/}}
-{{- define "ls-rqworker-high.labels" -}}
-helm.sh/chart: {{ include "ls.chart" . }}
-{{ include "ls-rqworker-high.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
-
-{{/*
-Selector labels for ls-rqworker-high
-*/}}
-{{- define "ls-rqworker-high.selectorLabels" -}}
-app.kubernetes.io/part-of: label-studio
-app.kubernetes.io/name: {{ include "ls-rqworker-high.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 

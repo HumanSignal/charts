@@ -331,9 +331,20 @@ rqworker:
 
   queues:
     high:
-      NameOverride: ""
-      FullnameOverride: ""
       replicas: 1
+      args: '"high"'
+    low:
+      replicas: 1
+      args: '"low"'
+    default:
+      replicas: 1
+      args: '"default"'
+    critical:
+      replicas: 1
+      args: '"critical"'
+    all:
+      replicas: 1
+      args: '"low", "default", "critical", "high"'
 
   resources:
     requests: {}

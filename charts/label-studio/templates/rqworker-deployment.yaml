@@ -1,63 +1,67 @@
-{{- if and .Values.enterprise.enabled .Values.rqworker.enabled -}}
+{{- if and $.Values.enterprise.enabled $.Values.rqworker.enabled -}}
+{{- range $queue_name, $val := $.Values.rqworker.queues }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ls-rqworker.fullname" . }}
+  name: {{ include "ls-rqworker.fullname" $ }}-{{ $queue_name }}
   labels:
-  {{- include "ls-rqworker.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "ls-rqworker.name" $ }}-{{ $queue_name }}
+    {{- include "ls-rqworker.labels" $ | nindent 4 }}
 spec:
-  replicas: {{ .Values.rqworker.replicas }}
+  replicas: {{ $val.replicas }}
   selector:
     matchLabels:
-      {{- include "ls-rqworker.selectorLabels" . | nindent 6 }}
-  {{- with .Values.rqworker.deploymentStrategy }}
+      app.kubernetes.io/name: {{ include "ls-rqworker.name" $ }}-{{ $queue_name }}
+      {{- include "ls-rqworker.selectorLabels" $ | nindent 6 }}
+  {{- with $.Values.rqworker.deploymentStrategy }}
   strategy:
   {{ toYaml . | trim | indent 4 }}
   {{- end }}
   template:
     metadata:
-      {{- with .Values.rqworker.annotations }}
+      {{- with $.Values.rqworker.annotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-    {{- include "ls-rqworker.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/name: {{ include "ls-rqworker.name" $ }}-{{ $queue_name }}
+        {{- include "ls-rqworker.selectorLabels" $ | nindent 8 }}
     spec:
-      {{- with .Values.global.imagePullSecrets }}
+      {{- with $.Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "ls-rqworker.serviceAccountName" . }}
-      {{- if .Values.rqworker.podSecurityContext.enabled }}
-      securityContext: {{- omit .Values.rqworker.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      serviceAccountName: {{ include "ls-rqworker.serviceAccountName" $ }}
+      {{- if $.Values.rqworker.podSecurityContext.enabled }}
+      securityContext: {{- omit $.Values.rqworker.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
-      automountServiceAccountToken: {{ .Values.rqworker.automountServiceAccountToken }}
+      automountServiceAccountToken: {{ $.Values.rqworker.automountServiceAccountToken }}
       containers:
-        - name: ls-rqworker
-          image: "{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
-          args: [ "python3", "/label-studio-enterprise/label_studio_enterprise/manage.py", "rqworker", "critical", "high", "default", "low" ]
-          imagePullPolicy: {{ .Values.global.image.pullPolicy }}
-          {{- if .Values.rqworker.containerSecurityContext.enabled }}
-          securityContext: {{- omit .Values.rqworker.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+        - name: rqworker
+          image: "{{ $.Values.global.image.repository }}:{{ $.Values.global.image.tag | default $.Chart.AppVersion }}"
+          args: [ "python3", "/label-studio-enterprise/label_studio_enterprise/manage.py", "rqworker", {{ $val.args }} ]
+          imagePullPolicy: {{ $.Values.global.image.pullPolicy }}
+          {{- if $.Values.rqworker.containerSecurityContext.enabled }}
+          securityContext: {{- omit $.Values.rqworker.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
-            {{- template "ls.common.envs" . }}
-            {{- if .Values.rqworker.logLevel }}
+            {{- template "ls.common.envs" $ }}
+            {{- if $.Values.rqworker.logLevel }}
             - name: LOG_LEVEL
-              value: "{{ .Values.rqworker.logLevel }}"
+              value: "{{ $.Values.rqworker.logLevel }}"
             {{- end }}
-            {{- if .Values.rqworker.debug }}
+            {{- if $.Values.rqworker.debug }}
             - name: DEBUG
               value: "true"
             {{- end }}
-            {{- if .Values.rqworker.extraEnvironmentVars -}}
-            {{- range $key, $value := .Values.rqworker.extraEnvironmentVars }}
+            {{- if $.Values.rqworker.extraEnvironmentVars -}}
+            {{- range $key, $value := $.Values.rqworker.extraEnvironmentVars }}
             - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
               value: {{ $value | quote }}
             {{- end }}
             {{- end }}
-            {{- if .Values.rqworker.extraEnvironmentSecrets -}}
-            {{- range $key, $value := .Values.rqworker.extraEnvironmentSecrets }}
+            {{- if $.Values.rqworker.extraEnvironmentSecrets -}}
+            {{- range $key, $value := $.Values.rqworker.extraEnvironmentSecrets }}
             - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
               valueFrom:
                 secretKeyRef:
@@ -69,115 +73,116 @@ spec:
             - name: service
               containerPort: 8000
               protocol: TCP
-          {{- if .Values.rqworker.readinessProbe.enabled }}
+          {{- if $.Values.rqworker.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
-              path: {{ .Values.rqworker.readinessProbe.path | quote }}
+              path: {{ $.Values.rqworker.readinessProbe.path | quote }}
               port: 8000
-            failureThreshold: {{ .Values.rqworker.readinessProbe.failureThreshold }}
-            initialDelaySeconds: {{ .Values.rqworker.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.rqworker.readinessProbe.periodSeconds }}
-            successThreshold: {{ .Values.rqworker.readinessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.rqworker.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ $.Values.rqworker.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ $.Values.rqworker.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.rqworker.readinessProbe.periodSeconds }}
+            successThreshold: {{ $.Values.rqworker.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ $.Values.rqworker.readinessProbe.timeoutSeconds }}
           {{- end }}
-          {{- if .Values.rqworker.livenessProbe.enabled }}
+          {{- if $.Values.rqworker.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
-              path: {{ .Values.rqworker.livenessProbe.path | quote }}
+              path: {{ $.Values.rqworker.livenessProbe.path | quote }}
               port: 8000
-            failureThreshold: {{ .Values.rqworker.livenessProbe.failureThreshold }}
-            initialDelaySeconds: {{ .Values.rqworker.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.rqworker.livenessProbe.periodSeconds }}
-            successThreshold: {{ .Values.rqworker.livenessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.rqworker.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ $.Values.rqworker.livenessProbe.failureThreshold }}
+            initialDelaySeconds: {{ $.Values.rqworker.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.rqworker.livenessProbe.periodSeconds }}
+            successThreshold: {{ $.Values.rqworker.livenessProbe.successThreshold }}
+            timeoutSeconds: {{ $.Values.rqworker.livenessProbe.timeoutSeconds }}
           {{- end }}
           resources:
-            {{- toYaml .Values.rqworker.resources | nindent 12 }}
+            {{- toYaml $.Values.rqworker.resources | nindent 12 }}
           volumeMounts:
             - name: data
               mountPath: /label-studio/data
-            {{- if and .Values.global.persistence.enabled (eq .Values.global.persistence.type "gcs") }}
-              {{- if or .Values.global.persistence.config.gcs.applicationCredentialsJSON (and .Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret .Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecretKey) }}
+            {{- if and $.Values.global.persistence.enabled (eq $.Values.global.persistence.type "gcs") }}
+              {{- if or $.Values.global.persistence.config.gcs.applicationCredentialsJSON (and $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecretKey) }}
             - name: gcs-storage-credentials
               mountPath: /opt/heartex/secrets/gcs
               readOnly: true
               {{- end }}
             {{- end }}
-            {{- if .Values.global.pgConfig.ssl.pgSslSecretName }}
+            {{- if $.Values.global.pgConfig.ssl.pgSslSecretName }}
             - name: pg-ssl-certs
               mountPath: /opt/heartex/secrets/pg_certs
             {{- end }}
-            {{- if .Values.global.redisConfig.ssl.redisSslSecretName }}
+            {{- if $.Values.global.redisConfig.ssl.redisSslSecretName }}
             - name: redis-ssl-certs
               mountPath: /opt/heartex/secrets/redis_certs
             {{- end }}
-            {{- if .Values.rqworker.extraVolumeMounts }}
-              {{ toYaml .Values.rqworker.extraVolumeMounts | nindent 12 }}
+            {{- if $.Values.rqworker.extraVolumeMounts }}
+              {{ toYaml $.Values.rqworker.extraVolumeMounts | nindent 12 }}
             {{- end }}
             - mountPath: /opt/heartex/instance-data/etc
               name: opt-heartex
             - mountPath: /tmp
               name: tmp-dir
-      {{- with .Values.rqworker.nodeSelector }}
+      {{- with $.Values.rqworker.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.rqworker.topologySpreadConstraints }}
-      topologySpreadConstraints: {{- include "tplvalues.render" (dict "value" .Values.rqworker.topologySpreadConstraints "context" $) | nindent 8 }}
+      {{- if $.Values.rqworker.topologySpreadConstraints }}
+      topologySpreadConstraints: {{- include "tplvalues.render" (dict "value" $.Values.rqworker.topologySpreadConstraints "context" $) | nindent 8 }}
       {{- end }}
-      {{- if .Values.rqworker.dnsPolicy }}
-      dnsPolicy: {{ .Values.rqworker.dnsPolicy }}
+      {{- if $.Values.rqworker.dnsPolicy }}
+      dnsPolicy: {{ $.Values.rqworker.dnsPolicy }}
       {{- end }}
-      {{- if .Values.rqworker.enableServiceLinks }}
-      enableServiceLinks: {{ .Values.rqworker.enableServiceLinks }}
+      {{- if $.Values.rqworker.enableServiceLinks }}
+      enableServiceLinks: {{ $.Values.rqworker.enableServiceLinks }}
       {{- end }}
-      {{- if .Values.rqworker.shareProcessNamespace }}
-      shareProcessNamespace: {{ .Values.rqworker.shareProcessNamespace }}
+      {{- if $.Values.rqworker.shareProcessNamespace }}
+      shareProcessNamespace: {{ $.Values.rqworker.shareProcessNamespace }}
       {{- end }}
-      {{- with .Values.rqworker.affinity }}
+      {{- with $.Values.rqworker.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.rqworker.tolerations }}
+      {{- with $.Values.rqworker.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
         - name: data
-          {{- if and .Values.global.persistence.enabled (eq .Values.global.persistence.type "volume") }}
+          {{- if and $.Values.global.persistence.enabled (eq $.Values.global.persistence.type "volume") }}
           persistentVolumeClaim:
-            claimName: {{ include "ls-pvc.claimName" . }}
+            claimName: {{ include "ls-pvc.claimName" $ }}
           {{- else }}
           emptyDir: {}
           {{- end }}
-        {{- if and .Values.global.persistence.enabled (eq .Values.global.persistence.type "gcs") }}
-        {{- if or .Values.global.persistence.config.gcs.applicationCredentialsJSON (and .Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret .Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecretKey) }}
+        {{- if and $.Values.global.persistence.enabled (eq $.Values.global.persistence.type "gcs") }}
+        {{- if or $.Values.global.persistence.config.gcs.applicationCredentialsJSON (and $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecretKey) }}
         - name: gcs-storage-credentials
           secret:
-            {{- if and .Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret .Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecretKey }}
-            secretName: {{ .Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret }}
+            {{- if and $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecretKey }}
+            secretName: {{ $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret }}
             {{- else }}
-            secretName: {{ include "ls-secrets.fullname" . }}
+            secretName: {{ include "ls-secrets.fullname" $ }}
             {{- end }}
         {{- end }}
         {{- end }}
-        {{- if .Values.global.pgConfig.ssl.pgSslSecretName }}
+        {{- if $.Values.global.pgConfig.ssl.pgSslSecretName }}
         - name: pg-ssl-certs
           secret:
-            secretName: {{ .Values.global.pgConfig.ssl.pgSslSecretName }}
+            secretName: {{ $.Values.global.pgConfig.ssl.pgSslSecretName }}
             defaultMode: 0640
         {{- end }}
-        {{- if .Values.global.redisConfig.ssl.redisSslSecretName }}
+        {{- if $.Values.global.redisConfig.ssl.redisSslSecretName }}
         - name: redis-ssl-certs
           secret:
-            secretName: {{ .Values.global.redisConfig.ssl.redisSslSecretName  }}
+            secretName: {{ $.Values.global.redisConfig.ssl.redisSslSecretName  }}
             defaultMode: 0640
         {{- end }}
-        {{- if .Values.rqworker.extraVolumes -}}
-          {{- toYaml .Values.rqworker.extraVolumes | nindent 8 }}
+        {{- if $.Values.rqworker.extraVolumes -}}
+          {{- toYaml $.Values.rqworker.extraVolumes | nindent 8 }}
         {{- end }}
         - name: opt-heartex
           emptyDir: {}
         - name: tmp-dir
           emptyDir: {}
+{{- end }}
 {{- end }}
