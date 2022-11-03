@@ -173,10 +173,6 @@ app:
       successThreshold: 1
       timeoutSeconds: 5
 
-  logLevel: "INFO"
-
-  debug: ""
-
   # extraEnvironmentVars is a list of extra environment variables to set in the
   # app deployment.
   extraEnvironmentVars: { }
@@ -327,8 +323,6 @@ rqworker:
   deploymentStrategy:
     type: Recreate
 
-  replicas: 1
-
   queues:
     high:
       replicas: 1
@@ -355,10 +349,6 @@ rqworker:
       ## Example:
       ## memory: "1500Mi"
       ## cpu: "1"
-
-  logLevel: "INFO"
-
-  debug: ""
 
   # extraEnvironmentVars is a list of extra environment variables to set in the
   # rqworker deployment.

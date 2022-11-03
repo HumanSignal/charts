@@ -45,10 +45,6 @@ spec:
             {{- template "ls.common.envs" . }}
             - name: INIT_CONTAINER
               value: "true"
-            {{- if .Values.app.logLevel }}
-            - name: LOG_LEVEL
-              value: "{{ .Values.app.logLevel }}"
-            {{- end }}
             {{- if .Values.app.debug }}
             - name: DEBUG
               value: "true"
@@ -79,14 +75,6 @@ spec:
           args: [ "label-studio-uwsgi" ]
           env:
             {{- template "ls.common.envs" . }}
-            {{- if .Values.app.logLevel }}
-            - name: LOG_LEVEL
-              value: "{{ .Values.app.logLevel }}"
-            {{- end }}
-            {{- if .Values.app.debug }}
-            - name: DEBUG
-              value: "true"
-            {{- end }}
             {{- if .Values.app.extraEnvironmentVars -}}
             {{- range $key, $value := .Values.app.extraEnvironmentVars }}
             - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
@@ -155,14 +143,6 @@ spec:
             - name: APP_HOST
               value: localhost
             {{- template "ls.common.envs" . }}
-            {{- if .Values.app.logLevel }}
-            - name: LOG_LEVEL
-              value: "{{ .Values.app.logLevel }}"
-            {{- end }}
-            {{- if .Values.app.debug }}
-            - name: DEBUG
-              value: "true"
-            {{- end }}
             {{- if .Values.app.extraEnvironmentVars -}}
             {{- range $key, $value := .Values.app.extraEnvironmentVars }}
             - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}

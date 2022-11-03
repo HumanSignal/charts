@@ -519,10 +519,6 @@
           },
           "additionalProperties": false
         },
-        "logLevel": {
-          "type": "string"
-        },
-        "debug": {},
         "extraEnvironmentVars": {
           "type": "object",
           "additionalProperties": true
@@ -747,9 +743,6 @@
           },
           "additionalProperties": true
         },
-        "replicas": {
-          "type": "integer"
-        },
         "queues": {
           "type": "object",
           "properties": {
@@ -845,10 +838,6 @@
           },
           "additionalProperties": false
         },
-        "logLevel": {
-          "type": "string"
-        },
-        "debug": {},
         "extraEnvironmentVars": {
           "type": "object",
           "additionalProperties": true

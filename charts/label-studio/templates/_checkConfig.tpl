@@ -80,8 +80,8 @@ ls-app:
 {{/* Ensure that redis host is set */}}
 {{- define "lse.checkConfig.redisHost" -}}
 {{- if and (.Values.enterprise.enabled) (not .Values.redis.enabled) (not .Values.global.redisConfig.host) -}}
-ls-app:
-  Redis: Redis is required for Label Studio. Please set Redis host in `.Values.global.redisConfig.host`
+Label Studio Enterprise:
+  Redis: Redis is required for Label Studio Enterpise. Please set Redis host in `.Values.global.redisConfig.host`
 {{- end -}}
 {{- end -}}
 {{/* END ls.checkConfig.redisHost */}}
@@ -112,7 +112,7 @@ ls-app:
 {{/* Ensure that "rediss" scheme used in connection string */}}
 {{- define "lse.checkConfig.redisSslscheme" -}}
 {{- if and (.Values.enterprise.enabled) (.Values.global.redisConfig.ssl.redisSslSecretName) (not (hasPrefix "rediss://" .Values.global.redisConfig.host)) -}}
-ls-app:
+Label Studio Enterprise:
   Redis: In the case if you're using Redis with TLS it's necessary to define the scheme "rediss://" in `.Values.global.redisConfig.host`
 {{- end -}}
 {{- end -}}
@@ -121,7 +121,7 @@ ls-app:
 {{/* Ensure persistence was enabled */}}
 {{- define "lse.checkConfig.persistenceEnabled" -}}
 {{- if and (.Values.enterprise.enabled) (not .Values.global.persistence.enabled) -}}
-ls-app:
+Label Studio Enterprise:
   Persistence: You haven't specified a persistence configuration. Data export function will not be supported.
   Data will be persisted on the node running this container, but all data will be lost if this node goes away.
   Please, check our documentation: https://labelstud.io/guide/persistent_storage.html
