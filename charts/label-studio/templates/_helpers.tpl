@@ -272,12 +272,12 @@ Set's common environment variables
               value: redis{{ if .Values.redis.tls.enabled }}s{{ end }}://{{ .Release.Name }}-redis-headless:6379/1
             {{- end }}
             {{- end }}
-            {{- if not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
-            {{- if .Values.app.ingress.enabled }}
-            - name: LABEL_STUDIO_HOST
-              value: http{{ if .Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.global.contextPath }}
-            {{- end }}
-            {{- end }}
+{{/*            {{- if not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}*/}}
+{{/*            {{- if .Values.app.ingress.enabled }}*/}}
+{{/*            - name: LABEL_STUDIO_HOST*/}}
+{{/*              value: http{{ if .Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.global.contextPath }}*/}}
+{{/*            {{- end }}*/}}
+{{/*            {{- end }}*/}}
             {{- if (and .Values.global.redisConfig.password.secretName .Values.global.redisConfig.password.secretKey) }}
             - name: REDIS_PASSWORD
               valueFrom:

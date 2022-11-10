@@ -178,9 +178,6 @@
                 "volume": {
                   "type": "object",
                   "properties": {
-                    "accessMode": {
-                      "type": "string"
-                    },
                     "accessModes": {
                       "type": "array"
                     },

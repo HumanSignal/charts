@@ -70,9 +70,9 @@ global:
         ##
         storageClass: ""
         size: 10Gi
-        accessMode: ReadWriteOnce
-        accessModes: [ ]
-        annotations: { }
+        accessModes:
+          - ReadWriteOnce
+        annotations: {}
         existingClaim: ""
         resourcePolicy: ""
       azure:
@@ -111,11 +111,12 @@ upgradeCheck:
 app:
   enabled: true
 
+  # Update strategy - only really applicable for deployments with RWO PVs attached
+  # If replicas = 1, an update can get "stuck", as the previous pod remains attached to the
+  # PV, and the "incoming" pod can never start. Changing the strategy to "Recreate" will
+  # terminate the single previous pod, so that the new, incoming pod can attach to the PV
   deploymentStrategy:
     type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 2
-      maxUnavailable: 0
 
   replicas: 1
 
@@ -124,9 +125,9 @@ app:
 
   resources:
     requests: {}
-    ## Example:
-    ##  memory: "1500Mi"
-    ##  cpu: "2"
+      ## Example:
+      ## memory: "600Mi"
+      ## cpu: "250m"
     limits: {}
     ## Example:
     ##  memory: "4000Mi"
@@ -146,7 +147,7 @@ app:
   nginx:
     resources:
       requests: {}
-        ## Example:
+        ## Example
         ## memory: 384Mi
         ## cpu: 250m
       limits: {}
@@ -298,7 +299,8 @@ app:
   ## @param app.podSecurityContext.enabled Enable pod Security Context
   ##
   podSecurityContext:
-    enabled: false
+    enabled: true
+    fsGroup: 1001
 
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
   ## @param containerSecurityContext.enabled Enable container Security Context
@@ -307,9 +309,8 @@ app:
   ##
   containerSecurityContext:
     enabled: true
-    runAsNonRoot: true
-    allowPrivilegeEscalation: false
     runAsUser: 1001
+    runAsNonRoot: true
 
 rqworker:
   enabled: true
@@ -339,9 +340,8 @@ rqworker:
 
   resources:
     requests: {}
-      ## Example:
-      ## memory: "512Mi"
-      ## cpu: "500m"
+      ## memory: "256Mi"
+      ## cpu: "250m"
     limits: {}
       ## Example:
       ## memory: "1500Mi"
@@ -442,7 +442,8 @@ rqworker:
   ## @param rqworker.podSecurityContext.enabled Enable pod Security Context
   ##
   podSecurityContext:
-    enabled: false
+    enabled: true
+    fsGroup: 1001
 
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
   ## @param containerSecurityContext.enabled Enable container Security Context
@@ -451,9 +452,8 @@ rqworker:
   ##
   containerSecurityContext:
     enabled: true
-    runAsNonRoot: true
-    allowPrivilegeEscalation: false
     runAsUser: 1001
+    runAsNonRoot: true
 
 #  [Enterprise Only]
 enterprise:

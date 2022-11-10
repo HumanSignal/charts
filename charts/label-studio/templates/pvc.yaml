@@ -19,12 +19,8 @@ metadata:
   {{- end }}
 spec:
   accessModes:
-  {{- if not (empty .Values.global.persistence.config.volume.accessModes) }}
   {{- range .Values.global.persistence.config.volume.accessModes }}
     - {{ . | quote }}
-  {{- end }}
-  {{- else }}
-    - {{ .Values.global.persistence.config.volume.accessMode | quote }}
   {{- end }}
   resources:
     requests:
