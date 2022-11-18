@@ -1,0 +1,69 @@
+global:
+  imagePullSecrets:
+    - name: heartex-pull-key
+
+  image:
+    repository: heartexlabs/label-studio-enterprise
+    tag: 2.3.1
+
+  pgConfig:
+    # PostgreSql instance hostname
+    host: "postgresql"
+    # PostgreSql database name
+    dbName: "my-database"
+    # PostgreSql username
+    userName: "postgres"
+    # PostgreSql password secret coordinates within Kubernetes secrets
+    password:
+      secretName: "postgresql"
+      secretKey: "postgresql-password"
+
+  redisConfig:
+    # Redis connection string
+    host: redis://host:port/db
+
+  # extraEnvironmentVars is a list of extra environment variables to set in the deployment, empty by default
+  extraEnvironmentVars: {}
+  # extraEnvironmentSecrets is a list of extra environment secrets to set in the deployment, empty by default
+  extraEnvironmentSecrets: {}
+
+enterpriseLicense:
+  enabled: true
+  enterpriseLicense:
+    secretName: "lse-license"
+    secretKey: "license"
+
+app:
+  # High Availability (HA) mode: adjust according to your resources
+  replicas: 1
+  # Ingress config for Label Studio
+  ingress:
+    enabled: true
+    host: studio.yourdomain.com
+    # You might need to set path to '/*' in order to use this with ALB ingress controllers.
+    path: /*
+    # Annotations required for your ingress controller, empty by default
+    annotations: {}
+
+  # default compute resources run label studio enterprise for a basic installation. adjust according to your business needs:
+  resources:
+    requests:
+      memory: 1024Mi
+      cpu: 1000m
+    limits:
+      memory: 6144Mi
+      cpu: 4000m
+
+rqworker:
+  # HA mode: adjust according to your business needs/resources
+  queues:
+    high:
+      replicas: 2
+    low:
+      replicas: 2
+    default:
+      replicas: 2
+    critical:
+      replicas: 2
+    all:
+      replicas: 2

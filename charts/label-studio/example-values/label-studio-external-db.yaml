@@ -1,0 +1,26 @@
+# Label Studio with external RDS instance deployed in us-east-1 AWS region
+# Nginx-ingress used as an Ingress Controller
+# Cert-manager to handle certificates
+
+global:
+  pgConfig:
+    host: "labelstudio-123as.cluster-1111.us-east-1.rds.amazonaws.com"
+    dbName: "postgres"
+    userName: "root"
+    password:
+      secretName: "postgresql"
+      secretKey: "postgresql-password"
+
+app:
+  ingress:
+    enabled: true
+    host: test.dev.labelstudio.io.com
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "200m"
+    tls:
+      - secretName: test.dev.labelstudio.io.com
+        hosts:
+          - dev.labelstudio.io.com
+
+postgresql:
+  enabled: false

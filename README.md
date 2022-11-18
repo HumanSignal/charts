@@ -5,12 +5,10 @@ Applications, provided by [Heartex](https://heartex.com), ready to launch on Kub
 ## TL;DR
 
 ```bash
-$ helm repo add heartex https://charts.heartex.com/heartex
+$ helm repo add heartex https://charts.heartex.com/
 $ helm search repo heartex
 $ helm install my-release heartex/<chart>
 ```
-
-## Before you begin
 
 ### Prerequisites
 - Kubernetes 1.19.x+
@@ -32,14 +30,6 @@ Helm is a tool for managing Kubernetes charts. Charts are packages of pre-config
 
 To install Helm, refer to the [Helm install guide](https://github.com/helm/helm#install) and ensure that the `helm` binary is in the `PATH` of your shell.
 
-### Add Repo
-
-The following command allows you to download and install all the charts from this repository:
-
-```bash
-$ helm repo add heartex https://charts.heartex.com/heartex
-```
-
 ### Using Helm
 
 Once you have installed the Helm client, you can deploy a Heartex Helm Chart into a Kubernetes cluster.
@@ -50,3 +40,11 @@ Useful Helm Client Commands:
 * View available charts: `helm search repo`
 * Install a chart: `helm install my-release heartex/<package-name>`
 * Upgrade your application: `helm upgrade`
+
+### Available Helm charts
+
+
+## Seeking help
+
+If you run into an issue, bug or have a question, please reach out to the Label Studio
+community via [Label Studio Slack Community](https://slack.labelstudio.heartex.com/).
