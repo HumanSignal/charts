@@ -43,7 +43,7 @@ Useful Helm Client Commands:
 
 ### Available Helm charts
 
-* [Label Studio](https://github.com/heartexlabs/charts/tree/master/charts/label-studio#label-studio-enterprise-overview)
+* [Label Studio](https://github.com/heartexlabs/charts/tree/master/charts/label-studio)
 
 ## Seeking help
 
