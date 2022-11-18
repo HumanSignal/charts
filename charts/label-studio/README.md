@@ -422,11 +422,11 @@ you need to do the following:
 
 Once you have these set, it is possible to install Label Studio Enterprise,
 but please make sure to review the below sections for other settings that
-you should consider configuring before installing Label Studio.
+you should consider configuring before installing Label Studio Enterprise.
 
 ### Label Studio Enterprise Prerequisites
 
-For long-lived or Production ready environments we strongly recommend to use separate instance of 
+For long-lived or Production ready environments we strongly recommend to use separate instance of PostgreSQL and Redis.
 
 #### Label Studio Enterprise License
 
@@ -442,7 +442,7 @@ kubectl create secret generic lse-license --from-file=license=path/to/lic
 kubectl create secret generic lse-license --from-literal=license=https://<LICENSE_SERVER>/<CUSTOMER_LICENSE_ID>
 ```
 
-You can override the secret name in `values.yaml`, in the `.enterprise.enterpriseLicense` key.
+You can override the secret name in `values.yaml`, in the `enterprise.enterpriseLicense` key.
 Please ensure the above secret is created in the same namespace in which Label Studio Enterprise is going to be deployed.
 
 #### Label Studio Enterprise Docker registry access
