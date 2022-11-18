@@ -21,7 +21,7 @@ enterprise:
     secretKey: "license"
 ```
 
-3. Completely remove properties `app.logLevel`, `app.debug`, `rqworker.logLevel`, `rqworker.debug`, `minio.enabled`.
+3. Completely remove properties `app.logLevel`, `app.debug`, `rqworker.logLevel`, `rqworker.debug`, `minio.*`.
 
 4. Set `app.ingress.enabled` to `true`:
 ```yaml

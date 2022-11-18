@@ -23,7 +23,7 @@ $ helm install labelstudio heartex/label-studio
 - [Install](#install)
 - [Uninstall](#uninstall)
 - [FAQs](#faqs)
-- [Label Studio Enterprise](#Label Studio-enterprise)
+- [Label Studio Enterprise](#Label-Studio-enterprise)
 - [Deployment Options](#deployment-options)
     - [Database](#database)
       - [Using the Postgres sub-chart](#using-the-postgres-sub-chart)
@@ -31,20 +31,19 @@ $ helm install labelstudio heartex/label-studio
       - [Using the redis sub-chart](#using-the-redis-sub-chart)
     - [Example configurations](#example-configurations)
 - [Configuration](#configuration)
-    - [Label Studio parameters](#Label Studio-parameters)
+    - [Label Studio parameters](#Label-Studio-parameters)
         - [Global parameters](#Global-parameters)
         - [Label Studio Service Parameters](#Label-Studio-parameters)
         - [Rqworker parameters](#Rqworker-parameters)
         - [Label Studio Enterprise parameters](#Label-Studio-Enterprise-parameters)
         - [Sub-charts parameters](#Sub-charts-parameters)
         - [Other parameters](#Other-parameters)
-- [Label Studio Enterprise Parameters](#Label Studio-enterprise-parameters)
+- [Label Studio Enterprise Parameters](#Label-Studio-enterprise-parameters)
     - [Label Studio Enterprise Overview](#overview)
     - [Label Studio Enterprise Prerequisites](#Label-Studio-Enterprise-prerequisites)
         - [Label Studio Enterprise License](#Label-Studio-Enterprise-license)
         - [Label Studio Enterprise Docker registry access](#Label-Studio-Enterprise-docker-registry-access)
-- [Changelog](https://github.com/heartexlabs/charts/blob/main/charts/label-studio/CHANGELOG.md)
-- [Upgrading](https://github.com/heartexlabs/charts/blob/main/charts/label-studio/UPGRADE.md)
+- [Changelog](https://github.com/heartexlabs/charts/blob/master/charts/label-studio/CHANGELOG.md)
 - [Seeking help](#seeking-help)
 
 ## Prerequisites
@@ -77,7 +76,7 @@ The command removes all the Kubernetes components including data associated with
 ## FAQs
 
 Please read the
-[FAQs](https://github.com/heartexlabs/charts/blob/main/charts/label-studio/FAQs.md)
+[FAQs](https://github.com/heartexlabs/charts/blob/master/charts/label-studio/FAQs.md)
 document.
 
 ## Label Studio Enterprise
@@ -147,7 +146,7 @@ release.
 ### Example configurations
 
 Several example values.yaml are available in the
-[example-values](https://github.com/heartexlabs/charts/blob/main/charts/label-studio/example-values/)
+[example-values](https://github.com/heartexlabs/charts/tree/master/charts/label-studio/example-values)
 directory.
 
 ## Configuration
