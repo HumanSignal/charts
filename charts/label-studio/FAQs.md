@@ -1,6 +1,6 @@
 # Frequently Asked Questions (FAQs)
 
-#### Label Studio Enterprise : Upgrade from decommissioned label-studio-enterprise Helm chart
+### Label Studio Enterprise: Upgrade from decommissioned label-studio-enterprise Helm chart
 
 Edit your lse-values.yaml file.
 
@@ -12,7 +12,7 @@ global:
     tag: 2.3.1
 ```
 
-2. Move `global.enterpriseLicense` and all its sub-keys to `enterpise`(so `enterprise` will on the same level as `app` or `rqworker`) and set `enterprise.enabled` to `true`:
+2. Move `global.enterpriseLicense` and all sub-keys to `enterpise` (so `enterprise` will on the same level as `app` or `rqworker`) and set `enterprise.enabled` to `true`:
 ```yaml
 enterprise:
   enabled: true
@@ -28,4 +28,10 @@ enterprise:
 app:
   ingress:
     enabled: true
+```
+
+5. Get the current release name using `helm list` command.
+6. Run upgrade command using new helm chart:
+```shell
+helm upgrade RELEASE_NAME heartex/label-studio -f lse-values.yaml
 ```
