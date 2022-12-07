@@ -37,9 +37,9 @@ Once you have installed the Helm client, you can deploy a Heartex Helm Chart int
 Please refer to the [Quick Start guide](https://helm.sh/docs/intro/quickstart/) if you wish to get running in just a few commands, otherwise the [Using Helm Guide](https://helm.sh/docs/intro/using_helm/) provides detailed instructions on how to use the Helm client to manage packages on your Kubernetes cluster.
 
 Useful Helm Client Commands:
-* View available charts: `helm search repo`
-* Install a chart: `helm install my-release heartex/<package-name>`
-* Upgrade your application: `helm repo update && helm upgrade my-release heartex/<package-name>`
+* View available charts: `helm search repo heartex`
+* Install a chart: `helm install my-release heartex/<chart-name>`
+* Upgrade your application: `helm repo update && helm upgrade my-release heartex/<chart-name>`
 
 ### Available Helm charts
 
