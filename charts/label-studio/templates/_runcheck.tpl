@@ -12,11 +12,12 @@ greater_version()
   test "$(printf '%s\n' "$@" | sort -V | tail -n 1)" = "$1";
 }
 
-MIN_VERSION=2.2.8-hotfix.2
-CHART_MIN_VERSION=0.0.42
+#TODO add check for opensource/enterprise types
+LS_MIN_VERSION=
+CHART_MIN_VERSION=0.0.49
 
 # Only run check for semver(-hotfix) releases
-if ! awk 'BEGIN{exit(!(ARGV[1] ~ /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}((\-hotfix\.[0-9]+)?)/))}' "$LS_VERSION"; then
+if ! awk 'BEGIN{exit(!(ARGV[1] ~ /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}(([0-9]+)?)/))}' "$LS_VERSION"; then
   exit 0
 fi
 

@@ -1010,6 +1010,12 @@
     },
     "ci": {
       "type": "boolean"
+    },
+    "deployment_type": {
+      "type": "string"
+    },
+    "cloud_provider": {
+      "type": "string"
     }
   },
   "additionalProperties": false

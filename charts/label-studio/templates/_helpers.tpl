@@ -287,6 +287,16 @@ Set's common environment variables
             {{- end }}
             - name: PYTHONUNBUFFERED
               value: "1"
+            - name: LS_VERSION
+              value: "{{ coalesce .Values.global.image.tag .Chart.AppVersion }}"
+            - name: DEPLOYMENT_TYPE
+              value: "{{ default "helm" .Values.deployment_type }}"
+            - name: IS_ENTERPRISE
+              value: {{ .Values.enterprise.enabled | quote }}
+            - name: CHART_VERSION
+              value: {{ .Chart.Version | quote }}
+            - name: CLOUD_PROVIDER
+              value: "{{ default "n/a" .Values.cloud_provider }}"
             {{- if .Values.global.extraEnvironmentVars -}}
             {{- range $key, $value := .Values.global.extraEnvironmentVars }}
             - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
