@@ -39,7 +39,7 @@ Please refer to the [Quick Start guide](https://helm.sh/docs/intro/quickstart/) 
 Useful Helm Client Commands:
 * View available charts: `helm search repo`
 * Install a chart: `helm install my-release heartex/<package-name>`
-* Upgrade your application: `helm upgrade`
+* Upgrade your application: `helm repo update && helm upgrade my-release heartex/<package-name>`
 
 ### Available Helm charts
 
