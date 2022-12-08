@@ -5,7 +5,7 @@ home: https://labelstud.io/
 type: application
 icon: https://raw.githubusercontent.com/heartexlabs/label-studio/master/images/logo.png
 # Chart version
-version: 1.0.0
+version: 0.0.9
 # Label Studio release version
 appVersion: "develop"
 kubeVersion: ">= 1.14.0-0"
