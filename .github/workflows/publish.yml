@@ -20,7 +20,7 @@ jobs:
     name: "Upload Chart"
     runs-on: ubuntu-latest
     steps:
-      - uses: hmarr/debug-action@v2
+      - uses: hmarr/debug-action@v2.1.0
 
       - name: Checkout
         uses: actions/checkout@v3.1.0
@@ -32,17 +32,17 @@ jobs:
         run: |
           set -eux
           # gather only changed charts
-          CHANGED_CHARTS=$(git diff --dirstat=files,0 HEAD~1 -- heartex | sed -E 's/^[ 0-9.]+% //g' | cut -d'/' -f2- | cut -d'/' -f1)
+          CHANGED_CHARTS=$(git diff --dirstat=files,0 HEAD~1 -- charts/ | sed -E 's/^[ 0-9.]+% //g' | cut -d'/' -f2- | cut -d'/' -f1)
           echo -e "Changed charts:\n$CHANGED_CHARTS"
+          CHANGED_CHARTS_MAP=""
           for chart in $CHANGED_CHARTS; do
-            # 0.0.1-dev.<build-id>+<gitcommitsha>
-            # bump versions for changed charts
-            chart_version=$(cat heartex/$chart/Chart.yaml | yq eval '.version' -)
-            build_id=${{ github.run_number }}
-            short_sha="$(git rev-parse --short HEAD)"
-            new_version=${chart_version}.${build_id}+${short_sha}
-            helm package ./heartex/$chart -d ${{ env.SYNC_DIR }} -u --version $new_version
+            chart_version=$(cat charts/$chart/Chart.yaml | yq eval '.version' -)
+            helm package ./charts/$chart -d ${{ env.SYNC_DIR }} -u
+            CHANGED_CHARTS_MAP+="$chart => $chart_version\n"
           done
+          echo "CHANGED_CHARTS_MAP<<EOF" >> $GITHUB_ENV
+          echo "${CHANGED_CHARTS_MAP}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -55,7 +55,7 @@ jobs:
         id: helm_index
         run: |
           set -eux
-          aws s3 cp s3://${{ env.HELM_CHARTS_BUCKET }}/index.yaml "${{ env.INDEX_DIR }}/index.yaml"
+          aws s3 cp s3://${{ env.HELM_CHARTS_BUCKET }}/index.yaml "${{ env.INDEX_DIR }}/index.yaml" || true
           helm repo index ${{ env.SYNC_DIR }} --url "${{ env.HELM_CHARTS_REPO }}" --merge "${{ env.INDEX_DIR }}/index.yaml"
           echo "==> Merged index:"
           cat "${{ env.SYNC_DIR }}/index.yaml"
@@ -66,3 +66,16 @@ jobs:
           aws s3 cp ${{ env.SYNC_DIR }} s3://${{ env.HELM_CHARTS_BUCKET }}/ --recursive
           # Make sure index.yaml is synced last
           aws s3 cp "${{ env.SYNC_DIR }}/index.yaml" s3://${{ env.HELM_CHARTS_BUCKET }}/
+
+      - name: Post to a Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.23
+        with:
+          channel-id: 'C02LMULF4NA'
+          slack-message: |
+            New versions of helm charts released:
+            ${{ env.CHANGED_CHARTS_MAP }}
+
+            ><https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|[Workflow run]>
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
