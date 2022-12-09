@@ -298,6 +298,9 @@ directory.
 | `app.ingress.extraPaths`                       | Extra paths to prepend to the host configuration                                                                     | `[]`            |
 | `app.ingress.tls`                              | TLS secrets definition                                                                                               | `[]`            |
 | `app.ingress.annotations`                      | Additional ingress annotations                                                                                       | `{}`            |
+| `app.rbac.create`                              | Specifies whether RBAC resources should be created for app service                                                   | `false`         |
+| `app.rbac.rules`                               | Custom RBAC rules to set for app service		                                                                           | `[]`            |
+
 
 ### Rqworker parameters
 Supported only in LabelStudio Enterprise 
@@ -354,6 +357,8 @@ Supported only in LabelStudio Enterprise
 | `rqworker.extraVolumes`                          | Array to add extra volumes                                                                  | `[]`                                   |
 | `rqworker.extraVolumeMounts`                     | Array to add extra mounts (normally used with extraVolumes)                                 | `[]`                                   |
 | `rqworker.topologySpreadConstraints`             | Topology Spread Constraints for pod assignment                                              | `[]`                                   |
+| `rqworker.rbac.create`                           | Specifies whether RBAC resources should be created for rqworker service                     | `false`                                |
+| `rqworker.rbac.rules`                            | Custom RBAC rules to set for rqworker service		                                             | `[]`                                   |
 
 ### Label Studio Enterprise parameters 
 | Parameter                                 | Description                                                                        | Default   |
