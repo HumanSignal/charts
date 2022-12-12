@@ -520,6 +520,18 @@
           "type": "array",
           "additionalProperties": true
         },
+        "rbac": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "rules": {
+              "type": "array"
+            }
+          },
+          "additionalProperties": true
+        },
         "dnsPolicy": {
           "type": "string"
         },
@@ -837,6 +849,18 @@
         },
         "topologySpreadConstraints": {
           "type": "array",
+          "additionalProperties": true
+        },
+        "rbac": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "rules": {
+              "type": "array"
+            }
+          },
           "additionalProperties": true
         },
         "dnsPolicy": {
