@@ -43,7 +43,7 @@ $ helm install labelstudio heartex/label-studio
     - [Label Studio Enterprise Prerequisites](#Label-Studio-Enterprise-prerequisites)
         - [Label Studio Enterprise License](#Label-Studio-Enterprise-license)
         - [Label Studio Enterprise Docker registry access](#Label-Studio-Enterprise-docker-registry-access)
-- [Changelog](https://github.com/heartexlabs/charts/blob/master/charts/label-studio/CHANGELOG.md)
+- [Changelog](https://github.com/heartexlabs/heartex/blob/master/heartex/label-studio/CHANGELOG.md)
 - [Seeking help](#seeking-help)
 
 ## Prerequisites
@@ -76,7 +76,7 @@ The command removes all the Kubernetes components including data associated with
 ## FAQs
 
 Please read the
-[FAQs](https://github.com/heartexlabs/charts/blob/master/charts/label-studio/FAQs.md)
+[FAQs](https://github.com/heartexlabs/heartex/blob/master/heartex/label-studio/FAQs.md)
 document.
 
 ## Label Studio Enterprise
@@ -118,7 +118,7 @@ You can override the database using `global.pgConfig` section. For more details,
 #### Using the Postgres sub-chart
 
 The chart spawn a Postgres instance using [Bitnami's Postgres
-chart](https://github.com/bitnami/charts/blob/master/bitnami/postgresql/README.md)
+chart](https://github.com/bitnami/heartex/blob/master/bitnami/postgresql/README.md)
 as a sub-chart. Set `postgresql.enabled=false` to disable the sub-chart. 
 
 The Postgres sub-chart is best used to quickly provision temporary environments
@@ -135,7 +135,7 @@ You can override the Redis using `global.redisConfig` section. For more details,
 #### Using the Redis sub-chart
 
 The chart spawn a Redis instance using [Bitnami's Redis
-chart](https://github.com/bitnami/charts/blob/master/bitnami/redis/README.md)
+chart](https://github.com/bitnami/heartex/blob/master/bitnami/redis/README.md)
 as a sub-chart. Set `redis.enabled=false` to disable the sub-chart.
 
 The Redis sub-chart is best used to quickly provision temporary environments
@@ -146,7 +146,7 @@ release.
 ### Example configurations
 
 Several example values.yaml are available in the
-[example-values](https://github.com/heartexlabs/charts/tree/master/charts/label-studio/example-values)
+[example-values](https://github.com/heartexlabs/heartex/tree/master/heartex/label-studio/example-values)
 directory.
 
 ## Configuration

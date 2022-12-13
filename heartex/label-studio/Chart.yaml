@@ -7,7 +7,7 @@ icon: https://raw.githubusercontent.com/heartexlabs/label-studio/master/images/l
 # Chart version
 version: 0.0.10
 # Label Studio release version
-appVersion: "develop"
+appVersion: "1.7.0rc646da705f463b09dbff0a5e2f3a81cd1b518c745"
 kubeVersion: ">= 1.14.0-0"
 dependencies:
   - name: redis

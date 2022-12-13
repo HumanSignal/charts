@@ -49,7 +49,7 @@ if [ ${OLD_MAJOR_VERSION} -lt ${NEW_MAJOR_VERSION} ] || [ ${OLD_CHART_MAJOR_VERS
   if (! greater_version $OLD_MINOR_VERSION $MIN_VERSION) || (! greater_version $OLD_CHART_MINOR_VERSION $CHART_MIN_VERSION); then
     notify "It seems you are upgrading the Label Studio Helm Chart from ${OLD_CHART_VERSION_STRING} (Label Studio ${OLD_VERSION_STRING}) to ${CHART_VERSION} (Label Studio Enterprise ${LS_VERSION})."
     notify "It is required to upgrade to the latest ${CHART_MIN_VERSION} version first before proceeding."
-    notify "Please follow the upgrade documentation at https://labelstud.io/guide/charts/releases/1_0.html"
+    notify "Please follow the upgrade documentation at https://labelstud.io/guide/heartex/releases/1_0.html"
     notify "and upgrade to Label Studio Helm Chart version ${CHART_MIN_VERSION} before upgrading to ${CHART_VERSION}."
     exit 1
   fi

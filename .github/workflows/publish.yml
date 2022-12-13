@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - 'charts/**'
+      - 'heartex/**'
       - '.github/workflows/publish.yml'
 
 env:
@@ -32,12 +32,12 @@ jobs:
         run: |
           set -eux
           # gather only changed charts
-          CHANGED_CHARTS=$(git diff --dirstat=files,0 HEAD~1 -- charts/ | sed -E 's/^[ 0-9.]+% //g' | cut -d'/' -f2- | cut -d'/' -f1)
+          CHANGED_CHARTS=$(git diff --dirstat=files,0 HEAD~1 -- heartex/ | sed -E 's/^[ 0-9.]+% //g' | cut -d'/' -f2- | cut -d'/' -f1)
           echo -e "Changed charts:\n$CHANGED_CHARTS"
           CHANGED_CHARTS_MAP=""
           for chart in $CHANGED_CHARTS; do
-            chart_version=$(cat charts/$chart/Chart.yaml | yq eval '.version' -)
-            helm package ./charts/$chart -d ${{ env.SYNC_DIR }} -u
+            chart_version=$(cat heartex/$chart/Chart.yaml | yq eval '.version' -)
+            helm package ./heartex/$chart -d ${{ env.SYNC_DIR }} -u
             CHANGED_CHARTS_MAP+="$chart => $chart_version\n"
           done
           echo "CHANGED_CHARTS_MAP<<EOF" >> $GITHUB_ENV
@@ -72,10 +72,6 @@ jobs:
         uses: slackapi/slack-github-action@v1.23
         with:
           channel-id: 'C02LMULF4NA'
-          slack-message: |
-            New versions of helm charts released:
-            ${{ env.CHANGED_CHARTS_MAP }}
-
-            ><https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|[Workflow run]>
+          slack-message: "New versions of helm charts released:\n${{ env.CHANGED_CHARTS_MAP }}\n><https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|[Workflow run]>"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
