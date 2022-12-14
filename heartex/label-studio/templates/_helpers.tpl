@@ -278,12 +278,17 @@ Set's common environment variables
 {{/*              value: http{{ if .Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.global.contextPath }}*/}}
 {{/*            {{- end }}*/}}
 {{/*            {{- end }}*/}}
+            {{- if (and .Values.redis.enabled .Values.redis.auth.enabled .Values.redis.auth.password) }}
+            - name: REDIS_PASSWORD
+              value: {{ .Values.redis.auth.password }}
+            {{- else }}
             {{- if (and .Values.global.redisConfig.password.secretName .Values.global.redisConfig.password.secretKey) }}
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.global.redisConfig.password.secretName }}
                   key: {{ .Values.global.redisConfig.password.secretKey }}
+            {{- end }}
             {{- end }}
             - name: PYTHONUNBUFFERED
               value: "1"
