@@ -1035,6 +1035,9 @@
     "ci": {
       "type": "boolean"
     },
+    "clusterDomain": {
+      "type": "string"
+    },
     "deployment_type": {
       "type": "string"
     },

@@ -505,6 +505,7 @@ enterprise:
 
 postgresql:
   enabled: true
+  clusterDomain: cluster.local
   architecture: standalone
   image:
     tag: 13.8.0
@@ -515,8 +516,10 @@ postgresql:
 
 redis:
   enabled: false
+  clusterDomain: cluster.local
   architecture: standalone
   auth:
     enabled: false
 
 ci: false
+clusterDomain: cluster.local

@@ -230,7 +230,7 @@ Set's common environment variables
             {{- else }}
             {{- if .Values.postgresql.enabled }}
             - name: POSTGRE_HOST
-              value: {{ .Release.Name }}-postgresql-hl
+              value: {{ .Release.Name }}-postgresql-hl.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
             {{- end }}
             {{- end }}
             {{- if (and .Values.postgresql.enabled .Values.postgresql.servicePort) }}
