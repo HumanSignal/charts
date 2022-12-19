@@ -1043,6 +1043,15 @@
     },
     "cloud_provider": {
       "type": "string"
+    },
+    "checkConfig": {
+      "type": "object",
+      "properties": {
+        "skipEnvValues": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false
