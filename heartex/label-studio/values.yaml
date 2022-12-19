@@ -523,3 +523,6 @@ redis:
 
 ci: false
 clusterDomain: cluster.local
+
+checkConfig:
+  skipEnvValues: false

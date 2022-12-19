@@ -381,11 +381,12 @@ Supported only in LabelStudio Enterprise
 | `redis.auth.enabled`       | Enable password authentication	                                                                         | `false`       |
 
 ### Other parameters
-| Parameter            | Description                                      | Default         |
-|----------------------|--------------------------------------------------|-----------------|
-| upgradeCheck.enabled | Enable upgradecheck                              | `false`         |
-| ci                   | Indicate that deployment running for CI purposes | `false`         |
-| clusterDomain        | Kubernetes Cluster Domain                        | `cluster.local` |
+| Parameter                 | Description                                      | Default         |
+|---------------------------|--------------------------------------------------|-----------------|
+| upgradeCheck.enabled      | Enable upgradecheck                              | `false`         |
+| ci                        | Indicate that deployment running for CI purposes | `false`         |
+| clusterDomain             | Kubernetes Cluster Domain                        | `cluster.local` |
+| checkConfig.skipEnvValues | Skip validation for env variables                | `false`         |
 
 #### The `global.extraEnvironmentVars` usage
 
