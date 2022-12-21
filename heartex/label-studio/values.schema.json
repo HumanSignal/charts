@@ -269,6 +269,10 @@
         "featureFlags": {
           "type": "object",
           "additionalProperties": true
+        },
+        "envInjectSources": {
+          "type": "array",
+          "additionalProperties": true
         }
       },
       "additionalProperties": false

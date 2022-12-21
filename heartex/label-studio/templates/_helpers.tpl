@@ -442,4 +442,8 @@ Set's common environment variables
             - name: REDIS_SSL_KEYFILE
               value: "/opt/heartex/secrets/redis_certs/{{ .Values.global.redisConfig.ssl.redisSslKeyFileSecretKey }}"
             {{- end }}
+            {{- if .Values.global.envInjectSources }}
+            - name: ENV_INJECT_SOURCES
+              value: {{ join "," .Values.global.envInjectSources }}
+            {{- end }}
 {{- end -}}
