@@ -30,15 +30,16 @@ jobs:
       - name: Helm package
         id: helm_package
         run: |
-          set -eux
+          set -eu
           # gather only changed charts
-          CHANGED_CHARTS=$(git diff --dirstat=files,0 HEAD~1 -- heartex/ | sed -E 's/^[ 0-9.]+% //g' | cut -d'/' -f2- | cut -d'/' -f1)
-          echo -e "Changed charts:\n$CHANGED_CHARTS"
+          CHANGED_CHARTS=$(git diff --dirstat=files,0 HEAD~1 -- heartex/ | sed -E 's/^[ 0-9.]+% //g' | cut -d'/' -f2- | cut -d'/' -f1 | sort -u)
+          echo "Changed charts:"
+          echo "$CHANGED_CHARTS"
           CHANGED_CHARTS_MAP=""
           for chart in $CHANGED_CHARTS; do
             chart_version=$(cat heartex/$chart/Chart.yaml | yq eval '.version' -)
             helm package ./heartex/$chart -d ${{ env.SYNC_DIR }} -u
-            CHANGED_CHARTS_MAP+="$chart => $chart_version\n"
+            CHANGED_CHARTS_MAP="${CHANGED_CHARTS_MAP}$chart => $chart_version\n"
           done
           echo "CHANGED_CHARTS_MAP<<EOF" >> $GITHUB_ENV
           echo "${CHANGED_CHARTS_MAP}" >> $GITHUB_ENV

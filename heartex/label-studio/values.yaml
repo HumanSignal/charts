@@ -95,6 +95,10 @@ global:
         urlExpirationSecs: "86400"
 
   featureFlags: { }
+  # File name of a shell script to load additional template environment variables from.
+  # This is useful when using Vault.
+  # "- /vault/secrets/config"
+  envInjectSources: []
 
 upgradeCheck:
   enabled: false

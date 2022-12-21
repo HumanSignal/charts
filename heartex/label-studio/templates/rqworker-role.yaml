@@ -15,4 +15,7 @@ rules:
       - securitycontextconstraints
     verbs:
       - use
+  {{- if .Values.rqworker.rbac.rules -}}
+    {{- toYaml .Values.rqworker.rbac.rules | nindent 2 }}
+  {{- end }}
 {{- end }}

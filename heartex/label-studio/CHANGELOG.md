@@ -8,6 +8,10 @@
 
 ### Fixes
 
+## 1.0.4
+### Features
+* Allow to source env variables from a file using `.Values.global.envInjectSources`.
+
 ## 1.0.2
 ### Fixes
 * Allow to skip mandatory env variables validation step using `.Values.checkConfig.skipEnvValues`
