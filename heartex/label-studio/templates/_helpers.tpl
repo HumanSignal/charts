@@ -269,7 +269,7 @@ Set's common environment variables
             {{- else }}
             {{- if .Values.redis.enabled }}
             - name: REDIS_LOCATION
-              value: redis{{ if .Values.redis.tls.enabled }}s{{ end }}://{{ .Release.Name }}-redis-headless:6379/1
+              value: redis{{ if .Values.redis.tls.enabled }}s{{ end }}://{{ .Release.Name }}-redis-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:6379/1
             {{- end }}
             {{- end }}
 {{/*            {{- if not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}*/}}
