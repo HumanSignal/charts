@@ -32,7 +32,6 @@ Due to gotpl scoping, we can't make use of `range`, so we have to add action lin
 
 {{/* other checks */}}
 {{- $messages = append $messages (include "ls.checkConfig.pgConfig" .) -}}
-{{/*{{- $messages = append $messages (include "ls.checkConfig.labelStudioHostisSet" .) -}}*/}}
 {{- $messages = append $messages (include "ls.checkConfig.labelStudioHostScheme" .) -}}
 {{- $messages = append $messages (include "ls.checkConfig.azureConfig" .) -}}
 {{- $messages = append $messages (include "ls.checkConfig.gcsConfig" .) -}}
@@ -55,16 +54,6 @@ Due to gotpl scoping, we can't make use of `range`, so we have to add action lin
 {{- end -}}
 {{- end -}}
 
-{{/* Ensure that LABEL_STUDIO_HOST is set if ingress enabled: false */}}
-{{- define "ls.checkConfig.labelStudioHostisSet" -}}
-{{- if and (not .Values.app.ingress.enabled) (not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST) -}}
-Label Studio:
-  Service: If `.Values.app.ingress.enabled` set to `false`, please define `.Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST` instead.
-  It should include http/https scheme and a hostname available outside of the k8s cluster, e.g.: http://host.com
-{{- end -}}
-{{- end -}}
-{{/* END ls.checkConfig.labelStudioHost */}}
-
 {{/* Ensure that "LABEL_STUDIO_HOST" has scheme */}}
 {{- define "ls.checkConfig.labelStudioHostScheme" -}}
 {{- if .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST -}}
@@ -82,7 +71,7 @@ Label Studio:
 {{- if not .Values.checkConfig.skipEnvValues }}
 {{- if and (.Values.enterprise.enabled) (not .Values.redis.enabled) (not .Values.global.redisConfig.host) -}}
 Label Studio Enterprise:
-  Redis: Redis is required for Label Studio Enterpise. Please set Redis host in `.Values.global.redisConfig.host`
+  Redis: Redis is required for Label Studio Enterprise. Please set Redis host in `.Values.global.redisConfig.host`
 {{- end -}}
 {{- end -}}
 {{- end -}}

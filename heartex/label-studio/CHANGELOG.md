@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.0.5
+### Fixes
+* Rename `Values.global.contextPath` to `Values.app.contextPath`.
+* Check for required variable `LABEL_STUDIO_HOST`.
 
 ## 1.0.4
 ### Features
@@ -14,12 +18,11 @@
 
 ## 1.0.2
 ### Fixes
-* Allow to skip mandatory env variables validation step using `.Values.checkConfig.skipEnvValues`
+* Allow to skip mandatory env variables validation step using `.Values.checkConfig.skipEnvValues`.
 
 ## 1.0.1
 ### Improvements
-* Override clusterDomain using `.Values.clusterDomain`
-
+* Override clusterDomain using `.Values.clusterDomain`.
 
 ## 1.0.0
-* Initial release
+* Initial release.

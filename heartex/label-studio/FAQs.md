@@ -12,7 +12,7 @@ global:
     tag: 2.3.1
 ```
 
-2. Move `global.enterpriseLicense` and all sub-keys to `enterpise` (so `enterprise` will on the same level as `app` or `rqworker`) and set `enterprise.enabled` to `true`:
+2. Move `global.enterpriseLicense` and all sub-keys to `enterprise` (so `enterprise` will on the same level as `global`, `app` or `rqworker`) and set `enterprise.enabled` to `true`:
 ```yaml
 enterprise:
   enabled: true

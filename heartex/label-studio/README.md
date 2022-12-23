@@ -180,7 +180,6 @@ directory.
 | `global.redisConfig.ssl.redisSslKeyFileSecretKey`                           | Key of an existing secret holding the ssl certificate private key for Redis host                                                    | `""`                       |
 | `global.extraEnvironmentVars`	                                              | Key/value map of an extra Environment variables, for example, `PYTHONUNBUFFERED: 1`                                                 | `{}`                       |
 | `global.extraEnvironmentSecrets`                                            | Key/value map of an extra Secrets                                                                                                   | `{}`                       |
-| `global.contextPath`                                                        | Context path appended for health/readiness checks                                                                                   | `/`                        |
 | `global.persistence.enabled`                                                | Enable persistent storage. [See more about setting up persistent storage](https://labelstud.io/guide/persistent_storage.html)       | `true`                     |
 | `global.persistence.type`                                                   | Persistent storage type                                                                                                             | `volume`                   |
 | `global.persistence.config.s3.accessKey`                                    | Access key to use to access AWS S3                                                                                                  | `""`                       |
@@ -301,6 +300,7 @@ directory.
 | `app.ingress.annotations`                      | Additional ingress annotations                                                                                       | `{}`            |
 | `app.rbac.create`                              | Specifies whether RBAC resources should be created for app service                                                   | `false`         |
 | `app.rbac.rules`                               | Custom RBAC rules to set for app service		                                                                           | `[]`            |
+| `app.contextPath`                              | Context path appended for health/readiness checks                                                                    | `/`             |
 
 
 ### Rqworker parameters

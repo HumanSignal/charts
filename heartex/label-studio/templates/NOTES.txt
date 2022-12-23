@@ -1,6 +1,6 @@
 {{- if .Values.ci }}
 {{- if not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
-LABEL_STUDIO_HOST=http{{ if $.Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.global.contextPath }}
+LABEL_STUDIO_HOST=http{{ if $.Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.app.contextPath }}
 {{- else }}
 LABEL_STUDIO_HOST={{ .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
 {{- end }}
@@ -30,9 +30,11 @@ After running these commands, please visit http://127.0.0.1:8080 to use Label St
   export CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $POD_NAME -o jsonpath="{.spec.containers[1].ports[0].containerPort}")
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:$CONTAINER_PORT
 {{- end }}
-
-{{/* run deprecations */}}
 {{ include "ls.deprecations" . }}
-{{/* run checkConfig */}}
 {{ include "ls.checkConfig" . }}
+{{- if and (not .Values.app.ingress.enabled) (not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST) -}}
+     WARNING:
+       If `.Values.app.ingress.enabled` set to `false`, please define `.Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST` instead.
+       It should include http/https scheme and a hostname or IP, e.g.: http://host.com or http://127.0.0.1:8080
+{{- end -}}
 {{- end }}

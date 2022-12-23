@@ -124,9 +124,6 @@
           "type": "object",
           "additionalProperties": true
         },
-        "contextPath": {
-          "type": "string"
-        },
         "persistence": {
           "type": "object",
           "properties": {
@@ -719,6 +716,9 @@
             }
           },
           "additionalProperties": true
+        },
+        "contextPath": {
+          "type": "string"
         }
       },
       "additionalProperties": false
