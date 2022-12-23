@@ -82,7 +82,7 @@ Label Studio:
 {{- if not .Values.checkConfig.skipEnvValues }}
 {{- if and (.Values.enterprise.enabled) (not .Values.redis.enabled) (not .Values.global.redisConfig.host) -}}
 Label Studio Enterprise:
-  Redis: Redis is required for Label Studio Enterpise. Please set Redis host in `.Values.global.redisConfig.host`
+  Redis: Redis is required for Label Studio Enterprise. Please set Redis host in `.Values.global.redisConfig.host`
 {{- end -}}
 {{- end -}}
 {{- end -}}
