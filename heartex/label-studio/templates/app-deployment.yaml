@@ -95,7 +95,7 @@ spec:
           {{- if .Values.app.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
-              path: "{{ if eq .Values.global.contextPath "/" }}{{ .Values.app.livenessProbe.path }}{{ else }}{{ .Values.global.contextPath }}{{ .Values.app.livenessProbe.path }}{{ end }}"
+              path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.livenessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.livenessProbe.path }}{{ end }}"
               port: 8000
             failureThreshold: {{ .Values.app.livenessProbe.failureThreshold }}
             initialDelaySeconds: {{ .Values.app.livenessProbe.initialDelaySeconds }}
@@ -167,7 +167,7 @@ spec:
           {{- if .Values.app.nginx.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
-              path: "{{ if eq .Values.global.contextPath "/" }}{{ .Values.app.readinessProbe.path }}{{ else }}{{ .Values.global.contextPath }}{{ .Values.app.readinessProbe.path }}{{ end }}"
+              path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.readinessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.readinessProbe.path }}{{ end }}"
               port: 8085
             failureThreshold: {{ .Values.app.readinessProbe.failureThreshold }}
             initialDelaySeconds: {{ .Values.app.readinessProbe.initialDelaySeconds }}

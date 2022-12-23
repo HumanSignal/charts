@@ -1,6 +1,6 @@
 {{- if .Values.ci }}
 {{- if not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
-LABEL_STUDIO_HOST=http{{ if $.Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.global.contextPath }}
+LABEL_STUDIO_HOST=http{{ if $.Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.app.contextPath }}
 {{- else }}
 LABEL_STUDIO_HOST={{ .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
 {{- end }}

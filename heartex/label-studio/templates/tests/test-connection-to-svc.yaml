@@ -19,5 +19,5 @@ spec:
               '--retry-delay', '2',
               '--retry-max-time', '30',
               '--retry-all-errors',
-              'http://{{ include "ls-app.fullname" . }}:{{ .Values.app.service.port }}{{ if ne .Values.global.contextPath "/" }}{{ .Values.global.contextPath }}{{ end }}' ]
+              'http://{{ include "ls-app.fullname" . }}:{{ .Values.app.service.port }}{{ if ne .Values.app.contextPath "/" }}{{ .Values.app.contextPath }}{{ end }}' ]
   restartPolicy: Never

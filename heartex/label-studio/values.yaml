@@ -44,8 +44,6 @@ global:
   extraEnvironmentVars: {}
   extraEnvironmentSecrets: { }
 
-  contextPath: /
-
   persistence:
     enabled: true
     type: volume # s3, azure, gcs
@@ -332,6 +330,8 @@ app:
     ##       - list
     ##
     rules: []
+
+  contextPath: /
 
 rqworker:
   enabled: true
