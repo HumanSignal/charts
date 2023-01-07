@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.0.6
+### Fixes
+* Add `.Values.global.persistence.config.s3.endpointUrl` for S3 persistent storage
+
 ## 1.0.5
 ### Fixes
 * Rename `Values.global.contextPath` to `Values.app.contextPath`.

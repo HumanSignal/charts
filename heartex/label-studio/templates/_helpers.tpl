@@ -355,6 +355,8 @@ Set's common environment variables
               value: {{ .Values.global.persistence.config.s3.folder | quote }}
             - name: STORAGE_AWS_X_AMZ_EXPIRES
               value: {{ .Values.global.persistence.config.s3.urlExpirationSecs | quote }}
+            - name: STORAGE_AWS_ENDPOINT_URL
+              value: {{ .Values.global.persistence.config.s3.endpointUrl | quote }}
             {{- end }}
             {{- if eq .Values.global.persistence.type "azure" }}
             - name: STORAGE_AZURE_CONTAINER_NAME

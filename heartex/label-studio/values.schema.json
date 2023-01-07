@@ -168,6 +168,9 @@
                     },
                     "urlExpirationSecs": {
                       "type": "string"
+                    },
+                    "endpointUrl": {
+                      "type": "string"
                     }
                   },
                   "additionalProperties": false
