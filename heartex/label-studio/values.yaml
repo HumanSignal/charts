@@ -99,6 +99,12 @@ global:
   # "- /vault/secrets/config"
   envInjectSources: []
 
+  ## @param app.cmdWrapper Additional commands to run prior to starting App. Useful to run wrappers before startup command
+  ## e.g:
+  ## cmdWrapper: "newrelic-admin run-program"
+  ##
+  cmdWrapper: ""
+
 upgradeCheck:
   enabled: false
   resources:
@@ -333,6 +339,11 @@ app:
     rules: []
 
   contextPath: /
+  ## @param app.cmdWrapper Additional commands to run prior to starting App. Useful to run wrappers before startup command
+  ## e.g:
+  ## cmdWrapper: "newrelic-admin run-program"
+  ##
+  cmdWrapper: ""
 
 rqworker:
   enabled: true
@@ -495,6 +506,12 @@ rqworker:
     ##       - list
     ##
     rules: []
+
+  ## @param app.cmdWrapper Additional commands to run prior to starting App. Useful to run wrappers before startup command
+  ## e.g:
+  ## cmdWrapper: "newrelic-admin run-python"
+  ##
+  cmdWrapper: ""
 
 #  [Enterprise Only]
 enterprise:

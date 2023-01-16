@@ -8,6 +8,10 @@
 
 ### Fixes
 
+## 1.0.8
+### Improvements
+* Add `.Values.global.cmdWrapper`,`.Values.app.cmdWrapper` or `.Values.rqworker.cmdWrapper` to override command wrapper.
+
 ## 1.0.7
 ### Fixes
 * Make `.Values.global.persistence.config.s3.endpointUrl` optional.
