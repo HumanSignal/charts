@@ -62,9 +62,9 @@ spec:
                   key: {{ $value.secretKey }}
             {{- end }}
             {{- end }}
-            {{- if or .Values.rqworker.cmdWrapper .Values.global.cmdWrapper }}
+            {{- if or $.Values.rqworker.cmdWrapper $.Values.global.cmdWrapper }}
             - name: CMD_WRAPPER
-              value: {{ coalesce .Values.rqworker.cmdWrapper .Values.global.cmdWrapper }}
+              value: {{ coalesce $.Values.rqworker.cmdWrapper $.Values.global.cmdWrapper }}
             {{- end }}
           ports:
             - name: service
