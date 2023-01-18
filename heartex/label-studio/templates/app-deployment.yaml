@@ -92,6 +92,10 @@ spec:
                   key: {{ $value.secretKey }}
             {{- end }}
             {{- end }}
+            {{- if or $.Values.app.cmdWrapper $.Values.global.cmdWrapper }}
+            - name: CMD_WRAPPER
+              value: {{ coalesce $.Values.app.cmdWrapper $.Values.global.cmdWrapper }}
+            {{- end }}
           {{- if .Values.app.livenessProbe.enabled }}
           livenessProbe:
             httpGet:

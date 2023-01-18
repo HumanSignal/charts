@@ -217,7 +217,8 @@ directory.
 | `global.persistence.config.gcs.folder`                                      | GCS folder name                                                                                                                     | `""`                       |
 | `global.persistence.config.gcs.urlExpirationSecs`                           | The number of seconds that a presigned URL is valid for                                                                             | `86400`                    |
 | `global.featureFlags`                                                       | Key/value map of Feature Flags                                                                                                      | `{}`                       |
-| `global.envInjectSources`                                                   | List of file names of a shell scripts to load additional environment variables from. This is useful when using Vault Agent Injector | `[]`                       | 
+| `global.envInjectSources`                                                   | List of file names of a shell scripts to load additional environment variables from. This is useful when using Vault Agent Injector | `[]`                       |
+| `global.cmdWrapper`                                                         | Additional commands to run prior to starting App. Useful to run wrappers before startup command                                     | `""`                       |
 
 ### Label Studio parameters
 
@@ -302,65 +303,67 @@ directory.
 | `app.rbac.create`                              | Specifies whether RBAC resources should be created for app service                                                   | `false`         |
 | `app.rbac.rules`                               | Custom RBAC rules to set for app service		                                                                           | `[]`            |
 | `app.contextPath`                              | Context path appended for health/readiness checks                                                                    | `/`             |
+| `app.cmdWrapper`                               | Additional commands to run prior to starting App. Useful to run wrappers before startup command                      | `""`            |
 
 
 ### Rqworker parameters
 Supported only in LabelStudio Enterprise 
 
-| Parameter                                        | Description                                                                                 | Default                                |
-|--------------------------------------------------|---------------------------------------------------------------------------------------------|----------------------------------------|
-| `rqworker.enabled`                               | Enable rqworker pod                                                                         | `true`                                 |
-| `rqworker.NameOverride`                          | String to partially override release template name                                          | `""`                                   |
-| `rqworker.FullnameOverride`                      | String to fully override release template name                                              | `""`                                   |
-| `rqworker.deploymentStrategy.type`               | Deployment strategy type                                                                    | `Recreate`                             |
-| `rqworker.extraEnvironmentVars`                  | A map of extra environment variables to set                                                 | `{}`                                   |
-| `rqworker.extraEnvironmentSecrets`               | A map of extra environment secrets to set                                                   | `{}`                                   |
-| `rqworker.nodeSelector`                          | labels for pod assignment, formatted as a multi-line string or YAML map                     | `{}`                                   |
-| `rqworker.annotations`                           | k8s annotations to attach to the rqworker pods                                              | `{}`                                   |
-| `rqworker.extraLabels`                           | extra k8s labels to attach                                                                  | `{}`                                   |
-| `rqworker.affinity`                              | Affinity for pod assignment                                                                 | `{}`                                   |
-| `rqworker.tolerations`                           | Toleration settings for pod                                                                 | `[]`                                   |
-| `rqworker.queues.high.replicas`                  | Rqworker queue "high" replicas amount                                                       | `1`                                    |
-| `rqworker.queues.high.args`                      | Rqworker queue "high" launch arguments                                                      | `"high"`                               |
-| `rqworker.queues.low.replicas`                   | Rqworker queue "low" replicas amount                                                        | `1`                                    |
-| `rqworker.queues.low.args`                       | Rqworker queue "low" launch arguments                                                       | `"low"`                                |
-| `rqworker.queues.default.replicas`               | Rqworker queue "default" replicas amount                                                    | `1`                                    |
-| `rqworker.queues.default.args`                   | Rqworker queue "default" launch arguments                                                   | `"default"`                            |
-| `rqworker.queues.critical.replicas`              | Rqworker queue "critical" replicas amount                                                   | `1`                                    |
-| `rqworker.queues.critical.args`                  | Rqworker queue "critical" launch arguments                                                  | `"critical"`                           |
-| `rqworker.queues.all.replicas`                   | Rqworker queue "all" replicas amount                                                        | `1`                                    |
-| `rqworker.queues.all.args`                       | Rqworker queue "all" launch arguments                                                       | `"low", "default", "critical", "high"` |
-| `rqworker.dnsPolicy`                             | Pod DNS policy                                                                              | `ClusterFirst`                         |
-| `rqworker.enableServiceLinks`                    | Service environment variables                                                               | `false`                                |
-| `rqworker.shareProcessNamespace`                 | Enable shared process namespace in a pod                                                    | `false`                                |
-| `rqworker.automountServiceAccountToken`          | Automount service account token for the server service account                              | `true`                                 |
-| `rqworker.readinessProbe.enabled`                | Enable redinessProbe                                                                        | `false`                                |
-| `rqworker.readinessProbe.path`                   | Path for reasinessProbe                                                                     | `/version`                             |
-| `rqworker.readinessProbe.failureThreshold`       | When a probe fails, Kubernetes will try failureThreshold times before giving up             | `2`                                    |
-| `rqworker.readinessProbe.initialDelaySeconds`    | Number of seconds after the container has started before probe initiates                    | `60`                                   |
-| `rqworker.readinessProbe.periodSeconds`          | How often (in seconds) to perform the probe                                                 | `5`                                    |
-| `rqworker.readinessProbe.successThreshold`       | Minimum consecutive successes for the probe to be considered successful after having failed | `1`                                    |
-| `rqworker.readinessProbe.timeoutSeconds`         | Number of seconds after which the probe times out                                           | `3`                                    |
-| `rqworker.livenessProbe.enabled`                 | Enable livenessProbe                                                                        | `false`                                |
-| `rqworker.livenessProbe.path`                    | Path for livenessProbe                                                                      | `/health`                              |
-| `rqworker.livenessProbe.failureThreshold`        | When a probe fails, Kubernetes will try failureThreshold times before giving up             | `2`                                    |
-| `rqworker.livenessProbe.initialDelaySeconds`     | Number of seconds after the container has started before probe initiates                    | `60`                                   |
-| `rqworker.livenessProbe.periodSeconds`           | How often (in seconds) to perform the probe                                                 | `5`                                    |
-| `rqworker.livenessProbe.successThreshold`        | Minimum consecutive successes for the probe to be considered successful after having failed | `1`                                    |
-| `rqworker.livenessProbe.timeoutSeconds`          | Number of seconds after which the probe times out                                           | `3`                                    |
-| `rqworker.serviceAccount.create`                 | Enable the creation of a ServiceAccount for rqworker pod                                    | `true`                                 |
-| `rqworker.serviceAccount.name`                   | Name of the created ServiceAccount                                                          | `""`                                   |
-| `rqworker.podSecurityContext.enabled`            | Enable pod Security Context                                                                 | `true`                                 |
-| `rqworker.podSecurityContext.fsGroup`            | Group ID for the pod                                                                        | `1001`                                 |
-| `rqworker.containerSecurityContext.enabled`      | Enable container security context                                                           | `true`                                 |
-| `rqworker.containerSecurityContext.runAsUser`    | User ID for the container                                                                   | `1001`                                 |
-| `rqworker.containerSecurityContext.runAsNonRoot` | Avoid privelege escalation to root user                                                     | `true`                                 |
-| `rqworker.serviceAccount.annotations`            | Custom annotations for app ServiceAccount                                                   | `{}`                                   |
-| `rqworker.extraVolumes`                          | Array to add extra volumes                                                                  | `[]`                                   |
-| `rqworker.extraVolumeMounts`                     | Array to add extra mounts (normally used with extraVolumes)                                 | `[]`                                   |
-| `rqworker.topologySpreadConstraints`             | Topology Spread Constraints for pod assignment                                              | `[]`                                   |
-| `rqworker.rbac.create`                           | Specifies whether RBAC resources should be created for rqworker service                     | `false`                                |
-| `rqworker.rbac.rules`                            | Custom RBAC rules to set for rqworker service		                                             | `[]`                                   |
+| Parameter                                        | Description                                                                                     | Default                                |
+|--------------------------------------------------|-------------------------------------------------------------------------------------------------|----------------------------------------|
+| `rqworker.enabled`                               | Enable rqworker pod                                                                             | `true`                                 |
+| `rqworker.NameOverride`                          | String to partially override release template name                                              | `""`                                   |
+| `rqworker.FullnameOverride`                      | String to fully override release template name                                                  | `""`                                   |
+| `rqworker.deploymentStrategy.type`               | Deployment strategy type                                                                        | `Recreate`                             |
+| `rqworker.extraEnvironmentVars`                  | A map of extra environment variables to set                                                     | `{}`                                   |
+| `rqworker.extraEnvironmentSecrets`               | A map of extra environment secrets to set                                                       | `{}`                                   |
+| `rqworker.nodeSelector`                          | labels for pod assignment, formatted as a multi-line string or YAML map                         | `{}`                                   |
+| `rqworker.annotations`                           | k8s annotations to attach to the rqworker pods                                                  | `{}`                                   |
+| `rqworker.extraLabels`                           | extra k8s labels to attach                                                                      | `{}`                                   |
+| `rqworker.affinity`                              | Affinity for pod assignment                                                                     | `{}`                                   |
+| `rqworker.tolerations`                           | Toleration settings for pod                                                                     | `[]`                                   |
+| `rqworker.queues.high.replicas`                  | Rqworker queue "high" replicas amount                                                           | `1`                                    |
+| `rqworker.queues.high.args`                      | Rqworker queue "high" launch arguments                                                          | `"high"`                               |
+| `rqworker.queues.low.replicas`                   | Rqworker queue "low" replicas amount                                                            | `1`                                    |
+| `rqworker.queues.low.args`                       | Rqworker queue "low" launch arguments                                                           | `"low"`                                |
+| `rqworker.queues.default.replicas`               | Rqworker queue "default" replicas amount                                                        | `1`                                    |
+| `rqworker.queues.default.args`                   | Rqworker queue "default" launch arguments                                                       | `"default"`                            |
+| `rqworker.queues.critical.replicas`              | Rqworker queue "critical" replicas amount                                                       | `1`                                    |
+| `rqworker.queues.critical.args`                  | Rqworker queue "critical" launch arguments                                                      | `"critical"`                           |
+| `rqworker.queues.all.replicas`                   | Rqworker queue "all" replicas amount                                                            | `1`                                    |
+| `rqworker.queues.all.args`                       | Rqworker queue "all" launch arguments                                                           | `"low", "default", "critical", "high"` |
+| `rqworker.dnsPolicy`                             | Pod DNS policy                                                                                  | `ClusterFirst`                         |
+| `rqworker.enableServiceLinks`                    | Service environment variables                                                                   | `false`                                |
+| `rqworker.shareProcessNamespace`                 | Enable shared process namespace in a pod                                                        | `false`                                |
+| `rqworker.automountServiceAccountToken`          | Automount service account token for the server service account                                  | `true`                                 |
+| `rqworker.readinessProbe.enabled`                | Enable redinessProbe                                                                            | `false`                                |
+| `rqworker.readinessProbe.path`                   | Path for reasinessProbe                                                                         | `/version`                             |
+| `rqworker.readinessProbe.failureThreshold`       | When a probe fails, Kubernetes will try failureThreshold times before giving up                 | `2`                                    |
+| `rqworker.readinessProbe.initialDelaySeconds`    | Number of seconds after the container has started before probe initiates                        | `60`                                   |
+| `rqworker.readinessProbe.periodSeconds`          | How often (in seconds) to perform the probe                                                     | `5`                                    |
+| `rqworker.readinessProbe.successThreshold`       | Minimum consecutive successes for the probe to be considered successful after having failed     | `1`                                    |
+| `rqworker.readinessProbe.timeoutSeconds`         | Number of seconds after which the probe times out                                               | `3`                                    |
+| `rqworker.livenessProbe.enabled`                 | Enable livenessProbe                                                                            | `false`                                |
+| `rqworker.livenessProbe.path`                    | Path for livenessProbe                                                                          | `/health`                              |
+| `rqworker.livenessProbe.failureThreshold`        | When a probe fails, Kubernetes will try failureThreshold times before giving up                 | `2`                                    |
+| `rqworker.livenessProbe.initialDelaySeconds`     | Number of seconds after the container has started before probe initiates                        | `60`                                   |
+| `rqworker.livenessProbe.periodSeconds`           | How often (in seconds) to perform the probe                                                     | `5`                                    |
+| `rqworker.livenessProbe.successThreshold`        | Minimum consecutive successes for the probe to be considered successful after having failed     | `1`                                    |
+| `rqworker.livenessProbe.timeoutSeconds`          | Number of seconds after which the probe times out                                               | `3`                                    |
+| `rqworker.serviceAccount.create`                 | Enable the creation of a ServiceAccount for rqworker pod                                        | `true`                                 |
+| `rqworker.serviceAccount.name`                   | Name of the created ServiceAccount                                                              | `""`                                   |
+| `rqworker.podSecurityContext.enabled`            | Enable pod Security Context                                                                     | `true`                                 |
+| `rqworker.podSecurityContext.fsGroup`            | Group ID for the pod                                                                            | `1001`                                 |
+| `rqworker.containerSecurityContext.enabled`      | Enable container security context                                                               | `true`                                 |
+| `rqworker.containerSecurityContext.runAsUser`    | User ID for the container                                                                       | `1001`                                 |
+| `rqworker.containerSecurityContext.runAsNonRoot` | Avoid privelege escalation to root user                                                         | `true`                                 |
+| `rqworker.serviceAccount.annotations`            | Custom annotations for app ServiceAccount                                                       | `{}`                                   |
+| `rqworker.extraVolumes`                          | Array to add extra volumes                                                                      | `[]`                                   |
+| `rqworker.extraVolumeMounts`                     | Array to add extra mounts (normally used with extraVolumes)                                     | `[]`                                   |
+| `rqworker.topologySpreadConstraints`             | Topology Spread Constraints for pod assignment                                                  | `[]`                                   |
+| `rqworker.rbac.create`                           | Specifies whether RBAC resources should be created for rqworker service                         | `false`                                |
+| `rqworker.rbac.rules`                            | Custom RBAC rules to set for rqworker service		                                                 | `[]`                                   |
+| `rqworker.cmdWrapper`                            | Additional commands to run prior to starting App. Useful to run wrappers before startup command | `""`                                   |
 
 ### Label Studio Enterprise parameters 
 | Parameter                                 | Description                                                                        | Default   |
