@@ -7,6 +7,9 @@
 * 
 
 ### Fixes
+## 1.0.9
+### Improvements
+* Add `.Values.customCaCerts` to add certificates into trust store.
 
 ## 1.0.8
 ### Improvements

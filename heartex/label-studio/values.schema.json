@@ -276,6 +276,10 @@
         },
         "cmdWrapper": {
           "type": "string"
+        },
+        "customCaCerts": {
+          "type": "array",
+          "additionalProperties": true
         }
       },
       "additionalProperties": false

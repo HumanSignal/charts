@@ -450,4 +450,8 @@ Set's common environment variables
             - name: ENV_INJECT_SOURCES
               value: {{ join "," .Values.global.envInjectSources }}
             {{- end }}
+            {{- if .Values.global.customCaCerts }}
+            - name: CUSTOM_CA_CERTS
+              value: {{ join "," .Values.global.customCaCerts }}
+            {{- end }}
 {{- end -}}

@@ -219,6 +219,7 @@ directory.
 | `global.featureFlags`                                                       | Key/value map of Feature Flags                                                                                                      | `{}`                       |
 | `global.envInjectSources`                                                   | List of file names of a shell scripts to load additional environment variables from. This is useful when using Vault Agent Injector | `[]`                       |
 | `global.cmdWrapper`                                                         | Additional commands to run prior to starting App. Useful to run wrappers before startup command                                     | `""`                       |
+| `global.customCaCerts`                                                      | List of file names of SSL certificates to add into trust chain                                                                      | `[]`                       |
 
 ### Label Studio parameters
 
