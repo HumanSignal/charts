@@ -35,3 +35,11 @@ app:
 ```shell
 helm upgrade RELEASE_NAME heartex/label-studio -f lse-values.yaml
 ```
+
+
+### Error: UPGRADE FAILED: failed to create resource: admission webhook "validate.nginx.ingress.kubernetes.io" denied the request: host "xxx" and path "/" is already defined in ingress kube-system/xxx-lse-app
+
+Remove `ValidatingWebhookConfiguration` resource:
+```shell
+kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+```
