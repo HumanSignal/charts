@@ -105,6 +105,10 @@ global:
   ##
   cmdWrapper: ""
 
+  # File names of a custom SSL root certs. These filename will be appended to existing root certs.
+  # "- /tmp/my_cool_root_cert"
+  customCaCerts: [ ]
+
 upgradeCheck:
   enabled: false
   resources:
