@@ -21,17 +21,23 @@ enterprise:
     secretKey: "license"
 ```
 
-3. Completely remove properties `app.logLevel`, `app.debug`, `rqworker.logLevel`, `rqworker.debug`, `minio.*`.
+3. Disable self-provisioned SQL instance:
+```yaml
+postgresql:
+  enabled: false
+```
 
-4. Set `app.ingress.enabled` to `true`:
+4. Completely remove properties `app.logLevel`, `app.debug`, `rqworker.logLevel`, `rqworker.debug`, `minio.*`.
+
+5. Set `app.ingress.enabled` to `true`:
 ```yaml
 app:
   ingress:
     enabled: true
 ```
 
-5. Get the current release name using `helm list` command.
-6. Run upgrade command using new helm chart:
+6. Get the current release name using `helm list` command.
+7. Run upgrade command using new helm chart:
 ```shell
 helm upgrade RELEASE_NAME heartex/label-studio -f lse-values.yaml
 ```

@@ -67,3 +67,6 @@ rqworker:
       replicas: 2
     all:
       replicas: 2
+
+postgresql:
+  enabled: false
