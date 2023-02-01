@@ -134,6 +134,11 @@ app:
   NameOverride: ""
   FullnameOverride: ""
 
+  ## @param app.args Override default container args (useful when using custom images)
+  ##
+  args:
+    - "label-studio-uwsgi"
+
   resources:
     requests: {}
       ## Example:
@@ -156,6 +161,8 @@ app:
         ## cpu: 500m
 
   nginx:
+    args:
+      - "nginx"
     resources:
       requests: {}
         ## Example

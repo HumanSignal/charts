@@ -353,6 +353,10 @@
         "replicas": {
           "type": "integer"
         },
+        "args": {
+          "type": "array",
+          "additionalProperties": true
+        },
         "NameOverride": {
           "type": "string"
         },
@@ -428,6 +432,10 @@
         "nginx": {
           "type": "object",
           "properties": {
+            "args": {
+              "type": "array",
+              "additionalProperties": true
+            },
             "resources": {
               "type": "object",
               "properties": {
