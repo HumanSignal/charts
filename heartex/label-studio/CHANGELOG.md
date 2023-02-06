@@ -7,6 +7,11 @@
 * 
 
 ### Fixes
+## 1.0.10
+### Improvements
+* Add `.Values.app.args` and `.Values.app.nginx.args` to override startup arguments.
+* Bump label-studio version to 1.7.1
+
 ## 1.0.9
 ### Improvements
 * Add `.Values.customCaCerts` to add certificates into trust store.

@@ -223,89 +223,90 @@ directory.
 
 ### Label Studio parameters
 
-| Parameter                                      | Description                                                                                                          | Default         |
-|------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|-----------------|
-| `app.deploymentStrategy.type`                  | Deployment strategy type                                                                                             | `RollingUpdate` |
-| `app.replicas`                                 | Amount of app pod replicas                                                                                           | `1`             |
-| `app.NameOverride`                             | String to partially override release template name                                                                   | `""`            |
-| `app.FullnameOverride`                         | String to fully override release template name                                                                       | `""`            |
-| `app.resources.requests.memory`                | The requested memory resources for the App container                                                                 | `384Mi`         |
-| `app.resources.requests.cpu`                   | The requested cpu resources for the App container                                                                    | `250m`          |
-| `app.resources.limits.memory`                  | The memory resources limits for the App container                                                                    | `""`            |
-| `app.resources.limits.cpu`                     | The cpu resources limits for the App container                                                                       | `""`            |
-| `app.initContainer.resources.requests`         | Init container db-migrations resource requests                                                                       | `{}`            |
-| `app.initContainer.resources.limits`           | Init container db-migrations resource limits                                                                         | `{}`            |
-| `app.readinessProbe.enabled`                   | Enable redinessProbe                                                                                                 | `false`         |
-| `app.readinessProbe.path`                      | Path for reasinessProbe                                                                                              | `/version`      |
-| `app.readinessProbe.failureThreshold`          | When a probe fails, Kubernetes will try failureThreshold times before giving up                                      | `2`             |
-| `app.readinessProbe.initialDelaySeconds`       | Number of seconds after the container has started before probe initiates                                             | `60`            |
-| `app.readinessProbe.periodSeconds`             | How often (in seconds) to perform the probe                                                                          | `10`            |
-| `app.readinessProbe.successThreshold`          | Minimum consecutive successes for the probe to be considered successful after having failed                          | `1`             |
-| `app.readinessProbe.timeoutSeconds`            | Number of seconds after which the probe times out                                                                    | `5`             |
-| `app.livenessProbe.enabled`                    | Enable livenessProbe                                                                                                 | `true`          |
-| `app.livenessProbe.path`                       | Path for livenessProbe                                                                                               | `/health`       |
-| `app.livenessProbe.failureThreshold`           | When a probe fails, Kubernetes will try failureThreshold times before giving up                                      | `3`             |
-| `app.livenessProbe.initialDelaySeconds`        | Number of seconds after the container has started before probe initiates                                             | `60`            |
-| `app.livenessProbe.periodSeconds`              | How often (in seconds) to perform the probe                                                                          | `10`            |
-| `app.livenessProbe.successThreshold`           | Minimum consecutive successes for the probe to be considered successful after having failed                          | `1`             |
-| `app.livenessProbe.timeoutSeconds`             | Number of seconds after which the probe times out                                                                    | `5`             |
-| `app.extraEnvironmentVars`                     | A map of extra environment variables to set                                                                          | `{}`            |
-| `app.extraEnvironmentSecrets`                  | A map of extra environment secrets to set                                                                            | `{}`            |
-| `app.nodeSelector`                             | Labels for pod assignment, formatted as a multi-line string or YAML map                                              | `{}`            |
-| `app.annotations`                              | k8s annotations to attach to the app pods                                                                            | `{}`            |
-| `app.extraLabels`                              | extra k8s labels to attach                                                                                           | `{}`            |
-| `app.affinity`                                 | Affinity for pod assignment                                                                                          | `{}`            |
-| `app.tolerations`                              | Toleration settings for pod                                                                                          | `[]`            |
-| `app.nginx.resources.requests`                 | Nginx sidecar container: resource requests                                                                           | `{}`            |
-| `app.nginx.resources.limits`                   | Nginx sidecar container: resource limits                                                                             | `{}`            |
-| `app.dnsPolicy`                                | Pod DNS policy                                                                                                       | `ClusterFirst`  |
-| `app.enableServiceLinks`                       | Service environment variables                                                                                        | `false`         |
-| `app.shareProcessNamespace`                    | Enable shared process namespace in a pod                                                                             | `false`         |
-| `app.automountServiceAccountToken`             | Automount service account token for the server service account                                                       | `true`          |
-| `app.serviceAccount.create`                    | Enable the creation of a ServiceAccount for app pod                                                                  | `true`          |
-| `app.serviceAccount.name`                      | Name of the created ServiceAccount                                                                                   |                 |
-| `app.serviceAccount.annotations`               | Custom annotations for app ServiceAccount                                                                            | `{}`            |
-| `app.podSecurityContext.enabled`               | Enable pod Security Context                                                                                          | `true`          |
-| `app.podSecurityContext.fsGroup`               | Group ID for the pod                                                                                                 | `1001`          |
-| `app.containerSecurityContext.enabled`         | Enable container security context                                                                                    | `true`          |
-| `app.containerSecurityContext.runAsUser`       | User ID for the container                                                                                            | `1001`          |
-| `app.containerSecurityContext.runAsNonRoot`    | Avoid privelege escalation to root user                                                                              | `true`          |
-| `app.extraVolumes`                             | Array to add extra volumes                                                                                           | `[]`            |
-| `app.extraVolumeMounts`                        | Array to add extra mounts (normally used with extraVolumes)                                                          | `[]`            |
-| `app.topologySpreadConstraints`                | Topology Spread Constraints for pod assignment                                                                       | `[]`            |
-| `app.nginx.livenessProbe.enabled`              | Nginx sidecar container: Enable livenessProbe                                                                        | `true`          |
-| `app.nginx.livenessProbe.path`                 | Nginx sidecar container: path for livenessProbe                                                                      | `/nginx_health` |
-| `app.nginx.livenessProbe.failureThreshold`     | Nginx sidecar container: when a probe fails, Kubernetes will try failureThreshold times before giving up             | `2`             |
-| `app.nginx.livenessProbe.initialDelaySeconds`  | Nginx sidecar container: Number of seconds after the container has started before probe initiates                    | `60`            |
-| `app.nginx.livenessProbe.periodSeconds`        | Nginx sidecar container: How often (in seconds) to perform the probe                                                 | `5`             |
-| `app.nginx.livenessProbe.successThreshold`     | Nginx sidecar container: Minimum consecutive successes for the probe to be considered successful after having failed | `1`             |
-| `app.nginx.livenessProbe.timeoutSeconds`       | Nginx sidecar container: Number of seconds after which the probe times out                                           | `3`             |
-| `app.nginx.readinessProbe.enabled`             | Nginx sidecar container: Enable redinessProbe                                                                        | `true`          |
-| `app.nginx.readinessProbe.path`                | Nginx sidecar container: Path for reasinessProbe                                                                     | `/version`      |
-| `app.nginx.readinessProbe.failureThreshold`    | Nginx sidecar container: When a probe fails, Kubernetes will try failureThreshold times before giving up             | `2`             |
-| `app.nginx.readinessProbe.initialDelaySeconds` | Nginx sidecar container: Number of seconds after the container has started before probe initiates                    | `60`            |
-| `app.nginx.readinessProbe.periodSeconds`       | Nginx sidecar container: How often (in seconds) to perform the probe                                                 | `10`            |
-| `app.nginx.readinessProbe.successThreshold`    | Nginx sidecar container: Minimum consecutive successes for the probe to be considered successful after having failed | `1`             |
-| `app.nginx.readinessProbe.timeoutSeconds`      | Nginx sidecar container: Number of seconds after which the probe times out                                           | `5`             |
-| `app.service.type`                             | k8s service type                                                                                                     | `ClusterIP`     |
-| `app.service.port`                             | k8s service port                                                                                                     | `80`            |
-| `app.service.targetPort`                       | k8s service target port                                                                                              | `8085`          |
-| `app.service.portName`                         | k8s service port name                                                                                                | `service`       |
-| `app.service.annotations`	                     | Custom annotations for app service                                                                                   | `{}`            |
-| `app.service.sessionAffinity`                  | Custom annotations for app service                                                                                   | `None`          |
-| `app.service.sessionAffinityConfig`	           | Additional settings for the sessionAffinity                                                                          | `{}`            |
-| `app.ingress.enabled`                          | Set to true to enable ingress record generation	                                                                     | `false`         |
-| `app.ingress.className`                        | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                        | `""`            |
-| `app.ingress.host`                             | Default host for the ingress resource	                                                                               | `""`            |
-| `app.ingress.path`                             | The Path to LabelStudio. You may need to set this to '/*' in order to use this with ALB ingress controllers.         | `/`             |
-| `app.ingress.extraPaths`                       | Extra paths to prepend to the host configuration                                                                     | `[]`            |
-| `app.ingress.tls`                              | TLS secrets definition                                                                                               | `[]`            |
-| `app.ingress.annotations`                      | Additional ingress annotations                                                                                       | `{}`            |
-| `app.rbac.create`                              | Specifies whether RBAC resources should be created for app service                                                   | `false`         |
-| `app.rbac.rules`                               | Custom RBAC rules to set for app service		                                                                           | `[]`            |
-| `app.contextPath`                              | Context path appended for health/readiness checks                                                                    | `/`             |
-| `app.cmdWrapper`                               | Additional commands to run prior to starting App. Useful to run wrappers before startup command                      | `""`            |
-
+| Parameter                                      | Description                                                                                                          | Default                  |
+|------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------|
+| `app.args`                                     | Override default container args (useful when using custom images)	                                                   | `["label-studio-uwsgi"]` |
+| `app.deploymentStrategy.type`                  | Deployment strategy type                                                                                             | `RollingUpdate`          |
+| `app.replicas`                                 | Amount of app pod replicas                                                                                           | `1`                      |
+| `app.NameOverride`                             | String to partially override release template name                                                                   | `""`                     |
+| `app.FullnameOverride`                         | String to fully override release template name                                                                       | `""`                     |
+| `app.resources.requests.memory`                | The requested memory resources for the App container                                                                 | `384Mi`                  |
+| `app.resources.requests.cpu`                   | The requested cpu resources for the App container                                                                    | `250m`                   |
+| `app.resources.limits.memory`                  | The memory resources limits for the App container                                                                    | `""`                     |
+| `app.resources.limits.cpu`                     | The cpu resources limits for the App container                                                                       | `""`                     |
+| `app.initContainer.resources.requests`         | Init container db-migrations resource requests                                                                       | `{}`                     |
+| `app.initContainer.resources.limits`           | Init container db-migrations resource limits                                                                         | `{}`                     |
+| `app.readinessProbe.enabled`                   | Enable redinessProbe                                                                                                 | `false`                  |
+| `app.readinessProbe.path`                      | Path for reasinessProbe                                                                                              | `/version`               |
+| `app.readinessProbe.failureThreshold`          | When a probe fails, Kubernetes will try failureThreshold times before giving up                                      | `2`                      |
+| `app.readinessProbe.initialDelaySeconds`       | Number of seconds after the container has started before probe initiates                                             | `60`                     |
+| `app.readinessProbe.periodSeconds`             | How often (in seconds) to perform the probe                                                                          | `10`                     |
+| `app.readinessProbe.successThreshold`          | Minimum consecutive successes for the probe to be considered successful after having failed                          | `1`                      |
+| `app.readinessProbe.timeoutSeconds`            | Number of seconds after which the probe times out                                                                    | `5`                      |
+| `app.livenessProbe.enabled`                    | Enable livenessProbe                                                                                                 | `true`                   |
+| `app.livenessProbe.path`                       | Path for livenessProbe                                                                                               | `/health`                |
+| `app.livenessProbe.failureThreshold`           | When a probe fails, Kubernetes will try failureThreshold times before giving up                                      | `3`                      |
+| `app.livenessProbe.initialDelaySeconds`        | Number of seconds after the container has started before probe initiates                                             | `60`                     |
+| `app.livenessProbe.periodSeconds`              | How often (in seconds) to perform the probe                                                                          | `10`                     |
+| `app.livenessProbe.successThreshold`           | Minimum consecutive successes for the probe to be considered successful after having failed                          | `1`                      |
+| `app.livenessProbe.timeoutSeconds`             | Number of seconds after which the probe times out                                                                    | `5`                      |
+| `app.extraEnvironmentVars`                     | A map of extra environment variables to set                                                                          | `{}`                     |
+| `app.extraEnvironmentSecrets`                  | A map of extra environment secrets to set                                                                            | `{}`                     |
+| `app.nodeSelector`                             | Labels for pod assignment, formatted as a multi-line string or YAML map                                              | `{}`                     |
+| `app.annotations`                              | k8s annotations to attach to the app pods                                                                            | `{}`                     |
+| `app.extraLabels`                              | extra k8s labels to attach                                                                                           | `{}`                     |
+| `app.affinity`                                 | Affinity for pod assignment                                                                                          | `{}`                     |
+| `app.tolerations`                              | Toleration settings for pod                                                                                          | `[]`                     |
+| `app.nginx.resources.requests`                 | Nginx sidecar container: resource requests                                                                           | `{}`                     |
+| `app.nginx.resources.limits`                   | Nginx sidecar container: resource limits                                                                             | `{}`                     |
+| `app.dnsPolicy`                                | Pod DNS policy                                                                                                       | `ClusterFirst`           |
+| `app.enableServiceLinks`                       | Service environment variables                                                                                        | `false`                  |
+| `app.shareProcessNamespace`                    | Enable shared process namespace in a pod                                                                             | `false`                  |
+| `app.automountServiceAccountToken`             | Automount service account token for the server service account                                                       | `true`                   |
+| `app.serviceAccount.create`                    | Enable the creation of a ServiceAccount for app pod                                                                  | `true`                   |
+| `app.serviceAccount.name`                      | Name of the created ServiceAccount                                                                                   |                          |
+| `app.serviceAccount.annotations`               | Custom annotations for app ServiceAccount                                                                            | `{}`                     |
+| `app.podSecurityContext.enabled`               | Enable pod Security Context                                                                                          | `true`                   |
+| `app.podSecurityContext.fsGroup`               | Group ID for the pod                                                                                                 | `1001`                   |
+| `app.containerSecurityContext.enabled`         | Enable container security context                                                                                    | `true`                   |
+| `app.containerSecurityContext.runAsUser`       | User ID for the container                                                                                            | `1001`                   |
+| `app.containerSecurityContext.runAsNonRoot`    | Avoid privelege escalation to root user                                                                              | `true`                   |
+| `app.extraVolumes`                             | Array to add extra volumes                                                                                           | `[]`                     |
+| `app.extraVolumeMounts`                        | Array to add extra mounts (normally used with extraVolumes)                                                          | `[]`                     |
+| `app.topologySpreadConstraints`                | Topology Spread Constraints for pod assignment                                                                       | `[]`                     |
+| `app.nginx.args`                               | Override default container args (useful when using custom images)	                                                   | `["nginx"]`              |
+| `app.nginx.livenessProbe.enabled`              | Nginx sidecar container: Enable livenessProbe                                                                        | `true`                   |
+| `app.nginx.livenessProbe.path`                 | Nginx sidecar container: path for livenessProbe                                                                      | `/nginx_health`          |
+| `app.nginx.livenessProbe.failureThreshold`     | Nginx sidecar container: when a probe fails, Kubernetes will try failureThreshold times before giving up             | `2`                      |
+| `app.nginx.livenessProbe.initialDelaySeconds`  | Nginx sidecar container: Number of seconds after the container has started before probe initiates                    | `60`                     |
+| `app.nginx.livenessProbe.periodSeconds`        | Nginx sidecar container: How often (in seconds) to perform the probe                                                 | `5`                      |
+| `app.nginx.livenessProbe.successThreshold`     | Nginx sidecar container: Minimum consecutive successes for the probe to be considered successful after having failed | `1`                      |
+| `app.nginx.livenessProbe.timeoutSeconds`       | Nginx sidecar container: Number of seconds after which the probe times out                                           | `3`                      |
+| `app.nginx.readinessProbe.enabled`             | Nginx sidecar container: Enable redinessProbe                                                                        | `true`                   |
+| `app.nginx.readinessProbe.path`                | Nginx sidecar container: Path for reasinessProbe                                                                     | `/version`               |
+| `app.nginx.readinessProbe.failureThreshold`    | Nginx sidecar container: When a probe fails, Kubernetes will try failureThreshold times before giving up             | `2`                      |
+| `app.nginx.readinessProbe.initialDelaySeconds` | Nginx sidecar container: Number of seconds after the container has started before probe initiates                    | `60`                     |
+| `app.nginx.readinessProbe.periodSeconds`       | Nginx sidecar container: How often (in seconds) to perform the probe                                                 | `10`                     |
+| `app.nginx.readinessProbe.successThreshold`    | Nginx sidecar container: Minimum consecutive successes for the probe to be considered successful after having failed | `1`                      |
+| `app.nginx.readinessProbe.timeoutSeconds`      | Nginx sidecar container: Number of seconds after which the probe times out                                           | `5`                      |
+| `app.service.type`                             | k8s service type                                                                                                     | `ClusterIP`              |
+| `app.service.port`                             | k8s service port                                                                                                     | `80`                     |
+| `app.service.targetPort`                       | k8s service target port                                                                                              | `8085`                   |
+| `app.service.portName`                         | k8s service port name                                                                                                | `service`                |
+| `app.service.annotations`	                     | Custom annotations for app service                                                                                   | `{}`                     |
+| `app.service.sessionAffinity`                  | Custom annotations for app service                                                                                   | `None`                   |
+| `app.service.sessionAffinityConfig`	           | Additional settings for the sessionAffinity                                                                          | `{}`                     |
+| `app.ingress.enabled`                          | Set to true to enable ingress record generation	                                                                     | `false`                  |
+| `app.ingress.className`                        | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                        | `""`                     |
+| `app.ingress.host`                             | Default host for the ingress resource	                                                                               | `""`                     |
+| `app.ingress.path`                             | The Path to LabelStudio. You may need to set this to '/*' in order to use this with ALB ingress controllers.         | `/`                      |
+| `app.ingress.extraPaths`                       | Extra paths to prepend to the host configuration                                                                     | `[]`                     |
+| `app.ingress.tls`                              | TLS secrets definition                                                                                               | `[]`                     |
+| `app.ingress.annotations`                      | Additional ingress annotations                                                                                       | `{}`                     |
+| `app.rbac.create`                              | Specifies whether RBAC resources should be created for app service                                                   | `false`                  |
+| `app.rbac.rules`                               | Custom RBAC rules to set for app service		                                                                           | `[]`                     |
+| `app.contextPath`                              | Context path appended for health/readiness checks                                                                    | `/`                      |
+| `app.cmdWrapper`                               | Additional commands to run prior to starting App. Useful to run wrappers before startup command                      | `""`                     |
 
 ### Rqworker parameters
 Supported only in LabelStudio Enterprise 

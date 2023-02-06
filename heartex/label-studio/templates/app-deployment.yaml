@@ -72,7 +72,9 @@ spec:
           {{- if .Values.app.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
-          args: [ "label-studio-uwsgi" ]
+          args: {{-  range .Values.app.args }}
+            - {{ . }}
+          {{- end }}
           env:
             - name: SKIP_DB_MIGRATIONS
               value: "true"
@@ -144,7 +146,9 @@ spec:
           {{- if .Values.app.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
-          args: [ "nginx" ]
+          args: {{-  range .Values.app.nginx.args }}
+            - {{ . }}
+          {{- end }}
           env:
             - name: APP_HOST
               value: localhost
