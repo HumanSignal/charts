@@ -292,15 +292,13 @@ Set's common environment variables
             {{- end }}
             - name: PYTHONUNBUFFERED
               value: "1"
-            - name: LS_VERSION
+            - name: LABEL_STUDIO_DOCKER_IMAGE
               value: "{{ coalesce .Values.global.image.tag .Chart.AppVersion }}"
-            - name: DEPLOYMENT_TYPE
+            - name: LABEL_STUDIO_DEPLOYMENT_TYPE
               value: "{{ default "helm" .Values.deployment_type }}"
-            - name: IS_ENTERPRISE
-              value: {{ .Values.enterprise.enabled | quote }}
-            - name: CHART_VERSION
+            - name: LABEL_STUDIO_CHART_VERSION
               value: {{ .Chart.Version | quote }}
-            - name: CLOUD_PROVIDER
+            - name: LABEL_STUDIO_CLOUD_PROVIDER
               value: "{{ default "n/a" .Values.cloud_provider }}"
             {{- if .Values.global.extraEnvironmentVars -}}
             {{- range $key, $value := .Values.global.extraEnvironmentVars }}
