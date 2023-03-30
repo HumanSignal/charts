@@ -7,6 +7,15 @@
 * 
 
 ### Fixes
+
+## 1.0.12
+### Improvements
+* Permit the use of slashes in the `app.ingress.className`
+
+## 1.0.11
+### Improvements
+* Add LABEL_STUDIO_ prefix to some env variables 
+
 ## 1.0.10
 ### Improvements
 * Add `.Values.app.args` and `.Values.app.nginx.args` to override startup arguments.
