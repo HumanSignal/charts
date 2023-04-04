@@ -7,6 +7,9 @@
 * 
 
 ### Fixes
+## 1.0.13
+### Improvements
+* Bump label-studio version to 1.7.2.
 
 ## 1.0.12
 ### Improvements
