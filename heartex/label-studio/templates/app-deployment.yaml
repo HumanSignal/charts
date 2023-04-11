@@ -42,7 +42,7 @@ spec:
           resources:
             {{- toYaml .Values.app.initContainer.resources | nindent 12 }}
           env:
-            {{- template "ls.common.envs" . }}
+            {{- include "ls.common.envs" . | nindent 12 }}
             - name: INIT_CONTAINER
               value: "true"
             {{- if .Values.app.debug }}
@@ -78,7 +78,7 @@ spec:
           env:
             - name: SKIP_DB_MIGRATIONS
               value: "true"
-            {{- template "ls.common.envs" . }}
+            {{- include "ls.common.envs" . | nindent 12 }}
             {{- if .Values.app.extraEnvironmentVars -}}
             {{- range $key, $value := .Values.app.extraEnvironmentVars }}
             - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
@@ -152,7 +152,7 @@ spec:
           env:
             - name: APP_HOST
               value: localhost
-            {{- template "ls.common.envs" . }}
+            {{- include "ls.common.envs" . | nindent 12}}
             {{- if .Values.app.extraEnvironmentVars -}}
             {{- range $key, $value := .Values.app.extraEnvironmentVars }}
             - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}

@@ -1080,7 +1080,54 @@
         }
       },
       "additionalProperties": false
-    }
-  },
-  "additionalProperties": false
+    },
+    "cronjob": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "jobs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "schedule": {
+                "type": "string",
+                "pattern": "^[0-9*,/ -]+$"
+              },
+              "args": {
+                "type": "array"
+              },
+              "extraEnvironmentVars": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "extraEnvironmentSecrets": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "extraVolumes": {
+                "type": "array"
+              },
+              "extraVolumeMounts": {
+                "type": "array"
+              },
+              "restartPolicy": {
+                "type": "string"
+              },
+              "backoffLimit": {
+                "type": "string"
+              },
+              "concurrencyPolicy": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "additionalProperties": false
+  }
 }

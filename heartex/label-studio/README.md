@@ -387,6 +387,23 @@ Supported only in LabelStudio Enterprise
 | `redis.architecture`       | Redis architecture. Allowed values: `standalone` or `replication`	                                      | `standalone`  |
 | `redis.auth.enabled`       | Enable password authentication	                                                                         | `false`       |
 
+### Cronjob parameters
+| Parameter                                | Description                                                         | Default |
+|------------------------------------------|---------------------------------------------------------------------|---------|
+| `cronjob.enabled`                        | Enable cronjobs                                                     | `false` |
+| `cronjob.jobs`                           | A map of predefined cronjobs                                        | `{}`    |
+| `cronjob.jobs.*.schedule`                | Cronjob schedule according to cron format                           | `""`    |
+| `cronjob.jobs.*.args`                    | Cronjob launch arguments	                                           | `""`    |
+| `cronjob.jobs.*.extraEnvironmentVars`	   | Cronjob key/value map of an extra Environment variables             | `{}`    |
+| `cronjob.jobs.*.extraEnvironmentSecrets` | Cronjob key/value map of an extra Secrets                           | `{}`    |
+| `cronjob.jobs.*.extraVolumes`            | Cronjob array to add extra volumes                                  | `[]`    |
+| `cronjob.jobs.*.extraVolumeMounts`       | Cronjob array to add extra mounts (normally used with extraVolumes) | `[]`    |
+| `cronjob.jobs.*.restartPolicy`           | Cronjob restart policy: OnFailure or Never                          | `[]`    |
+| `cronjob.jobs.*.backoffLimit`            | The number of retries before considering a Job as failed            | `""`    |
+| `cronjob.jobs.*.concurrencyPolicy`       | Concurrency policy                                                  | `""`    |
+
+
+
 ### Other parameters
 | Parameter                 | Description                                      | Default         |
 |---------------------------|--------------------------------------------------|-----------------|

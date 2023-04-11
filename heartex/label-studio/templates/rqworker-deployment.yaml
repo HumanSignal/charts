@@ -46,7 +46,7 @@ spec:
           securityContext: {{- omit $.Values.rqworker.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
-            {{- template "ls.common.envs" $ }}
+            {{- include "ls.common.envs" $ | nindent 12}}
             {{- if $.Values.rqworker.extraEnvironmentVars -}}
             {{- range $key, $value := $.Values.rqworker.extraEnvironmentVars }}
             - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}

@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.0.14
+### Improvements
+* Add support for CronJobs.
+
 ## 1.0.13
 ### Improvements
 * Bump label-studio version to 1.7.2.
