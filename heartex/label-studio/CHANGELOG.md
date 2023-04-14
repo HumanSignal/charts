@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.0.15
+### Fixes
+* Remove pattern check from `cronjob.jobs.*.schedule`.
+
 ## 1.0.14
 ### Improvements
 * Add support for CronJobs.

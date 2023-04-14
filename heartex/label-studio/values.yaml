@@ -562,14 +562,4 @@ checkConfig:
 
 cronjob:
   enabled: false
-  jobs:
-    billing_statistics:
-      schedule: ""
-      args: [ ]
-      extraEnvironmentVars: { }
-      extraEnvironmentSecrets: { }
-      extraVolumes: [ ]
-      extraVolumeMounts: [ ]
-      restartPolicy: ""
-      backoffLimit: ""
-      concurrencyPolicy: ""
+  jobs: {}

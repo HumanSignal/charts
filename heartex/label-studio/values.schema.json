@@ -1093,8 +1093,7 @@
             "type": "object",
             "properties": {
               "schedule": {
-                "type": "string",
-                "pattern": "^[0-9*,/ -]+$"
+                "type": "string"
               },
               "args": {
                 "type": "array"
