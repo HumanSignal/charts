@@ -73,6 +73,6 @@ jobs:
         uses: slackapi/slack-github-action@v1.23
         with:
           channel-id: 'C02LMULF4NA'
-          slack-message: "New versions of helm charts released:\n${{ env.CHANGED_CHARTS_MAP }}\n><https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|[Workflow run]>"
+          slack-message: "New versions of helm charts released:\n${{ env.CHANGED_CHARTS_MAP }}<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|[Workflow run]>"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
