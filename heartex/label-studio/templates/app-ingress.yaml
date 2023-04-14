@@ -46,7 +46,7 @@ spec:
 {{- end }}
           - path: {{ default "/" .Values.app.ingress.path }}
             {{- if (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: ImplementationSpecific
+            pathType: {{ .Values.app.ingress.pathType }}
             {{- end }}
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}

@@ -680,6 +680,9 @@
             "path": {
               "type": "string"
             },
+            "pathType": {
+              "type": "string"
+            },
             "extraPaths": {
               "type": "array"
             },

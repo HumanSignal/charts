@@ -303,6 +303,7 @@ directory.
 | `app.ingress.extraPaths`                       | Extra paths to prepend to the host configuration                                                                     | `[]`                     |
 | `app.ingress.tls`                              | TLS secrets definition                                                                                               | `[]`                     |
 | `app.ingress.annotations`                      | Additional ingress annotations                                                                                       | `{}`                     |
+| `app.ingress.pathType`                         | Ingress path type                                                                                                    | `ImplementationSpecific` |
 | `app.rbac.create`                              | Specifies whether RBAC resources should be created for app service                                                   | `false`                  |
 | `app.rbac.rules`                               | Custom RBAC rules to set for app service		                                                                           | `[]`                     |
 | `app.contextPath`                              | Context path appended for health/readiness checks                                                                    | `/`                      |

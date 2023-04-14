@@ -285,6 +285,7 @@ app:
     path: /
     ## Extra paths to prepend to the host configuration. This is useful when working with annotation based services.
     extraPaths: []
+    pathType: ImplementationSpecific
     ## Examples:
     ## - path: /*
     ##   backend:

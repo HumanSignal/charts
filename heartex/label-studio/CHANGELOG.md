@@ -7,9 +7,13 @@
 * 
 
 ### Fixes
+## 1.0.16
+### Fixes
+* Support for different ingress path types `.Values.app.ingress.pathType`
+
 ## 1.0.15
 ### Fixes
-* Remove pattern check from `cronjob.jobs.*.schedule`.
+* Remove pattern check from `.Values.cronjob.jobs.*.schedule`.
 
 ## 1.0.14
 ### Improvements
@@ -21,7 +25,7 @@
 
 ## 1.0.12
 ### Improvements
-* Permit the use of slashes in the `app.ingress.className`
+* Permit the use of slashes in the `.Values.app.ingress.className`
 
 ## 1.0.11
 ### Improvements
