@@ -374,14 +374,11 @@ rqworker:
       replicas: 1
       args: '"low"'
     default:
-      replicas: 1
+      replicas: 4
       args: '"default"'
     critical:
       replicas: 1
       args: '"critical"'
-    all:
-      replicas: 1
-      args: '"low", "default", "critical", "high"'
 
   resources:
     requests: {}

@@ -7,9 +7,16 @@
 * 
 
 ### Fixes
+## 1.0.17
+### Improvements
+* Bump label-studio version to 1.7.3.
+* Remove `all` rqworker.
+### Fixes
+* Allow to set deploymentStrategy in percentage.
+
 ## 1.0.16
 ### Fixes
-* Support for different ingress path types `.Values.app.ingress.pathType`
+* Support for different ingress path types `.Values.app.ingress.pathType`.
 
 ## 1.0.15
 ### Fixes
@@ -29,12 +36,12 @@
 
 ## 1.0.11
 ### Improvements
-* Add LABEL_STUDIO_ prefix to some env variables 
+* Add LABEL_STUDIO_ prefix to some env variables .
 
 ## 1.0.10
 ### Improvements
 * Add `.Values.app.args` and `.Values.app.nginx.args` to override startup arguments.
-* Bump label-studio version to 1.7.1
+* Bump label-studio version to 1.7.1.
 
 ## 1.0.9
 ### Improvements

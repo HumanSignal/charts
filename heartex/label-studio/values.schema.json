@@ -337,14 +337,6 @@
             },
             "rollingUpdate": {
               "type": "object",
-              "properties": {
-                "maxSurge": {
-                  "type": "integer"
-                },
-                "maxUnavailable": {
-                  "type": "integer"
-                }
-              },
               "additionalProperties": true
             }
           },
