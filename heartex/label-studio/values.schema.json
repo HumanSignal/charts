@@ -171,6 +171,10 @@
                     },
                     "endpointUrl": {
                       "type": "string"
+                    },
+                    "objectParameters": {
+                      "type": "object",
+                      "additionalProperties": true
                     }
                   },
                   "additionalProperties": false

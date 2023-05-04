@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.0.18
+### Improvements
+* Add `.Values.global.persistence.config.s3.objectParameters` to override possible parameters.
+
 ## 1.0.17
 ### Improvements
 * Bump label-studio version to 1.7.3.

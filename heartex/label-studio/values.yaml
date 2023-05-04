@@ -60,6 +60,7 @@ global:
         folder: ""
         urlExpirationSecs: "86400"
         endpointUrl: ""
+        objectParameters: {}
       volume:
         ## If defined, storageClassName: <storageClass>
         ## If set to "-", storageClassName: "", which disables dynamic provisioning
