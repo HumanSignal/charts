@@ -272,12 +272,12 @@ spec:
         - name: opt-heartex-app
           emptyDir: {}
         - name: opt-heartex-nginx
-          emptyDir: { }
+          emptyDir: {}
         - name: opt-heartex-init
-          emptyDir: { }
+          emptyDir: {}
         - name: tmp-dir-app
-          emptyDir: { }
+          emptyDir: {}
         - name: tmp-dir-nginx
-          emptyDir: { }
+          emptyDir: {}
         - name: tmp-dir-init
-          emptyDir: { }
+          emptyDir: {}
