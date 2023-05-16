@@ -7,6 +7,12 @@
 * 
 
 ### Fixes
+## 1.1.0
+### Improvements
+* Add `.Values.app.terminationGracePeriodSeconds` and `.Values.rqworker.terminationGracePeriodSeconds` to override terminationGracePeriodSeconds for a pod.
+* Add `.Values.app.preStopDelaySeconds` to override pre stop delay in seconds.
+* Add `.Values.rqworker.queues.*.resources` to override per queue resources requests/limits.
+
 ## 1.0.18
 ### Improvements
 * Add `.Values.global.persistence.config.s3.objectParameters` to override possible parameters.

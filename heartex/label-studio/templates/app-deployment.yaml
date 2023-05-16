@@ -65,6 +65,7 @@ spec:
             {{- if .Values.app.extraVolumeMounts }}
               {{ toYaml .Values.app.extraVolumeMounts | nindent 12 }}
             {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.app.terminationGracePeriodSeconds }}
       containers:
         - name: app
           image: "{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
@@ -112,7 +113,7 @@ spec:
           lifecycle:
             preStop:
               exec:
-                command: ['/bin/sh', '-c', 'sleep 15']
+                command: [ '/bin/sh', '-c', 'sleep {{ .Values.app.preStopDelaySeconds }}' ]
           resources:
             {{- toYaml .Values.app.resources | nindent 12 }}
           volumeMounts:
@@ -172,6 +173,10 @@ spec:
             - name: {{ .Values.app.service.portName }}
               containerPort: 8085
               protocol: TCP
+          lifecycle:
+            preStop:
+              exec:
+                command: [ '/bin/sh', '-c', 'sleep {{ .Values.app.preStopDelaySeconds }}' ]
           {{- if .Values.app.nginx.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
@@ -267,12 +272,12 @@ spec:
         - name: opt-heartex-app
           emptyDir: {}
         - name: opt-heartex-nginx
-          emptyDir: {}
+          emptyDir: { }
         - name: opt-heartex-init
-          emptyDir: {}
+          emptyDir: { }
         - name: tmp-dir-app
-          emptyDir: {}
+          emptyDir: { }
         - name: tmp-dir-nginx
-          emptyDir: {}
+          emptyDir: { }
         - name: tmp-dir-init
-          emptyDir: {}
+          emptyDir: { }
