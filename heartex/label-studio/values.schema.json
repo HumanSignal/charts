@@ -739,6 +739,12 @@
         },
         "cmdWrapper": {
           "type": "string"
+        },
+        "preStopDelaySeconds": {
+          "type": "integer"
+        },
+        "terminationGracePeriodSeconds": {
+          "type": "integer"
         }
       },
       "additionalProperties": false
@@ -775,6 +781,36 @@
                 },
                 "replicas": {
                   "type": "integer"
+                },
+                "resources": {
+                  "type": "object",
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "properties": {
+                        "memory": {
+                          "type": "string"
+                        },
+                        "cpu": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "limits": {
+                      "type": "object",
+                      "properties": {
+                        "memory": {
+                          "type": "string"
+                        },
+                        "cpu": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
@@ -787,6 +823,36 @@
                 },
                 "replicas": {
                   "type": "integer"
+                },
+                "resources": {
+                  "type": "object",
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "properties": {
+                        "memory": {
+                          "type": "string"
+                        },
+                        "cpu": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "limits": {
+                      "type": "object",
+                      "properties": {
+                        "memory": {
+                          "type": "string"
+                        },
+                        "cpu": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
@@ -799,6 +865,36 @@
                 },
                 "replicas": {
                   "type": "integer"
+                },
+                "resources": {
+                  "type": "object",
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "properties": {
+                        "memory": {
+                          "type": "string"
+                        },
+                        "cpu": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "limits": {
+                      "type": "object",
+                      "properties": {
+                        "memory": {
+                          "type": "string"
+                        },
+                        "cpu": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
@@ -811,6 +907,36 @@
                 },
                 "replicas": {
                   "type": "integer"
+                },
+                "resources": {
+                  "type": "object",
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "properties": {
+                        "memory": {
+                          "type": "string"
+                        },
+                        "cpu": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "limits": {
+                      "type": "object",
+                      "properties": {
+                        "memory": {
+                          "type": "string"
+                        },
+                        "cpu": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
@@ -823,6 +949,36 @@
                 },
                 "replicas": {
                   "type": "integer"
+                },
+                "resources": {
+                  "type": "object",
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "properties": {
+                        "memory": {
+                          "type": "string"
+                        },
+                        "cpu": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "limits": {
+                      "type": "object",
+                      "properties": {
+                        "memory": {
+                          "type": "string"
+                        },
+                        "cpu": {
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
@@ -1016,6 +1172,9 @@
         },
         "cmdWrapper": {
           "type": "string"
+        },
+        "terminationGracePeriodSeconds": {
+          "type": "integer"
         }
       },
       "additionalProperties": false

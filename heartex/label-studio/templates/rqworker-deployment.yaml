@@ -37,6 +37,7 @@ spec:
       securityContext: {{- omit $.Values.rqworker.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
       automountServiceAccountToken: {{ $.Values.rqworker.automountServiceAccountToken }}
+      terminationGracePeriodSeconds: {{ $.Values.rqworker.terminationGracePeriodSeconds }}
       containers:
         - name: rqworker
           image: "{{ $.Values.global.image.repository }}:{{ $.Values.global.image.tag | default $.Chart.AppVersion }}"
@@ -93,7 +94,11 @@ spec:
             timeoutSeconds: {{ $.Values.rqworker.livenessProbe.timeoutSeconds }}
           {{- end }}
           resources:
+            {{- if or $val.resources.limits $val.resources.requests }}
+            {{- toYaml $val.resources | nindent 12 }}
+            {{- else }}
             {{- toYaml $.Values.rqworker.resources | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: data
               mountPath: /label-studio/data

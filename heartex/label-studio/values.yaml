@@ -358,6 +358,13 @@ app:
   ##
   cmdWrapper: ""
 
+  ## Minimal number of seconds preStop hook waits before LS is stopped to finish processing requests
+  ## Note: must be set to lower value than terminationGracePeriodSeconds so that preStop hook finishes
+  ## before grace period expires
+  preStopDelaySeconds: 15
+  # Seconds LS pod needs to terminate gracefully
+  terminationGracePeriodSeconds: 30
+
 rqworker:
   enabled: true
 
@@ -371,16 +378,29 @@ rqworker:
     high:
       replicas: 1
       args: '"high"'
+      resources:
+        requests: {}
+        limits: {}
     low:
       replicas: 1
       args: '"low"'
+      resources:
+        requests: {}
+        limits: {}
     default:
       replicas: 4
       args: '"default"'
+      resources:
+        requests: {}
+        limits: {}
     critical:
       replicas: 1
       args: '"critical"'
+      resources:
+        requests: {}
+        limits: {}
 
+  # Default fallback in the case if queue-specific resources are not set
   resources:
     requests: {}
       ## memory: "256Mi"
@@ -522,6 +542,9 @@ rqworker:
   ## cmdWrapper: "newrelic-admin run-python"
   ##
   cmdWrapper: ""
+
+  # Seconds rqworker pod needs to terminate gracefully
+  terminationGracePeriodSeconds: 30
 
 #  [Enterprise Only]
 enterprise:
