@@ -94,10 +94,17 @@ spec:
             timeoutSeconds: {{ $.Values.rqworker.livenessProbe.timeoutSeconds }}
           {{- end }}
           resources:
-            {{- if or $val.resources.limits $val.resources.requests }}
-            {{- toYaml $val.resources | nindent 12 }}
+            limits:
+            {{- if $val.resources.limits }}
+            {{- toYaml $val.resources.limits | nindent 14 }}
             {{- else }}
-            {{- toYaml $.Values.rqworker.resources | nindent 12 }}
+            {{- toYaml $.Values.rqworker.resources.limits | nindent 14 }}
+            {{- end }}
+            requests:
+            {{- if $val.resources.requests }}
+            {{- toYaml $val.resources.requests | nindent 14 }}
+            {{- else }}
+            {{- toYaml $.Values.rqworker.resources.requests | nindent 14 }}
             {{- end }}
           volumeMounts:
             - name: data

@@ -7,6 +7,13 @@
 * 
 
 ### Fixes
+## 1.1.1
+### Improvements
+* Add `.Values.cronjob.jobs.*.successfulJobsHistoryLimit` and `.Values.cronjob.jobs.*.failedJobsHistoryLimit` to override possible parameters.
+### Fixes
+* Fallback to default `.Values.rqworker.resources.limits` if `.Values.rqworker.queues.*.resources.limits` is not specified
+* Fallback to default `.Values.rqworker.resources.requests` if `.Values.rqworker.queues.*.resources.requests` is not specified
+
 ## 1.1.0
 ### Improvements
 * Add `.Values.app.terminationGracePeriodSeconds` and `.Values.rqworker.terminationGracePeriodSeconds` to override terminationGracePeriodSeconds for a pod.

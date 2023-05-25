@@ -8,6 +8,8 @@ metadata:
   labels:
     {{- include "ls-app.labels" $ | nindent 4 }}
 spec:
+  successfulJobsHistoryLimit: {{ default 3 $val.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ default 1 $val.failedJobsHistoryLimit }}
   schedule: "{{ $val.schedule }}"
   concurrencyPolicy: {{ $val.concurrencyPolicy }}
   jobTemplate:

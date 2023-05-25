@@ -1278,6 +1278,12 @@
               },
               "concurrencyPolicy": {
                 "type": "string"
+              },
+              "successfulJobsHistoryLimit": {
+                "type": "string"
+              },
+              "failedJobsHistoryLimit": {
+                "type": "string"
               }
             },
             "additionalProperties": false
