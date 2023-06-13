@@ -456,6 +456,10 @@ Set's common environment variables
 - name: CUSTOM_CA_CERTS
   value: {{ join "," .Values.global.customCaCerts }}
 {{- end }}
+{{- if .Values.metrics.enabled }}
+- name: PROMETHEUS_EXPORT_ENABLED
+  value: "1"
+{{- end }}
 {{- end -}}
 
 

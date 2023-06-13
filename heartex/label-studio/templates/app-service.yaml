@@ -15,6 +15,18 @@ spec:
       targetPort: {{ .Values.app.service.targetPort }}
       protocol: TCP
       name: {{ .Values.app.service.portName }}
+    {{- if and .Values.metrics.enabled .Values.metrics.uwsgiExporter.enabled }}
+    - port: 9117
+      targetPort: "uwsgimetrics"
+      protocol: "TCP"
+      name: "uwsgimetrics"
+    {{- end }}
+    {{- if and .Values.metrics.enabled }}
+    - port: 8000
+      targetPort: "djangometrics"
+      protocol: "TCP"
+      name: "djangometrics"
+    {{- end }}
   selector:
     {{- include "ls-app.selectorLabels" . | nindent 4 }}
   sessionAffinity: {{ .Values.app.service.sessionAffinity }}

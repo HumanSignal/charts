@@ -141,6 +141,11 @@ spec:
               name: opt-heartex-app
             - mountPath: /tmp
               name: tmp-dir-app
+          {{- if .Values.metrics.enabled }}
+          ports:
+            - name: "djangometrics"
+              containerPort: 8000
+          {{- end }}
         - name: nginx
           image: "{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
@@ -211,6 +216,44 @@ spec:
               name: opt-heartex-nginx
             - mountPath: /tmp
               name: tmp-dir-nginx
+        {{- if and .Values.metrics.enabled .Values.metrics.uwsgiExporter.enabled }}
+        - name: uwsgi-exporter
+          image: "{{ .Values.metrics.uwsgiExporter.image.repository }}:{{ .Values.metrics.uwsgiExporter.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.metrics.uwsgiExporter.image.pullPolicy }}
+          {{- if .Values.metrics.uwsgiExporter.containerSecurityContext.enabled }}
+          securityContext: {{- omit .Values.metrics.uwsgiExporter.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          args:
+            - "--stats.uri=http://localhost:1717"
+          {{- if .Values.metrics.uwsgiExporter.resources }}
+          resources: {{- toYaml .Values.metrics.uwsgiExporter.resources | nindent 12 }}
+          {{- end }}
+          {{- if .Values.metrics.uwsgiExporter.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: "{{ .Values.metrics.uwsgiExporter.readinessProbe.httpGet.path }}"
+              port: "{{ .Values.metrics.uwsgiExporter.readinessProbe.httpGet.port }}"
+            failureThreshold: {{ .Values.metrics.uwsgiExporter.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.metrics.uwsgiExporter.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.metrics.uwsgiExporter.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.metrics.uwsgiExporter.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.metrics.uwsgiExporter.readinessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- if .Values.metrics.uwsgiExporter.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: "{{ .Values.metrics.uwsgiExporter.livenessProbe.httpGet.path }}"
+              port: "{{ .Values.metrics.uwsgiExporter.livenessProbe.httpGet.port }}"
+            failureThreshold: {{ .Values.metrics.uwsgiExporter.livenessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.metrics.uwsgiExporter.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.metrics.uwsgiExporter.livenessProbe.periodSeconds }}
+            successThreshold: {{ .Values.metrics.uwsgiExporter.livenessProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.metrics.uwsgiExporter.livenessProbe.timeoutSeconds }}
+          {{- end }}
+          ports:
+            - name: "uwsgimetrics"
+              containerPort: 9117
+          {{- end }}
       {{- with .Values.app.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

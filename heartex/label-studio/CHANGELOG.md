@@ -7,6 +7,14 @@
 * 
 
 ### Fixes
+## 1.1.3
+### Improvements
+* Add `.Values.metrics.*`
+
+## 1.1.2
+### Improvements
+* Bump label-studio version to 1.8.0.
+
 ## 1.1.1
 ### Improvements
 * Add `.Values.cronjob.jobs.*.successfulJobsHistoryLimit` and `.Values.cronjob.jobs.*.failedJobsHistoryLimit` to override possible parameters.

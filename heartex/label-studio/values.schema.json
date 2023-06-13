@@ -1291,6 +1291,17 @@
         }
       }
     },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "uwsgiExporter": {
+          "type": "object"
+        }
+      }
+    },
     "additionalProperties": false
   }
 }

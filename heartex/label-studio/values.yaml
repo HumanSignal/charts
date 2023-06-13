@@ -331,6 +331,7 @@ app:
     enabled: true
     runAsUser: 1001
     runAsNonRoot: true
+    allowPrivilegeEscalation: false
 
   ## RBAC configuration
   ##
@@ -517,6 +518,7 @@ rqworker:
     enabled: true
     runAsUser: 1001
     runAsNonRoot: true
+    allowPrivilegeEscalation: false
 
   ## RBAC configuration
   ##
@@ -585,3 +587,50 @@ checkConfig:
 cronjob:
   enabled: false
   jobs: {}
+
+metrics:
+  enabled: true
+  uwsgiExporter:
+    enabled: false
+    image:
+      registry: "docker.io"
+      repository: "timonwong/uwsgi-exporter"
+      tag: "v1.3.0"
+      pullPolicy: "Always"
+      pullSecrets: [ ]
+
+    containerSecurityContext:
+      enabled: true
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: false
+      runAsUser: 1001
+
+    resources:
+      requests:
+        cpu: ".001"
+        memory: "6Mi"
+      limits:
+        cpu: ".01"
+        memory: "128Mi"
+
+    livenessProbe:
+      enabled: true
+      httpGet:
+        path: "/-/healthy"
+        port: "uwsgimetrics"
+      initialDelaySeconds: 2
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 3
+      successThreshold: 1
+
+    readinessProbe:
+      enabled: true
+      httpGet:
+        path: "/metrics"
+        port: "uwsgimetrics"
+      initialDelaySeconds: 2
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 3
+      successThreshold: 1

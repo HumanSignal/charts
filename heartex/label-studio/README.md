@@ -275,6 +275,9 @@ directory.
 | `app.extraVolumes`                             | Array to add extra volumes                                                                                           | `[]`                     |
 | `app.extraVolumeMounts`                        | Array to add extra mounts (normally used with extraVolumes)                                                          | `[]`                     |
 | `app.topologySpreadConstraints`                | Topology Spread Constraints for pod assignment                                                                       | `[]`                     |
+| `app.terminationGracePeriodSeconds`                | Termination grace period in seconds                                                                                  | `30`                     |
+| `app.preStopDelaySeconds`                | PreStop delay in seconds                                                                                             | `15`                     |
+| `app.topologySpreadConstraints`                | Topology Spread Constraints for pod assignment                                                                       | `[]`                     |
 | `app.nginx.args`                               | Override default container args (useful when using custom images)	                                                   | `["nginx"]`              |
 | `app.nginx.livenessProbe.enabled`              | Nginx sidecar container: Enable livenessProbe                                                                        | `true`                   |
 | `app.nginx.livenessProbe.path`                 | Nginx sidecar container: path for livenessProbe                                                                      | `/nginx_health`          |
@@ -328,14 +331,16 @@ Supported only in LabelStudio Enterprise
 | `rqworker.tolerations`                           | Toleration settings for pod                                                                     | `[]`                                   |
 | `rqworker.queues.high.replicas`                  | Rqworker queue "high" replicas amount                                                           | `1`                                    |
 | `rqworker.queues.high.args`                      | Rqworker queue "high" launch arguments                                                          | `"high"`                               |
+| `rqworker.queues.high.resources`                 | Rqworker queue "high" resources                                                                 | `{}`                                   |
 | `rqworker.queues.low.replicas`                   | Rqworker queue "low" replicas amount                                                            | `1`                                    |
 | `rqworker.queues.low.args`                       | Rqworker queue "low" launch arguments                                                           | `"low"`                                |
+| `rqworker.queues.low.resources`                  | Rqworker queue "low" resources                                                                  | `{}`                                   |
 | `rqworker.queues.default.replicas`               | Rqworker queue "default" replicas amount                                                        | `1`                                    |
 | `rqworker.queues.default.args`                   | Rqworker queue "default" launch arguments                                                       | `"default"`                            |
+| `rqworker.queues.default.resources`              | Rqworker queue "default" resources                                                              | `{}`                                   |
 | `rqworker.queues.critical.replicas`              | Rqworker queue "critical" replicas amount                                                       | `1`                                    |
 | `rqworker.queues.critical.args`                  | Rqworker queue "critical" launch arguments                                                      | `"critical"`                           |
-| `rqworker.queues.all.replicas`                   | Rqworker queue "all" replicas amount                                                            | `1`                                    |
-| `rqworker.queues.all.args`                       | Rqworker queue "all" launch arguments                                                           | `"low", "default", "critical", "high"` |
+| `rqworker.queues.critical.resources`             | Rqworker queue "critical" resources                                                             | `{}`                                   |
 | `rqworker.dnsPolicy`                             | Pod DNS policy                                                                                  | `ClusterFirst`                         |
 | `rqworker.enableServiceLinks`                    | Service environment variables                                                                   | `false`                                |
 | `rqworker.shareProcessNamespace`                 | Enable shared process namespace in a pod                                                        | `false`                                |
@@ -404,6 +409,11 @@ Supported only in LabelStudio Enterprise
 | `cronjob.jobs.*.backoffLimit`            | The number of retries before considering a Job as failed            | `""`    |
 | `cronjob.jobs.*.concurrencyPolicy`       | Concurrency policy                                                  | `""`    |
 
+### metrics parameters
+| Parameter                                | Description                                                         | Default |
+|------------------------------------------|---------------------------------------------------------------------|---------|
+| `metrics.enabled`                        | Enable metrics                                                      | `true`  |
+| `metrics.uwsgiExporter`                  | Configuration map for uwsgiExporter                                 | `{}`    |
 
 
 ### Other parameters
