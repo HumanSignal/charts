@@ -589,7 +589,7 @@ cronjob:
   jobs: {}
 
 metrics:
-  enabled: true
+  enabled: false
   uwsgiExporter:
     enabled: false
     image:
