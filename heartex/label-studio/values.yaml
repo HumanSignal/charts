@@ -134,6 +134,8 @@ app:
 
   NameOverride: ""
   FullnameOverride: ""
+  labels: { }
+  podLabels: { }
 
   ## @param app.args Override default container args (useful when using custom images)
   ##
@@ -164,6 +166,8 @@ app:
   nginx:
     args:
       - "nginx"
+    extraEnvironmentVars: {}
+    extraEnvironmentSecrets: {}
     resources:
       requests: {}
         ## Example
@@ -371,6 +375,8 @@ rqworker:
 
   NameOverride: ""
   FullnameOverride: ""
+  labels: {}
+  podLabels: {}
 
   deploymentStrategy:
     type: Recreate

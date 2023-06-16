@@ -4,6 +4,9 @@ metadata:
   name: {{ include "ls-app.fullname" . }}
   labels:
     {{- include "ls-app.labels" . | nindent 4 }}
+    {{- if .Values.app.labels }}
+    {{- toYaml .Values.app.labels | nindent 8 }}
+    {{- end }}
 spec:
   replicas: {{ .Values.app.replicas }}
   selector:
@@ -21,6 +24,9 @@ spec:
       {{- end }}
       labels:
         {{- include "ls-app.selectorLabels" . | nindent 8 }}
+        {{- if .Values.app.podLabels }}
+        {{- toYaml .Values.app.podLabels | nindent 8 }}
+        {{- end }}
     spec:
       {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:
@@ -159,14 +165,14 @@ spec:
             - name: APP_HOST
               value: localhost
             {{- include "ls.common.envs" . | nindent 12}}
-            {{- if .Values.app.extraEnvironmentVars -}}
-            {{- range $key, $value := .Values.app.extraEnvironmentVars }}
+            {{- if .Values.app.nginx.extraEnvironmentVars -}}
+            {{- range $key, $value := .Values.app.nginx.extraEnvironmentVars }}
             - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
               value: {{ $value | quote }}
             {{- end }}
             {{- end }}
-            {{- if .Values.app.extraEnvironmentSecrets -}}
-            {{- range $key, $value := .Values.app.extraEnvironmentSecrets }}
+            {{- if .Values.app.nginx.extraEnvironmentSecrets -}}
+            {{- range $key, $value := .Values.app.nginx.extraEnvironmentSecrets }}
             - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
               valueFrom:
                 secretKeyRef:

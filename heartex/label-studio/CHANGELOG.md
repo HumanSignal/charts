@@ -7,9 +7,14 @@
 * 
 
 ### Fixes
+## 1.1.4
+### Improvements
+* Add `.Values.app.nginx.extraEnvironmentVars` and `.Values.app.nginx.extraEnvironmentSecrets`.
+* Add `.Values.app.labels`, `.Values.app.podLabels`, `.Values.rqworker.labels`, `.Values.rqworker.podLabels`.
+
 ## 1.1.3
 ### Improvements
-* Add `.Values.metrics.*`
+* Add `.Values.metrics.*`.
 
 ## 1.1.2
 ### Improvements

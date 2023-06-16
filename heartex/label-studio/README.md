@@ -258,6 +258,8 @@ directory.
 | `app.extraLabels`                              | extra k8s labels to attach                                                                                           | `{}`                     |
 | `app.affinity`                                 | Affinity for pod assignment                                                                                          | `{}`                     |
 | `app.tolerations`                              | Toleration settings for pod                                                                                          | `[]`                     |
+| `app.nginx.extraEnvironmentVars`               | A map of extra environment variables to set for nginx container                                                      | `{}`                     |
+| `app.nginx.extraEnvironmentSecrets`            | A map of extra environment secrets to set for nginx container                                                        | `{}`                     |
 | `app.nginx.resources.requests`                 | Nginx sidecar container: resource requests                                                                           | `{}`                     |
 | `app.nginx.resources.limits`                   | Nginx sidecar container: resource limits                                                                             | `{}`                     |
 | `app.dnsPolicy`                                | Pod DNS policy                                                                                                       | `ClusterFirst`           |
@@ -275,8 +277,8 @@ directory.
 | `app.extraVolumes`                             | Array to add extra volumes                                                                                           | `[]`                     |
 | `app.extraVolumeMounts`                        | Array to add extra mounts (normally used with extraVolumes)                                                          | `[]`                     |
 | `app.topologySpreadConstraints`                | Topology Spread Constraints for pod assignment                                                                       | `[]`                     |
-| `app.terminationGracePeriodSeconds`                | Termination grace period in seconds                                                                                  | `30`                     |
-| `app.preStopDelaySeconds`                | PreStop delay in seconds                                                                                             | `15`                     |
+| `app.terminationGracePeriodSeconds`            | Termination grace period in seconds                                                                                  | `30`                     |
+| `app.preStopDelaySeconds`                      | PreStop delay in seconds                                                                                             | `15`                     |
 | `app.topologySpreadConstraints`                | Topology Spread Constraints for pod assignment                                                                       | `[]`                     |
 | `app.nginx.args`                               | Override default container args (useful when using custom images)	                                                   | `["nginx"]`              |
 | `app.nginx.livenessProbe.enabled`              | Nginx sidecar container: Enable livenessProbe                                                                        | `true`                   |

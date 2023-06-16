@@ -48,21 +48,6 @@ spec:
                 - name: SKIP_DB_MIGRATIONS
                   value: "true"
                 {{- include "ls.common.envs" $ | nindent 16 }}
-                {{- if $.Values.app.extraEnvironmentVars -}}
-                {{- range $key, $value := $.Values.app.extraEnvironmentVars }}
-                - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-                  value: {{ $value | quote }}
-                {{- end }}
-                {{- end }}
-                {{- if $.Values.app.extraEnvironmentSecrets -}}
-                {{- range $key, $value := $.Values.app.extraEnvironmentSecrets }}
-                - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-                  valueFrom:
-                    secretKeyRef:
-                      name: {{ $value.secretName }}
-                      key: {{ $value.secretKey }}
-                {{- end }}
-                {{- end }}
                 {{- if $val.extraEnvironmentVars -}}
                 {{- range $key, $value := $val.extraEnvironmentVars }}
                 - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}

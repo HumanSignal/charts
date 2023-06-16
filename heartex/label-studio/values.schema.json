@@ -359,6 +359,12 @@
         "FullnameOverride": {
           "type": "string"
         },
+        "labels": {
+          "type": "object"
+        },
+        "podLabels": {
+          "type": "object"
+        },
         "resources": {
           "type": "object",
           "properties": {
@@ -515,6 +521,14 @@
                 }
               },
               "additionalProperties": false
+            },
+            "extraEnvironmentVars": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "extraEnvironmentSecrets": {
+              "type": "object",
+              "additionalProperties": true
             }
           },
           "additionalProperties": false
@@ -760,6 +774,12 @@
         },
         "FullnameOverride": {
           "type": "string"
+        },
+        "labels": {
+          "type": "object"
+        },
+        "podLabels": {
+          "type": "object"
         },
         "deploymentStrategy": {
           "type": "object",
