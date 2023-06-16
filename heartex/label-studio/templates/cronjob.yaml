@@ -17,9 +17,9 @@ spec:
       backoffLimit: {{ $val.backoffLimit }}
       template:
         metadata:
-          {{- with $.Values.app.annotations }}
+          {{- with $.Values.cronjob.annotations }}
           annotations:
-            {{- toYaml . | nindent 8 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
           labels:
             {{- include "ls-app.selectorLabels" $ | nindent 12 }}

@@ -11,6 +11,8 @@
 ### Improvements
 * Add `.Values.app.nginx.extraEnvironmentVars` and `.Values.app.nginx.extraEnvironmentSecrets`.
 * Add `.Values.app.labels`, `.Values.app.podLabels`, `.Values.rqworker.labels`, `.Values.rqworker.podLabels`.
+### Fixes
+* Fix indentation for pods annotations
 
 ## 1.1.3
 ### Improvements

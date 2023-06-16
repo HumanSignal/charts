@@ -25,7 +25,7 @@ spec:
     metadata:
       {{- with $.Values.rqworker.annotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 12 }}
       {{- end }}
       labels:
         app.kubernetes.io/name: {{ include "ls-rqworker.name" $ }}-{{ $queue_name }}

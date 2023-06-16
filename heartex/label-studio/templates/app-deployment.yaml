@@ -20,7 +20,7 @@ spec:
     metadata:
       {{- with .Values.app.annotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml . | nindent 12 }}
       {{- end }}
       labels:
         {{- include "ls-app.selectorLabels" . | nindent 8 }}

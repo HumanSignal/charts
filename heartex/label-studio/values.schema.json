@@ -1265,6 +1265,10 @@
         "enabled": {
           "type": "boolean"
         },
+        "annotations": {
+          "type": "object",
+          "additionalProperties": true
+        },
         "jobs": {
           "type": "object",
           "additionalProperties": {
