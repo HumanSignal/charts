@@ -478,8 +478,7 @@ rqworker:
     timeoutSeconds: 3
   # Used to enable a livenessProbe for the pods
   livenessProbe:
-    enabled: false
-    path: "/health"
+    enabled: true
     # When a probe fails, Kubernetes will try failureThreshold times before giving up
     failureThreshold: 2
     # Number of seconds after the container has started before probe initiates

@@ -90,9 +90,11 @@ spec:
           {{- end }}
           {{- if $.Values.rqworker.livenessProbe.enabled }}
           livenessProbe:
-            httpGet:
-              path: {{ $.Values.rqworker.livenessProbe.path | quote }}
-              port: 8000
+            exec:
+              command:
+                - python3
+                - /label-studio-enterprise/label_studio_enterprise/check_rqworker.py
+                - rqworker_selfcheck
             failureThreshold: {{ $.Values.rqworker.livenessProbe.failureThreshold }}
             initialDelaySeconds: {{ $.Values.rqworker.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ $.Values.rqworker.livenessProbe.periodSeconds }}
