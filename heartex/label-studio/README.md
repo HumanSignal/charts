@@ -511,4 +511,4 @@ Please ensure the above secret is created in the same namespace in which Label S
 ## Seeking help
 
 If you run into an issue, bug or have a question, please reach out to the Label Studio
-community via [Label Studio Slack Community](https://slack.labelstudio.heartex.com/).
+community via [Label Studio Slack Community](https://slack.labelstud.io/).
