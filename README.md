@@ -1,4 +1,4 @@
-[Website](https://labelstud.io/) • [Docs](https://labelstud.io/guide/) • [Twitter](https://twitter.com/labelstudiohq) • [Join Slack Community <img src="https://app.heartex.ai/docs/images/slack-mini.png" width="18px"/>](https://slack.labelstudio.heartex.com/?source=github-1)
+[Website](https://labelstud.io/) • [Docs](https://labelstud.io/guide/) • [Twitter](https://twitter.com/labelstudiohq) • [Join Slack Community <img src="https://app.heartex.ai/docs/images/slack-mini.png" width="18px"/>](https://slack.labelstud.io/?source=github-1)
 
 # The Heartex Library for Kubernetes
 
@@ -50,7 +50,7 @@ Useful Helm Client Commands:
 ## Seeking help
 
 If you run into an issue, bug or have a question, please reach out to the Label Studio
-community via [Label Studio Slack Community](https://slack.labelstudio.heartex.com/).
+community via [Label Studio Slack Community](https://slack.labelstud.io/).
 
 
 ## License
