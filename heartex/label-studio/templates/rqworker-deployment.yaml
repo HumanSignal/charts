@@ -19,7 +19,7 @@ spec:
       {{- include "ls-rqworker.selectorLabels" $ | nindent 6 }}
   {{- with $.Values.rqworker.deploymentStrategy }}
   strategy:
-  {{ toYaml . | trim | indent 4 }}
+  {{- toYaml . | trim | nindent 4 }}
   {{- end }}
   template:
     metadata:
