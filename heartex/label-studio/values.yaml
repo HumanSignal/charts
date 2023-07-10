@@ -301,6 +301,13 @@ app:
     ##  - secretName: chart-example-tls
     ##    hosts:
     ##      - app.heartex.local
+    ## @param api.ingress.extraHosts An array with additional hostname(s) to be covered with the ingress record
+    ## e.g:
+    ## extraHosts:
+    ##   - name: app.humansignal.local
+    ##     path: /
+    ##
+    extraHosts: [ ]
 
   # Definition of the serviceAccount used to run Label Studio Enterprise
   serviceAccount:

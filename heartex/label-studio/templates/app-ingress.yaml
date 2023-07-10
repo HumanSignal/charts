@@ -1,5 +1,4 @@
 {{- if .Values.app.ingress.enabled -}}
-{{- $extraPaths := .Values.app.ingress.extraPaths -}}
 {{- $fullName := include "ls-app.fullname" . -}}
 {{- $svcPort := .Values.app.service.port -}}
 {{- if and .Values.app.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
@@ -41,21 +40,26 @@ spec:
     - host: {{ .Values.app.ingress.host | quote }}
       http:
         paths:
-{{- if $extraPaths }}
-{{ toYaml $extraPaths | indent 10 }}
-{{- end }}
+          {{- if .Values.app.ingress.extraPaths }}
+          {{- toYaml .Values.app.ingress.extraPaths | nindent 10 }}
+          {{- end }}
           - path: {{ default "/" .Values.app.ingress.path }}
-            {{- if (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
             pathType: {{ .Values.app.ingress.pathType }}
-            {{- end }}
             backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
                 name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
-              {{- else }}
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
-              {{- end }}
+    {{- range .Values.app.ingress.extraHosts }}
+    - host: {{ .name }}
+      http:
+        paths:
+          - path: {{ default "/" .path }}
+            pathType: {{ default "ImplementationSpecific" .pathType }}
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ $svcPort }}
+    {{- end }}
 {{- end }}

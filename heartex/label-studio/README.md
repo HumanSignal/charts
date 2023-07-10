@@ -307,6 +307,7 @@ directory.
 | `app.ingress.host`                             | Default host for the ingress resource	                                                                               | `""`                     |
 | `app.ingress.path`                             | The Path to LabelStudio. You may need to set this to '/*' in order to use this with ALB ingress controllers.         | `/`                      |
 | `app.ingress.extraPaths`                       | Extra paths to prepend to the host configuration                                                                     | `[]`                     |
+| `app.ingress.extraHosts`                       | Extra hosts to prepend to the hosts configuration                                                                    | `[]`                     |
 | `app.ingress.tls`                              | TLS secrets definition                                                                                               | `[]`                     |
 | `app.ingress.annotations`                      | Additional ingress annotations                                                                                       | `{}`                     |
 | `app.ingress.pathType`                         | Ingress path type                                                                                                    | `ImplementationSpecific` |

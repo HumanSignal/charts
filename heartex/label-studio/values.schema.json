@@ -698,6 +698,9 @@
             },
             "tls": {
               "type": "array"
+            },
+            "extraHosts": {
+              "type": "array"
             }
           },
           "additionalProperties": false

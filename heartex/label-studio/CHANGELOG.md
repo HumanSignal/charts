@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.1.6
+### Fixes
+* Add .Values.app.ingress.extraHosts.
+
 ## 1.1.5
 ### Fixes
 * Fix indentation for rqworker deploymentStrategy.
