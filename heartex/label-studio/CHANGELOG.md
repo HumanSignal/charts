@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.1.7
+### Fixes
+* Add USE_NGINX_FOR_EXPORT_DOWNLOADS=0 for `volume` storage.
+
 ## 1.1.6
 ### Fixes
 * Add .Values.app.ingress.extraHosts.
