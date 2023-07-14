@@ -409,7 +409,7 @@ Set's common environment variables
 {{- end }}
 {{- if eq .Values.global.persistence.type "volume" }}
 - name: USE_NGINX_FOR_EXPORT_DOWNLOADS
-  value: 0
+  value: "0"
 {{- end }}
 {{- end }}
 {{- if .Values.global.featureFlags -}}
