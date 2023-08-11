@@ -98,6 +98,12 @@ else
 	export_rqworker_log "${pods[*]}"
 fi
 
+# Export Service and PVC describes
+for resource in svc pvc ing serviceaccount; do
+    kubectl describe $resource -n $namespace -l app.kubernetes.io/name=ls-app > "$log_path/${resource}_describe.log"
+    echo -e "Export describe of $resource\n"
+done
+
 tar zcf $log_path.tar.gz $log_path
 
 echo "The compressed logs are stored in $(readlink -f $log_path.tar.gz)"
