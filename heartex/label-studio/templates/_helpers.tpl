@@ -43,6 +43,19 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
+{{- define "ls-cronjob.fullname" -}}
+{{- if .Values.cronjob.FullnameOverride }}
+{{- .Values.cronjob.FullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default "ls-cronjob" .Values.cronjob.FullnameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
 {{- define "ls-rqworker.fullname" -}}
 {{- if .Values.rqworker.FullnameOverride }}
 {{- .Values.rqworker.FullnameOverride | trunc 63 | trimSuffix "-" }}
@@ -157,6 +170,26 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Selector labels for ls-rqworker
 */}}
 {{- define "ls-rqworker.selectorLabels" -}}
+app.kubernetes.io/part-of: label-studio
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Common labels for ls-cronjob
+*/}}
+{{- define "ls-cronjob.labels" -}}
+helm.sh/chart: {{ include "ls.chart" . }}
+{{ include "ls-cronjob.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels for ls-cronjob
+*/}}
+{{- define "ls-cronjob.selectorLabels" -}}
 app.kubernetes.io/part-of: label-studio
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}

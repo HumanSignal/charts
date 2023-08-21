@@ -4,9 +4,10 @@
 apiVersion: {{ include "capabilities.cronjob.apiVersion" $ }}
 kind: CronJob
 metadata:
-  name: {{ include "ls-app.fullname" $ }}-{{ replace "_" "-" $cronjob_name }}
+  name: {{ include "ls-cronjob.fullname" $ }}-{{ replace "_" "-" $cronjob_name }}
   labels:
-    {{- include "ls-app.labels" $ | nindent 4 }}
+    app.kubernetes.io/name: {{ include "ls-cronjob.fullname" $ }}-{{ replace "_" "-" $cronjob_name }}
+    {{- include "ls-cronjob.labels" $ | nindent 4 }}
 spec:
   successfulJobsHistoryLimit: {{ default 3 $val.successfulJobsHistoryLimit }}
   failedJobsHistoryLimit: {{ default 1 $val.failedJobsHistoryLimit }}
@@ -22,7 +23,8 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           labels:
-            {{- include "ls-app.selectorLabels" $ | nindent 12 }}
+            app.kubernetes.io/name: {{ include "ls-cronjob.fullname" $ }}-{{ replace "_" "-" $cronjob_name }}
+            {{- include "ls-cronjob.selectorLabels" $ | nindent 12 }}
         spec:
           {{- with $.Values.global.imagePullSecrets }}
           imagePullSecrets:

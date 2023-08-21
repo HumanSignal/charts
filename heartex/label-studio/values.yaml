@@ -601,6 +601,8 @@ cronjob:
   enabled: false
   jobs: {}
   annotations: {}
+  NameOverride: ""
+  FullnameOverride: ""
 
 metrics:
   enabled: false

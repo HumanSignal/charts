@@ -7,6 +7,14 @@
 * 
 
 ### Fixes
+## 1.1.9
+### Fixes
+* Fix wrong labels assignment for cronjobs.
+
+## 1.1.8
+### Improvements
+* Bump label-studio version to 1.8.1.
+
 ## 1.1.7
 ### Fixes
 * Add USE_NGINX_FOR_EXPORT_DOWNLOADS=0 for `volume` storage.
