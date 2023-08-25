@@ -6,7 +6,10 @@
 
 This chart bootstraps a [Label Studio](https://labelstud.io/) deployment on a [Kubernetes](http://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
-This chart has been tested to work with NGINX Ingress, cert-manager.
+This chart has been tested to work with:
+
+- NGINX Ingress
+- cert-manager
 
 ## TL;DR
 
