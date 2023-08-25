@@ -1,0 +1,31 @@
+# Label Studio running on OpenShift
+
+app:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+  # ingress:
+  #   enabled: true
+
+rqworker:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+
+postgresql:
+  enabled: true
+  primary:
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
+
+redis:
+  enabled: true
+  master:
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
