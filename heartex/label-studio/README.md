@@ -39,7 +39,7 @@ helm install labelstudio heartex/label-studio
     - [Sub-charts parameters](#sub-charts-parameters)
     - [Other parameters](#other-parameters)
 - [Label Studio Enterprise Parameters](#label-studio-enterprise-parameters)
-  - [Label Studio Enterprise Overview](#overview)
+  - [Label Studio Enterprise Overview](#label-studio-enterprise-overview)
   - [Label Studio Enterprise Prerequisites](#label-studio-enterprise-prerequisites)
     - [Label Studio Enterprise License](#label-studio-enterprise-license)
     - [Label Studio Enterprise Docker registry access](#label-studio-enterprise-docker-registry-access)
