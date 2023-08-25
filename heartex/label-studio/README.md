@@ -1,4 +1,4 @@
-## Label Studio Helm Chart
+# Label Studio Helm Chart
 
 [Label Studio](https://labelstud.io/) is an open source data labeling tool. It lets you label data types like audio, text, images, videos, and time series with a simple and straightforward UI and export to various model formats. It can be used to prepare raw data or improve existing training data to get more accurate ML models.
 
@@ -113,7 +113,7 @@ Following sections detail on various high-level architecture options available:
 
 Label Studio can run with an external database. By default, this chart installs Label Studio with [PostgreSQL packaged by Bitnami](https://bitnami.com/stack/postgresql/helm).
 
-You can override the database using `global.pgConfig` section. For more details, please read the [Global parameters](#Global-parameters) section.
+You can override the database using `global.pgConfig` section. For more details, please read the [Global parameters](#global-parameters) section.
 
 #### Using the Postgres sub-chart
 
@@ -130,7 +130,7 @@ release.
 
 Label Studio Enterprise can run with an external Redis. This chart optionally installs Label Studio Enterprise with [Bitnami's Redis chart](https://bitnami.com/stack/redis/helm)
 
-You can override the Redis using `global.redisConfig` section. For more details, please read the [Global parameters](#Global-parameters) section.
+You can override the Redis using `global.redisConfig` section. For more details, please read the [Global parameters](#global-parameters) section.
 
 #### Using the Redis sub-chart
 
