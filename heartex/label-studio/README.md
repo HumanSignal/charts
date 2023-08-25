@@ -425,12 +425,12 @@ Supported only in LabelStudio Enterprise
 
 ### Other parameters
 
-| Parameter                 | Description                                      | Default         |
-|---------------------------|--------------------------------------------------|-----------------|
-| upgradeCheck.enabled      | Enable upgradecheck                              | `false`         |
-| ci                        | Indicate that deployment running for CI purposes | `false`         |
-| clusterDomain             | Kubernetes Cluster Domain                        | `cluster.local` |
-| checkConfig.skipEnvValues | Skip validation for env variables                | `false`         |
+| Parameter                   | Description                                      | Default         |
+|-----------------------------|--------------------------------------------------|-----------------|
+| `upgradeCheck.enabled`      | Enable upgradecheck                              | `false`         |
+| `ci`                        | Indicate that deployment running for CI purposes | `false`         |
+| `clusterDomain`             | Kubernetes Cluster Domain                        | `cluster.local` |
+| `checkConfig.skipEnvValues` | Skip validation for env variables                | `false`         |
 
 #### The `global.extraEnvironmentVars` usage
 
