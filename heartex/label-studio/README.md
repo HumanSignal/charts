@@ -8,41 +8,41 @@ This chart bootstraps a [Label Studio](https://labelstud.io/) deployment on a [K
 
 This chart has been tested to work with NGINX Ingress, cert-manager.
 
-## TL;DR;
+## TL;DR
 
 ```bash
-$ helm repo add heartex https://charts.heartex.com/
-$ helm repo update
+helm repo add heartex https://charts.heartex.com/
+helm repo update
 
-$ helm install labelstudio heartex/label-studio
+helm install labelstudio heartex/label-studio
 ```
 
 ## Table of contents
 
-- [Prerequisites](#Prerequisites)
+- [Prerequisites](#prerequisites)
 - [Install](#install)
 - [Uninstall](#uninstall)
 - [FAQs](#faqs)
-- [Label Studio Enterprise](#Label-Studio-enterprise)
+- [Label Studio Enterprise](#label-studio-enterprise)
 - [Deployment Options](#deployment-options)
-    - [Database](#database)
-      - [Using the Postgres sub-chart](#using-the-postgres-sub-chart)
-    - [Redis](#redis)
-      - [Using the redis sub-chart](#using-the-redis-sub-chart)
-    - [Example configurations](#example-configurations)
+  - [Database](#database)
+    - [Using the Postgres sub-chart](#using-the-postgres-sub-chart)
+  - [Redis](#redis)
+    - [Using the redis sub-chart](#using-the-redis-sub-chart)
+  - [Example configurations](#example-configurations)
 - [Configuration](#configuration)
-    - [Label Studio parameters](#Label-Studio-parameters)
-        - [Global parameters](#Global-parameters)
-        - [Label Studio Service Parameters](#Label-Studio-parameters)
-        - [Rqworker parameters](#Rqworker-parameters)
-        - [Label Studio Enterprise parameters](#Label-Studio-Enterprise-parameters)
-        - [Sub-charts parameters](#Sub-charts-parameters)
-        - [Other parameters](#Other-parameters)
-- [Label Studio Enterprise Parameters](#Label-Studio-enterprise-parameters)
-    - [Label Studio Enterprise Overview](#overview)
-    - [Label Studio Enterprise Prerequisites](#Label-Studio-Enterprise-prerequisites)
-        - [Label Studio Enterprise License](#Label-Studio-Enterprise-license)
-        - [Label Studio Enterprise Docker registry access](#Label-Studio-Enterprise-docker-registry-access)
+  - [Label Studio parameters](#label-studio-parameters)
+    - [Global parameters](#global-parameters)
+    - [Label Studio Service Parameters](#label-studio-parameters)
+    - [Rqworker parameters](#rqworker-parameters)
+    - [Label Studio Enterprise parameters](#label-studio-enterprise-parameters)
+    - [Sub-charts parameters](#sub-charts-parameters)
+    - [Other parameters](#other-parameters)
+- [Label Studio Enterprise Parameters](#label-studio-enterprise-parameters)
+  - [Label Studio Enterprise Overview](#overview)
+  - [Label Studio Enterprise Prerequisites](#label-studio-enterprise-prerequisites)
+    - [Label Studio Enterprise License](#label-studio-enterprise-license)
+    - [Label Studio Enterprise Docker registry access](#label-studio-enterprise-docker-registry-access)
 - [Changelog](https://github.com/heartexlabs/heartex/blob/master/heartex/label-studio/CHANGELOG.md)
 - [Seeking help](#seeking-help)
 
@@ -57,10 +57,10 @@ $ helm install labelstudio heartex/label-studio
 To install Label Studio:
 
 ```bash
-$ helm repo add heartex https://charts.heartex.com/
-$ helm repo update
+helm repo add heartex https://charts.heartex.com/
+helm repo update
 
-$ helm install labelstudio heartex/label-studio
+helm install labelstudio heartex/label-studio
 ```
 
 ## Uninstall
@@ -68,7 +68,7 @@ $ helm install labelstudio heartex/label-studio
 To uninstall/delete a Helm release `labelstudio`:
 
 ```bash
-$ helm delete labelstudio
+helm delete labelstudio
 ```
 
 The command removes all the Kubernetes components including data associated with the chart and deletes the release.
@@ -119,7 +119,7 @@ You can override the database using `global.pgConfig` section. For more details,
 
 The chart spawn a Postgres instance using [Bitnami's Postgres
 chart](https://github.com/bitnami/heartex/blob/master/bitnami/postgresql/README.md)
-as a sub-chart. Set `postgresql.enabled=false` to disable the sub-chart. 
+as a sub-chart. Set `postgresql.enabled=false` to disable the sub-chart.
 
 The Postgres sub-chart is best used to quickly provision temporary environments
 without installing and configuring your database separately. For longer-lived
@@ -178,7 +178,7 @@ directory.
 | `global.redisConfig.ssl.redisSslCaCertsSecretKey`                           | Key of an existing secret holding the ssl certificate for Redis host                                                                | `""`                       |
 | `global.redisConfig.ssl.redisSslCertFileSecretKey`                          | Name of an existing secret holding the ssl certificate private key for Redis host                                                   | `""`                       |
 | `global.redisConfig.ssl.redisSslKeyFileSecretKey`                           | Key of an existing secret holding the ssl certificate private key for Redis host                                                    | `""`                       |
-| `global.extraEnvironmentVars`	                                              | Key/value map of an extra Environment variables, for example, `PYTHONUNBUFFERED: 1`                                                 | `{}`                       |
+| `global.extraEnvironmentVars`                                               | Key/value map of an extra Environment variables, for example, `PYTHONUNBUFFERED: 1`                                                 | `{}`                       |
 | `global.extraEnvironmentSecrets`                                            | Key/value map of an extra Secrets                                                                                                   | `{}`                       |
 | `global.persistence.enabled`                                                | Enable persistent storage. [See more about setting up persistent storage](https://labelstud.io/guide/persistent_storage.html)       | `true`                     |
 | `global.persistence.type`                                                   | Persistent storage type                                                                                                             | `volume`                   |
@@ -197,7 +197,7 @@ directory.
 | `global.persistence.config.volume.storageClass`                             | StorageClass for Persistent Volume                                                                                                  | `""`                       |
 | `global.persistence.config.volume.size`                                     | Persistent volume size                                                                                                              | `10Gi`                     |
 | `global.persistence.config.volume.accessModes`                              | PVC Access mode                                                                                                                     | `[ReadWriteOnce]`          |
-| `global.persistence.config.volume.annotations`	                             | Persistent volume additional annotations                                                                                            | `{}`                       |
+| `global.persistence.config.volume.annotations`                              | Persistent volume additional annotations                                                                                            | `{}`                       |
 | `global.persistence.config.volume.existingClaim`                            | Name of an existing PVC to use                                                                                                      | `""`                       |
 | `global.persistence.config.volume.resourcePolicy`                           | PVC resource policy                                                                                                                 | `""`                       |
 | `global.persistence.config.volume.annotations`                              | Persistent volume additional annotations                                                                                            | `{}`                       |
@@ -226,7 +226,7 @@ directory.
 
 | Parameter                                      | Description                                                                                                          | Default                  |
 |------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------|
-| `app.args`                                     | Override default container args (useful when using custom images)	                                                   | `["label-studio-uwsgi"]` |
+| `app.args`                                     | Override default container args (useful when using custom images)                                                    | `["label-studio-uwsgi"]` |
 | `app.deploymentStrategy.type`                  | Deployment strategy type                                                                                             | `RollingUpdate`          |
 | `app.replicas`                                 | Amount of app pod replicas                                                                                           | `1`                      |
 | `app.NameOverride`                             | String to partially override release template name                                                                   | `""`                     |
@@ -280,7 +280,7 @@ directory.
 | `app.terminationGracePeriodSeconds`            | Termination grace period in seconds                                                                                  | `30`                     |
 | `app.preStopDelaySeconds`                      | PreStop delay in seconds                                                                                             | `15`                     |
 | `app.topologySpreadConstraints`                | Topology Spread Constraints for pod assignment                                                                       | `[]`                     |
-| `app.nginx.args`                               | Override default container args (useful when using custom images)	                                                   | `["nginx"]`              |
+| `app.nginx.args`                               | Override default container args (useful when using custom images)                                                    | `["nginx"]`              |
 | `app.nginx.livenessProbe.enabled`              | Nginx sidecar container: Enable livenessProbe                                                                        | `true`                   |
 | `app.nginx.livenessProbe.path`                 | Nginx sidecar container: path for livenessProbe                                                                      | `/nginx_health`          |
 | `app.nginx.livenessProbe.failureThreshold`     | Nginx sidecar container: when a probe fails, Kubernetes will try failureThreshold times before giving up             | `2`                      |
@@ -299,12 +299,12 @@ directory.
 | `app.service.port`                             | k8s service port                                                                                                     | `80`                     |
 | `app.service.targetPort`                       | k8s service target port                                                                                              | `8085`                   |
 | `app.service.portName`                         | k8s service port name                                                                                                | `service`                |
-| `app.service.annotations`	                     | Custom annotations for app service                                                                                   | `{}`                     |
+| `app.service.annotations`                      | Custom annotations for app service                                                                                   | `{}`                     |
 | `app.service.sessionAffinity`                  | Custom annotations for app service                                                                                   | `None`                   |
-| `app.service.sessionAffinityConfig`	           | Additional settings for the sessionAffinity                                                                          | `{}`                     |
-| `app.ingress.enabled`                          | Set to true to enable ingress record generation	                                                                     | `false`                  |
+| `app.service.sessionAffinityConfig`            | Additional settings for the sessionAffinity                                                                          | `{}`                     |
+| `app.ingress.enabled`                          | Set to true to enable ingress record generation                                                                      | `false`                  |
 | `app.ingress.className`                        | IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)                                        | `""`                     |
-| `app.ingress.host`                             | Default host for the ingress resource	                                                                               | `""`                     |
+| `app.ingress.host`                             | Default host for the ingress resource                                                                                | `""`                     |
 | `app.ingress.path`                             | The Path to LabelStudio. You may need to set this to '/*' in order to use this with ALB ingress controllers.         | `/`                      |
 | `app.ingress.extraPaths`                       | Extra paths to prepend to the host configuration                                                                     | `[]`                     |
 | `app.ingress.extraHosts`                       | Extra hosts to prepend to the hosts configuration                                                                    | `[]`                     |
@@ -312,12 +312,13 @@ directory.
 | `app.ingress.annotations`                      | Additional ingress annotations                                                                                       | `{}`                     |
 | `app.ingress.pathType`                         | Ingress path type                                                                                                    | `ImplementationSpecific` |
 | `app.rbac.create`                              | Specifies whether RBAC resources should be created for app service                                                   | `false`                  |
-| `app.rbac.rules`                               | Custom RBAC rules to set for app service		                                                                           | `[]`                     |
+| `app.rbac.rules`                               | Custom RBAC rules to set for app service                                                                             | `[]`                     |
 | `app.contextPath`                              | Context path appended for health/readiness checks                                                                    | `/`                      |
 | `app.cmdWrapper`                               | Additional commands to run prior to starting App. Useful to run wrappers before startup command                      | `""`                     |
 
 ### Rqworker parameters
-Supported only in LabelStudio Enterprise 
+
+Supported only in LabelStudio Enterprise
 
 | Parameter                                        | Description                                                                                     | Default                                |
 |--------------------------------------------------|-------------------------------------------------------------------------------------------------|----------------------------------------|
@@ -374,10 +375,11 @@ Supported only in LabelStudio Enterprise
 | `rqworker.extraVolumeMounts`                     | Array to add extra mounts (normally used with extraVolumes)                                     | `[]`                                   |
 | `rqworker.topologySpreadConstraints`             | Topology Spread Constraints for pod assignment                                                  | `[]`                                   |
 | `rqworker.rbac.create`                           | Specifies whether RBAC resources should be created for rqworker service                         | `false`                                |
-| `rqworker.rbac.rules`                            | Custom RBAC rules to set for rqworker service		                                                 | `[]`                                   |
+| `rqworker.rbac.rules`                            | Custom RBAC rules to set for rqworker service                                                   | `[]`                                   |
 | `rqworker.cmdWrapper`                            | Additional commands to run prior to starting App. Useful to run wrappers before startup command | `""`                                   |
 
-### Label Studio Enterprise parameters 
+### Label Studio Enterprise parameters
+
 | Parameter                                 | Description                                                                        | Default   |
 |-------------------------------------------|------------------------------------------------------------------------------------|-----------|
 | `enterprise.enabled`                      | Enable Enterprise features                                                         | `false`   |
@@ -385,26 +387,28 @@ Supported only in LabelStudio Enterprise
 | `enterprise.enterpriseLicense.secretKey`  | Key of an existing secret holding the enterprise license information               | `license` |
 
 ### Sub-charts parameters
+
 | Parameter                  | Description                                                                                             | Default       |
 |----------------------------|---------------------------------------------------------------------------------------------------------|---------------|
 | `postgresql.enabled`       | Enable Postgresql sub-chart                                                                             | `true`        |
 | `postgresql.architecture`  | PostgreSQL architecture (standalone or replication)                                                     | `standalone`  |
 | `postgresql.image.tag`     | PostgreSQL image tag                                                                                    | `13.8.0`      |
-| `postgresql.auth.username` | Name for a custom user to create	                                                                       | `labelstudio` |
-| `postgresql.auth.password` | Password for the custom user to create. Ignored if `auth.existingSecret` with key password is provided	 | `labelstudio` |
-| `postgresql.auth.database` | Name for a custom database to create	                                                                   | `labelstudio` |
+| `postgresql.auth.username` | Name for a custom user to create                                                                        | `labelstudio` |
+| `postgresql.auth.password` | Password for the custom user to create. Ignored if `auth.existingSecret` with key password is provided  | `labelstudio` |
+| `postgresql.auth.database` | Name for a custom database to create                                                                    | `labelstudio` |
 | `redis.enabled`            | Enable Redis sub-chart                                                                                  | `false`       |
-| `redis.architecture`       | Redis architecture. Allowed values: `standalone` or `replication`	                                      | `standalone`  |
-| `redis.auth.enabled`       | Enable password authentication	                                                                         | `false`       |
+| `redis.architecture`       | Redis architecture. Allowed values: `standalone` or `replication`                                       | `standalone`  |
+| `redis.auth.enabled`       | Enable password authentication                                                                          | `false`       |
 
 ### Cronjob parameters
+
 | Parameter                                | Description                                                         | Default |
 |------------------------------------------|---------------------------------------------------------------------|---------|
 | `cronjob.enabled`                        | Enable cronjobs                                                     | `false` |
 | `cronjob.jobs`                           | A map of predefined cronjobs                                        | `{}`    |
 | `cronjob.jobs.*.schedule`                | Cronjob schedule according to cron format                           | `""`    |
-| `cronjob.jobs.*.args`                    | Cronjob launch arguments	                                           | `""`    |
-| `cronjob.jobs.*.extraEnvironmentVars`	   | Cronjob key/value map of an extra Environment variables             | `{}`    |
+| `cronjob.jobs.*.args`                    | Cronjob launch arguments                                            | `""`    |
+| `cronjob.jobs.*.extraEnvironmentVars`    | Cronjob key/value map of an extra Environment variables             | `{}`    |
 | `cronjob.jobs.*.extraEnvironmentSecrets` | Cronjob key/value map of an extra Secrets                           | `{}`    |
 | `cronjob.jobs.*.extraVolumes`            | Cronjob array to add extra volumes                                  | `[]`    |
 | `cronjob.jobs.*.extraVolumeMounts`       | Cronjob array to add extra mounts (normally used with extraVolumes) | `[]`    |
@@ -413,13 +417,14 @@ Supported only in LabelStudio Enterprise
 | `cronjob.jobs.*.concurrencyPolicy`       | Concurrency policy                                                  | `""`    |
 
 ### metrics parameters
+
 | Parameter                                | Description                                                         | Default |
 |------------------------------------------|---------------------------------------------------------------------|---------|
 | `metrics.enabled`                        | Enable metrics                                                      | `true`  |
 | `metrics.uwsgiExporter`                  | Configuration map for uwsgiExporter                                 | `{}`    |
 
-
 ### Other parameters
+
 | Parameter                 | Description                                      | Default         |
 |---------------------------|--------------------------------------------------|-----------------|
 | upgradeCheck.enabled      | Enable upgradecheck                              | `false`         |
@@ -493,7 +498,7 @@ Please ensure the above secret is created in the same namespace in which Label S
 
 #### Label Studio Enterprise Docker registry access
 
-Label Studio Enterprise uses a private Docker registry and require a pull secret. 
+Label Studio Enterprise uses a private Docker registry and require a pull secret.
 
 You should have received credentials to log into Docker Hub after
 purchasing Label Studio Enterprise. Use provided credentials to create registry
