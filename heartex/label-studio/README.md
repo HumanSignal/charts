@@ -48,9 +48,9 @@ helm install labelstudio heartex/label-studio
 
 ## Prerequisites
 
-- Kubernetes 1.17+.
+- Kubernetes 1.17+
 - PV provisioner support in the underlying infrastructure if persistence
-  is needed for Label Studio datastore.
+  is needed for Label Studio datastore
 
 ## Install
 
@@ -145,7 +145,7 @@ release.
 
 ### Example configurations
 
-Several example values.yaml are available in the
+Several example `values.yaml` are available in the
 [example-values](https://github.com/heartexlabs/charts/tree/master/heartex/label-studio/example-values)
 directory.
 
