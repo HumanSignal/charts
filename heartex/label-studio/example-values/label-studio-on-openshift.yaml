@@ -7,12 +7,8 @@ app:
     enabled: false
   # ingress:
   #   enabled: true
-
-rqworker:
-  podSecurityContext:
-    enabled: false
-  containerSecurityContext:
-    enabled: false
+  rbac:
+    create: true
 
 postgresql:
   enabled: true
@@ -29,3 +25,12 @@ redis:
       enabled: false
     containerSecurityContext:
       enabled: false
+
+# Can enable the following when using Label Studio Enterprise
+
+# rqworker:
+#   podSecurityContext:
+#     enabled: false
+#   containerSecurityContext:
+#     enabled: false
+#   rbac: true
