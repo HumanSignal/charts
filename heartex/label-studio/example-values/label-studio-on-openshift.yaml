@@ -1,4 +1,4 @@
-# Label Studio running on OpenShift
+# Example values for running Label Studio on OpenShift
 
 app:
   podSecurityContext:
