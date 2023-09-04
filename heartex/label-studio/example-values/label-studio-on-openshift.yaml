@@ -1,0 +1,29 @@
+# Example values for running Label Studio on OpenShift
+
+app:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+  # see https://docs.openshift.com/container-platform/3.11/architecture/networking/routes.html#architecture-routes-support-for-ingress
+  # cli ex: `oc expose svc labelstudio-ls-app` 
+  ingress:
+    enabled: true
+    annotations:
+      # note: the annotation below will allow a route to be created using a default wildcard certificate
+      route.openshift.io/termination: edge
+    # note: you will need to modify 'host' to your cluster domain
+    host: labelstudio-sandbox.apps.example.com
+    # note: below will also allow a route to be created using a default wildcard certificate
+    # tls:
+    #   - secretName: null
+  rbac:
+    create: true
+
+postgresql:
+  enabled: true
+  primary:
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
