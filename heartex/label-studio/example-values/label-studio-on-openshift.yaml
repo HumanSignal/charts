@@ -27,11 +27,3 @@ postgresql:
       enabled: false
     containerSecurityContext:
       enabled: false
-
-redis:
-  enabled: true
-  master:
-    podSecurityContext:
-      enabled: false
-    containerSecurityContext:
-      enabled: false
