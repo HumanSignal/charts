@@ -7,6 +7,14 @@
 * 
 
 ### Fixes
+## 1.2.0
+### Improvements
+* Generate django-secret during install phase.
+
+## 1.1.10
+### Improvements
+* Bump label-studio version to 1.8.2.
+
 ## 1.1.9
 ### Fixes
 * Fix wrong labels assignment for cronjobs.

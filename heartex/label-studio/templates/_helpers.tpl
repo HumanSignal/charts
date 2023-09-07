@@ -497,6 +497,13 @@ Set's common environment variables
 - name: PROMETHEUS_EXPORT_ENABLED
   value: "1"
 {{- end }}
+{{- if and (not (hasKey .Values.global.extraEnvironmentSecrets "SECRET_KEY")) (not (hasKey .Values.global.extraEnvironmentVars "SECRET_KEY")) }}
+- name: SECRET_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "ls-app.fullname" . }}-django-secret
+      key: "key"
+{{- end }}
 {{- end -}}
 
 
