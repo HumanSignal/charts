@@ -606,6 +606,18 @@ cronjob:
 
 metrics:
   enabled: false
+  serviceMonitor:
+    enabled: false
+    annotations: {}
+    labels: {}
+    jobLabel: ""
+    honorLabels: false
+    interval: ""
+    scrapeTimeout: ""
+    metricRelabelings: []
+    relabelings: []
+    selector: {}
+
   uwsgiExporter:
     enabled: false
     image:
@@ -623,10 +635,10 @@ metrics:
 
     resources:
       requests:
-        cpu: ".001"
-        memory: "6Mi"
+        cpu: "10m"
+        memory: "64Mi"
       limits:
-        cpu: ".01"
+        cpu: "20m"
         memory: "128Mi"
 
     livenessProbe:

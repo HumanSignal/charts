@@ -7,21 +7,17 @@
 * 
 
 ### Fixes
+## 1.2.7
+### Improvements
+* Add ServiceMonitor component.
+
 ## 1.2.0
 ### Improvements
 * Generate django-secret during install phase.
 
-## 1.1.10
-### Improvements
-* Bump label-studio version to 1.8.2.
-
 ## 1.1.9
 ### Fixes
 * Fix wrong labels assignment for cronjobs.
-
-## 1.1.8
-### Improvements
-* Bump label-studio version to 1.8.1.
 
 ## 1.1.7
 ### Fixes
@@ -46,10 +42,6 @@
 ### Improvements
 * Add `.Values.metrics.*`.
 
-## 1.1.2
-### Improvements
-* Bump label-studio version to 1.8.0.
-
 ## 1.1.1
 ### Improvements
 * Add `.Values.cronjob.jobs.*.successfulJobsHistoryLimit` and `.Values.cronjob.jobs.*.failedJobsHistoryLimit` to override possible parameters.
@@ -69,7 +61,6 @@
 
 ## 1.0.17
 ### Improvements
-* Bump label-studio version to 1.7.3.
 * Remove `all` rqworker.
 ### Fixes
 * Allow to set deploymentStrategy in percentage.
@@ -86,10 +77,6 @@
 ### Improvements
 * Add support for CronJobs.
 
-## 1.0.13
-### Improvements
-* Bump label-studio version to 1.7.2.
-
 ## 1.0.12
 ### Improvements
 * Permit the use of slashes in the `.Values.app.ingress.className`
@@ -101,7 +88,6 @@
 ## 1.0.10
 ### Improvements
 * Add `.Values.app.args` and `.Values.app.nginx.args` to override startup arguments.
-* Bump label-studio version to 1.7.1.
 
 ## 1.0.9
 ### Improvements

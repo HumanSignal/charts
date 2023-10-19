@@ -1326,6 +1326,44 @@
         },
         "uwsgiExporter": {
           "type": "object"
+        },
+        "serviceMonitor": {
+          "properties": {
+            "annotations": {
+              "type": "object"
+            },
+            "enabled": {
+              "type": "boolean"
+            },
+            "honorLabels": {
+              "type": "boolean"
+            },
+            "interval": {
+              "type": "string"
+            },
+            "jobLabel": {
+              "type": "string"
+            },
+            "labels": {
+              "type": "object"
+            },
+            "metricRelabelings": {
+              "type": "array"
+            },
+            "namespace": {
+              "type": "string"
+            },
+            "relabelings": {
+              "type": "array"
+            },
+            "scrapeTimeout": {
+              "type": "string"
+            },
+            "selector": {
+              "type": "object"
+            }
+          },
+          "type": "object"
         }
       }
     },
