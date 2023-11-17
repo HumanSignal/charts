@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.3.0
+### Improvements
+* Update postgresql to 13.12.0.
+
 ## 1.2.7
 ### Improvements
 * Add ServiceMonitor component.

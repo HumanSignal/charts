@@ -578,7 +578,7 @@ postgresql:
   clusterDomain: cluster.local
   architecture: standalone
   image:
-    tag: 13.8.0
+    tag: 13.12.0
   auth:
     username: "labelstudio"
     password: "labelstudio"
