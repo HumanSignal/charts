@@ -305,7 +305,7 @@ Set's common environment variables
   value: redis{{ if .Values.redis.tls.enabled }}s{{ end }}://{{ .Release.Name }}-redis-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:6379/1
 {{- end }}
 {{- end }}
-{{- if not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
+{{- if not (hasKey .Values.global.extraEnvironmentVars "LABEL_STUDIO_HOST") }}
 {{- if .Values.app.ingress.enabled }}
 - name: LABEL_STUDIO_HOST
   value: http{{ if .Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.app.contextPath }}

@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.4.0
+### Fixes
+* Add support for an empty LABEL_STUDIO_HOST variable.
+
 ## 1.3.0
 ### Improvements
 * Update postgresql to 13.12.0.
