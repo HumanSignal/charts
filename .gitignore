@@ -4,4 +4,5 @@
 .DS_Store
 charts-repo/
 # helm subcharts
-helm/**/charts
+helm/**/charts# actions-hub
+.github/actions-hub
