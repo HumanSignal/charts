@@ -1,5 +1,5 @@
 {{- if .Values.ci }}
-{{- if not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
+{{- if not (hasKey .Values.global.extraEnvironmentVars "LABEL_STUDIO_HOST") }}
 LABEL_STUDIO_HOST=http{{ if $.Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.app.contextPath }}
 {{- else }}
 LABEL_STUDIO_HOST={{ .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
@@ -7,7 +7,7 @@ LABEL_STUDIO_HOST={{ .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
 {{- else }}
 Get the application URL by running these commands:
 {{- if .Values.app.ingress.enabled }}
-{{- if not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
+{{- if not (hasKey .Values.global.extraEnvironmentVars "LABEL_STUDIO_HOST") }}
 Please visit http{{ if $.Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.app.ingress.path }} to use Label Studio
 {{- else }}
 Please visit {{ .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }} to use Label Studio
@@ -32,7 +32,7 @@ After running these commands, please visit http://127.0.0.1:8080 to use Label St
 {{- end }}
 {{ include "ls.deprecations" . }}
 {{ include "ls.checkConfig" . }}
-{{- if and (not .Values.app.ingress.enabled) (not .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST) -}}
+{{- if and (not .Values.app.ingress.enabled) (not (hasKey .Values.global.extraEnvironmentVars "LABEL_STUDIO_HOST")) -}}
      WARNING:
        If `.Values.app.ingress.enabled` set to `false`, please define `.Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST` instead.
        It should include http/https scheme and a hostname or IP, e.g.: http://host.com or http://127.0.0.1:8080
