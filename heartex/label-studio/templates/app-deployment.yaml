@@ -222,6 +222,41 @@ spec:
               name: opt-heartex-nginx
             - mountPath: /tmp
               name: tmp-dir-nginx
+        {{- if and .Values.metrics.enabled .Values.metrics.nginxExporter.enabled }}
+        - name: nginx-exporter
+          image: "{{ .Values.metrics.nginxExporter.image.repository }}:{{ .Values.metrics.nginxExporter.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.metrics.nginxExporter.image.pullPolicy }}
+          args:
+            - '-nginx.scrape-uri=http://localhost/nginx_status'
+          {{- if .Values.metrics.nginxExporter.resources }}
+          resources: {{- toYaml .Values.metrics.nginxExporter.resources | nindent 12 }}
+          {{- end }}
+          {{- if .Values.metrics.nginxExporter.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: "{{ .Values.metrics.nginxExporter.readinessProbe.httpGet.path }}"
+              port: "{{ .Values.metrics.nginxExporter.readinessProbe.httpGet.port }}"
+            failureThreshold: {{ .Values.metrics.nginxExporter.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.metrics.nginxExporter.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.metrics.nginxExporter.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.metrics.nginxExporter.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.metrics.nginxExporter.readinessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- if .Values.metrics.nginxExporter.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: "{{ .Values.metrics.nginxExporter.livenessProbe.httpGet.path }}"
+              port: "{{ .Values.metrics.nginxExporter.livenessProbe.httpGet.port }}"
+            failureThreshold: {{ .Values.metrics.nginxExporter.livenessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.metrics.nginxExporter.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.metrics.nginxExporter.livenessProbe.periodSeconds }}
+            successThreshold: {{ .Values.metrics.nginxExporter.livenessProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.metrics.nginxExporter.livenessProbe.timeoutSeconds }}
+          {{- end }}
+          ports:
+            - name: "nginxmetrics"
+              containerPort: 9113
+        {{- end }}
         {{- if and .Values.metrics.enabled .Values.metrics.uwsgiExporter.enabled }}
         - name: uwsgi-exporter
           image: "{{ .Values.metrics.uwsgiExporter.image.repository }}:{{ .Values.metrics.uwsgiExporter.image.tag | default "latest" }}"
