@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.4.1
+### Improvements
+* Add support for additional initContainers in app using .Values.app.initContainers
+
 ## 1.4.0
 ### Fixes
 * Add support for an empty LABEL_STUDIO_HOST variable.

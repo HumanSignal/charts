@@ -762,6 +762,9 @@
         },
         "terminationGracePeriodSeconds": {
           "type": "integer"
+        },
+        "initContainers": {
+          "type": "array"
         }
       },
       "additionalProperties": false

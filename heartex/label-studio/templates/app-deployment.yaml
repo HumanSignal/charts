@@ -71,6 +71,43 @@ spec:
             {{- if .Values.app.extraVolumeMounts }}
               {{ toYaml .Values.app.extraVolumeMounts | nindent 12 }}
             {{- end }}
+        {{- if .Values.app.initContainers }}
+        {{- range .Values.app.initContainers }}
+        - name: {{ .name }}
+          image: {{ or .image (printf "%s:%s" $.Values.global.image.repository $.Values.global.image.tag) ($.Chart.AppVersion) }}
+          args: {{- range .args }}
+            - {{ . }}
+          {{- end }}
+          imagePullPolicy: {{ or .pullPolicy $.Values.global.image.pullPolicy }}
+          {{- if $.Values.app.containerSecurityContext.enabled }}
+          securityContext: {{- omit $.Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+            {{- include "ls.common.envs" $ | nindent 12 }}
+            - name: INIT_CONTAINER
+              value: "true"
+            {{- if $.Values.app.debug }}
+            - name: DEBUG
+              value: "true"
+            {{- end }}
+          volumeMounts:
+            - mountPath: /opt/heartex/instance-data/etc
+              name: opt-heartex-init
+            - mountPath: /tmp
+              name: tmp-dir-init
+            {{- if $.Values.global.pgConfig.ssl.pgSslSecretName }}
+            - name: pg-ssl-certs
+              mountPath: /opt/heartex/secrets/pg_certs
+            {{- end }}
+            {{- if $.Values.global.redisConfig.ssl.redisSslSecretName }}
+            - name: redis-ssl-certs
+              mountPath: /opt/heartex/secrets/redis_certs
+            {{- end }}
+            {{- if .extraVolumeMounts }}
+              {{ toYaml .extraVolumeMounts | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          {{- end }}
       terminationGracePeriodSeconds: {{ .Values.app.terminationGracePeriodSeconds }}
       containers:
         - name: app
@@ -319,14 +356,14 @@ spec:
           {{- toYaml .Values.app.extraVolumes | nindent 8 }}
         {{- end }}
         - name: opt-heartex-app
-          emptyDir: {}
+          emptyDir: { }
         - name: opt-heartex-nginx
-          emptyDir: {}
+          emptyDir: { }
         - name: opt-heartex-init
-          emptyDir: {}
+          emptyDir: { }
         - name: tmp-dir-app
-          emptyDir: {}
+          emptyDir: { }
         - name: tmp-dir-nginx
-          emptyDir: {}
+          emptyDir: { }
         - name: tmp-dir-init
-          emptyDir: {}
+          emptyDir: { }

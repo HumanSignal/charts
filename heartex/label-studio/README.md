@@ -318,6 +318,7 @@ directory.
 | `app.rbac.rules`                               | Custom RBAC rules to set for app service                                                                             | `[]`                     |
 | `app.contextPath`                              | Context path appended for health/readiness checks                                                                    | `/`                      |
 | `app.cmdWrapper`                               | Additional commands to run prior to starting App. Useful to run wrappers before startup command                      | `""`                     |
+| `app.initContainers`                           | Additional init containers to the App Deployment pod                                                                 | `[]`                     |
 
 ### Rqworker parameters
 
