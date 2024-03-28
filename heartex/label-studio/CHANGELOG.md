@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.4.2
+### Fixes
+* Fix wrong indent in `app.labels` and `rqworker.labels`.
+
 ## 1.4.1
 ### Improvements
 * Add support for additional initContainers in app using .Values.app.initContainers

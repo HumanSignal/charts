@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "ls-app.labels" . | nindent 4 }}
     {{- if .Values.app.labels }}
-    {{- toYaml .Values.app.labels | nindent 8 }}
+    {{- toYaml .Values.app.labels | nindent 4 }}
     {{- end }}
 spec:
   replicas: {{ .Values.app.replicas }}

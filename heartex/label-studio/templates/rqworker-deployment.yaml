@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/name: {{ include "ls-rqworker.name" $ }}-{{ $queue_name }}
     {{- include "ls-rqworker.labels" $ | nindent 4 }}
     {{- if $.Values.rqworker.labels }}
-    {{- toYaml $.Values.rqworker.labels | nindent 8 }}
+    {{- toYaml $.Values.rqworker.labels | nindent 4 }}
     {{- end }}
 spec:
   replicas: {{ $val.replicas }}
