@@ -8,7 +8,7 @@ LABEL_STUDIO_HOST={{ .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }}
 Get the application URL by running these commands:
 {{- if .Values.app.ingress.enabled }}
 {{- if not (hasKey .Values.global.extraEnvironmentVars "LABEL_STUDIO_HOST") }}
-Please visit http{{ if $.Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.app.ingress.path }} to use Label Studio
+Please visit http{{ if $.Values.app.ingress.tls }}s{{ end }}://{{ .Values.app.ingress.host }}{{ default "" .Values.app.contextPath }} to use Label Studio
 {{- else }}
 Please visit {{ .Values.global.extraEnvironmentVars.LABEL_STUDIO_HOST }} to use Label Studio
 {{- end }}
