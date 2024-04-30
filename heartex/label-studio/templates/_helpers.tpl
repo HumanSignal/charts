@@ -504,6 +504,8 @@ Set's common environment variables
       name: {{ include "ls-app.fullname" . }}-django-secret
       key: "key"
 {{- end }}
+- name: LS_APP_SERVICE_SCHEME
+  value: "http"
 - name: LS_APP_SERVICE_NAME
   value: "{{ include "ls-app.fullname" . }}"
 - name: LS_APP_SERVICE_PORT
