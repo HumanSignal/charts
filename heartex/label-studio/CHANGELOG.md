@@ -7,6 +7,10 @@
 * 
 
 ### Fixes
+## 1.4.7
+### Fixes
+* Fix expose of LS_APP env variables to add namespace + allow to override.
+
 ## 1.4.5
 ### Improvements
 * Expose LS app service name and service port as an env variables. 
