@@ -143,13 +143,13 @@ spec:
             {{- if $.Values.global.pgConfig.ssl.pgSslSecretName }}
             - name: pg-ssl-certs
               secret:
-                secretName: {{ $.Values.global.pgConfig.ssl.pgSslSecretName }}
+                secretName: {{ include "render-values" ( dict "value" $.Values.global.pgConfig.ssl.pgSslSecretName "context" $) }}
                 defaultMode: 0640
             {{- end }}
             {{- if $.Values.global.redisConfig.ssl.redisSslSecretName }}
             - name: redis-ssl-certs
               secret:
-                secretName: {{ $.Values.global.redisConfig.ssl.redisSslSecretName  }}
+                secretName: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
                 defaultMode: 0640
             {{- end }}
             {{- if $.Values.app.extraVolumes -}}
