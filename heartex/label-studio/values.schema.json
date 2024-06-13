@@ -346,6 +346,10 @@
           },
           "additionalProperties": true
         },
+        "deploymentAnnotations": {
+          "type": "object",
+          "additionalProperties": true
+        },
         "replicas": {
           "type": "integer"
         },

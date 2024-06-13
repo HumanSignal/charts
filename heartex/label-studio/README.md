@@ -231,6 +231,7 @@ directory.
 |------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------|
 | `app.args`                                     | Override default container args (useful when using custom images)                                                    | `["label-studio-uwsgi"]` |
 | `app.deploymentStrategy.type`                  | Deployment strategy type                                                                                             | `RollingUpdate`          |
+| `app.deploymentAnnotations`                    | Deployment annotations                                                                                               | `{}`                     |
 | `app.replicas`                                 | Amount of app pod replicas                                                                                           | `1`                      |
 | `app.NameOverride`                             | String to partially override release template name                                                                   | `""`                     |
 | `app.FullnameOverride`                         | String to fully override release template name                                                                       | `""`                     |

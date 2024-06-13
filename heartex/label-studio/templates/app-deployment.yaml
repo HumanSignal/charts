@@ -2,6 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "ls-app.fullname" . }}
+  {{- with .Values.app.deploymentAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "ls-app.labels" . | nindent 4 }}
     {{- if .Values.app.labels }}

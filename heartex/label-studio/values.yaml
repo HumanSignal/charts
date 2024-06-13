@@ -130,6 +130,8 @@ app:
   deploymentStrategy:
     type: RollingUpdate
 
+  deploymentAnnotations: { }
+  
   replicas: 1
 
   NameOverride: ""

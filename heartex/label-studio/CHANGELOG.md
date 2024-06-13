@@ -6,6 +6,10 @@
 
 * 
 
+## 1.4.9
+### Improvements
+* Add support for deployment annotations using .Values.app.deploymentAnnotations
+
 ### Fixes
 ## 1.4.7
 ### Fixes
