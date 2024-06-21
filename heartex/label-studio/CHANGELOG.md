@@ -1,16 +1,13 @@
 # Changelog
 
-## Unreleased
-
+## 1.4.10
 ### Improvements
-
-* 
+* Add support for resources definition in cronjobs.
 
 ## 1.4.9
 ### Improvements
-* Add support for deployment annotations using .Values.app.deploymentAnnotations
+* Add support for deployment annotations using .Values.app.deploymentAnnotations.
 
-### Fixes
 ## 1.4.7
 ### Fixes
 * Fix expose of LS_APP env variables to add namespace + allow to override.

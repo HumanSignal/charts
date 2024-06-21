@@ -1318,6 +1318,36 @@
               },
               "failedJobsHistoryLimit": {
                 "type": "string"
+              },
+              "resources": {
+                "type": "object",
+                "properties": {
+                  "requests": {
+                    "type": "object",
+                    "properties": {
+                      "memory": {
+                        "type": "string"
+                      },
+                      "cpu": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "limits": {
+                    "type": "object",
+                    "properties": {
+                      "memory": {
+                        "type": "string"
+                      },
+                      "cpu": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
               }
             },
             "additionalProperties": false

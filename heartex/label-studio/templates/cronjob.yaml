@@ -65,6 +65,10 @@ spec:
                       key: {{ $value.secretKey }}
                 {{- end }}
                 {{- end }}
+              {{- if $val.resources }}
+              resources:
+                {{- toYaml $val.resources | nindent 16 }}
+              {{- end }}
               volumeMounts:
                 - name: data
                   mountPath: /label-studio/data
