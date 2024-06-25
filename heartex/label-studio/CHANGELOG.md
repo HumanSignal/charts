@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.11
+### Improvements
+* Reset resources for uwsgiExporter container.
+
 ## 1.4.10
 ### Improvements
 * Add support for resources definition in cronjobs.

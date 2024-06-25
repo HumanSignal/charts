@@ -647,12 +647,13 @@ metrics:
       runAsUser: 1001
 
     resources:
-      requests:
-        cpu: "10m"
-        memory: "64Mi"
-      limits:
-        cpu: "20m"
-        memory: "128Mi"
+      requests: { }
+      ## Example:
+      #        cpu: "200m"
+      #        memory: "64Mi"
+      limits: { }
+      #        cpu: "20m"
+      #        memory: "128Mi"
 
     livenessProbe:
       enabled: true
