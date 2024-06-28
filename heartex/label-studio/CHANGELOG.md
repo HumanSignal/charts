@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0
+### Improvements
+* Add support for template variables in helm values.
+
 ## 1.4.11
 ### Improvements
 * Reset resources for uwsgiExporter container.
