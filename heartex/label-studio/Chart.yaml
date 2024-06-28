@@ -5,7 +5,7 @@ home: https://labelstud.io/
 type: application
 icon: https://raw.githubusercontent.com/heartexlabs/label-studio/master/images/logo.png
 # Chart version
-version: 1.5.0
+version: 1.6.0
 # Label Studio release version
 appVersion: "1.12.1"
 kubeVersion: ">= 1.14.0-0"
@@ -15,6 +15,6 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enabled
   - name: postgresql
-    version: "11.9.13"
+    version: "15.5.15"
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled

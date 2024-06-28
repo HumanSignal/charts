@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0
+### Improvements
+* Upgrade psql helm chart.
+* Pin psql version to 13.15.0.
+
 ## 1.5.0
 ### Improvements
 * Add support for template variables in helm values.
