@@ -4,6 +4,7 @@
 ### Improvements
 * Upgrade psql helm chart.
 * Pin psql version to 13.15.0.
+* Allow defining more global variables
 
 ## 1.5.0
 ### Improvements
@@ -27,7 +28,7 @@
 
 ## 1.4.5
 ### Improvements
-* Expose LS app service name and service port as an env variables. 
+* Expose LS app service name and service port as an env variables.
 
 ## 1.4.3
 ### Fixes
