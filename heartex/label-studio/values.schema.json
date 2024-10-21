@@ -286,7 +286,7 @@
           "additionalProperties": true
         }
       },
-      "additionalProperties": false
+      "additionalProperties": true
     },
     "upgradeCheck": {
       "type": "object",
