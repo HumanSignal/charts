@@ -71,15 +71,9 @@ spec:
       {{- if .Values.app.topologySpreadConstraints }}
       topologySpreadConstraints: {{- include "tplvalues.render" (dict "value" .Values.app.topologySpreadConstraints "context" $) | nindent 8 }}
       {{- end }}
-      {{- if .Values.app.dnsPolicy }}
       dnsPolicy: {{ .Values.app.dnsPolicy }}
-      {{- end }}
-      {{- if .Values.app.enableServiceLinks }}
       enableServiceLinks: {{ .Values.app.enableServiceLinks }}
-      {{- end }}
-      {{- if .Values.app.shareProcessNamespace }}
       shareProcessNamespace: {{ .Values.app.shareProcessNamespace }}
-      {{- end }}
       {{- with .Values.app.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
