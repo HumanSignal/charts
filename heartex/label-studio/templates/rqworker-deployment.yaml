@@ -144,15 +144,9 @@ spec:
       {{- if $.Values.rqworker.topologySpreadConstraints }}
       topologySpreadConstraints: {{- include "tplvalues.render" (dict "value" $.Values.rqworker.topologySpreadConstraints "context" $) | nindent 8 }}
       {{- end }}
-      {{- if $.Values.rqworker.dnsPolicy }}
       dnsPolicy: {{ $.Values.rqworker.dnsPolicy }}
-      {{- end }}
-      {{- if $.Values.rqworker.enableServiceLinks }}
       enableServiceLinks: {{ $.Values.rqworker.enableServiceLinks }}
-      {{- end }}
-      {{- if $.Values.rqworker.shareProcessNamespace }}
       shareProcessNamespace: {{ $.Values.rqworker.shareProcessNamespace }}
-      {{- end }}
       {{- with $.Values.rqworker.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

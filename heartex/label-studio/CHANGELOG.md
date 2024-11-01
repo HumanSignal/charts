@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.0
+### Improvements
+* Explicitly set dnsPolicy, shareProcessNamespace and enableServiceLinks.
+* Set shareProcessNamespace and enableServiceLinks to `false`. 
+
 ## 1.6.0
 ### Improvements
 * Upgrade psql helm chart.
