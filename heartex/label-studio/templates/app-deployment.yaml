@@ -232,7 +232,7 @@ spec:
           {{- if .Values.app.nginx.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
-              path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.readinessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.readinessProbe.path }}{{ end }}"
+              path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.nginx.readinessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.nginx.readinessProbe.path }}{{ end }}"
               port: 8085
             failureThreshold: {{ .Values.app.readinessProbe.failureThreshold }}
             initialDelaySeconds: {{ .Values.app.readinessProbe.initialDelaySeconds }}
@@ -243,7 +243,7 @@ spec:
           {{- if .Values.app.nginx.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
-              path: "{{ .Values.app.nginx.livenessProbe.path }}"
+              path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.nginx.livenessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.nginx.livenessProbe.path }}{{ end }}"
               port: 8085
             failureThreshold: {{ .Values.app.nginx.livenessProbe.failureThreshold }}
             initialDelaySeconds: {{ .Values.app.nginx.livenessProbe.initialDelaySeconds }}

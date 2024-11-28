@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.3
+### Improvements
+* Fix the path in readinessProbe and livenessProbe for the nginx container to use app.contextPath
+
 ## 1.7.0
 ### Improvements
 * Explicitly set dnsPolicy, shareProcessNamespace and enableServiceLinks.
