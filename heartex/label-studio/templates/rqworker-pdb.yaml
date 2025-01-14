@@ -6,7 +6,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "ls-rqworker.fullname" $ }}-{{ $queue_name }}
-  namespace: {{ include "common.names.namespace" $ | quote }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "ls-rqworker.labels" $ | nindent 8 }}
     {{- if $.Values.rqworker.podLabels }}

@@ -3,7 +3,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "ls-app.fullname" . }}
-  namespace: {{ include "common.names.namespace" . | quote }}
+  namespace: {{ .Release.Namespace | quote }}
   labels:
     {{- include "ls-app.labels" . | nindent 4 }}
     {{- if .Values.app.labels }}
