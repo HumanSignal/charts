@@ -390,6 +390,17 @@ app:
   ##
   initContainers: [ ]
 
+  ## Pod Disruption Budget configuration
+  ## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb
+  ## @param app.pdb.create Enable/disable a Pod Disruption Budget creation
+  ## @param app.pdb.minAvailable Minimum number/percentage of pods that should remain scheduled
+  ## @param app.pdb.maxUnavailable Maximum number/percentage of pods that may be made unavailable. Defaults to `1` if both `app.pdb.minAvailable` and `app.pdb.maxUnavailable` are empty.
+  ##
+  pdb:
+    create: false
+    minAvailable: ""
+    maxUnavailable: ""
+
 rqworker:
   enabled: true
 
@@ -436,6 +447,11 @@ rqworker:
       ## Example:
       ## memory: "1500Mi"
       ## cpu: "1"
+
+  pdb:
+    create: false
+    minAvailable: ""
+    maxUnavailable: ""
 
   # extraEnvironmentVars is a list of extra environment variables to set in the
   # rqworker deployment.

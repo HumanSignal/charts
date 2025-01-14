@@ -1,0 +1,31 @@
+{{- if and $.Values.enterprise.enabled $.Values.rqworker.enabled -}}
+{{- range $queue_name, $val := $.Values.rqworker.queues }}
+---
+{{- if $.Values.rqworker.pdb.create }}
+apiVersion: {{ include "common.capabilities.policy.apiVersion" $ }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "ls-rqworker.fullname" $ }}-{{ $queue_name }}
+  namespace: {{ include "common.names.namespace" $ | quote }}
+  labels:
+    {{- include "ls-rqworker.labels" $ | nindent 8 }}
+    {{- if $.Values.rqworker.podLabels }}
+    {{- toYaml $.Values.rqworker.podLabels | nindent 8 }}
+    {{- end }}
+spec:
+  {{- if $.Values.rqworker.pdb.minAvailable }}
+  minAvailable: {{ $.Values.rqworker.pdb.minAvailable }}
+  {{- end  }}
+  {{- if or $.Values.rqworker.pdb.maxUnavailable ( not $.Values.rqworker.pdb.minAvailable ) }}
+  maxUnavailable: {{ $.Values.rqworker.pdb.maxUnavailable | default 1 }}
+  {{- end  }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "ls-rqworker.name" $ }}-{{ $queue_name }}
+      {{- include "ls-rqworker.selectorLabels" $ | nindent 6 }}
+      {{- if $.Values.rqworker.podLabels }}
+      {{- toYaml $.Values.rqworker.podLabels | nindent 6 }}
+      {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

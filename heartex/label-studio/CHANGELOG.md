@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.8.0
+### Improvements
+* Add support for PodDisruptionBudgets.
+
 ## 1.7.3
 ### Improvements
-* Fix the path in readinessProbe and livenessProbe for the nginx container to use app.contextPath
+* Fix the path in readinessProbe and livenessProbe for the nginx container to use app.contextPath.
 
 ## 1.7.0
 ### Improvements

@@ -1,0 +1,25 @@
+{{- if .Values.app.pdb.create }}
+apiVersion: {{ include "common.capabilities.policy.apiVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "ls-app.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    {{- include "ls-app.labels" . | nindent 4 }}
+    {{- if .Values.app.labels }}
+    {{- toYaml .Values.app.labels | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.app.pdb.minAvailable }}
+  minAvailable: {{ .Values.app.pdb.minAvailable }}
+  {{- end  }}
+  {{- if or .Values.app.pdb.maxUnavailable ( not .Values.app.pdb.minAvailable ) }}
+  maxUnavailable: {{ .Values.app.pdb.maxUnavailable | default 1 }}
+  {{- end  }}
+  selector:
+    matchLabels:
+      {{- include "ls-app.selectorLabels" . | nindent 6 }}
+      {{- if .Values.app.podLabels }}
+      {{- toYaml .Values.app.podLabels | nindent 6 }}
+      {{- end }}
+{{- end }}
