@@ -1,5 +1,5 @@
 {{- if .Values.app.pdb.create }}
-apiVersion: {{ include "common.capabilities.policy.apiVersion" . }}
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "ls-app.fullname" . }}
