@@ -617,6 +617,8 @@ redis:
   enabled: false
   clusterDomain: cluster.local
   architecture: standalone
+  master:
+    enableServiceLinks: false
   auth:
     enabled: false
 

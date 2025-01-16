@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.0
+### Improvements
+* Upgrade redis subchart to `20.6.3`.
+
 ## 1.8.0
 ### Improvements
 * Add support for PodDisruptionBudgets.
