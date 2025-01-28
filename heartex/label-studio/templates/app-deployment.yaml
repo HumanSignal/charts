@@ -43,7 +43,7 @@ spec:
       automountServiceAccountToken: {{ .Values.app.automountServiceAccountToken }}
       initContainers:
         - name: db-migrations
-          image: "{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.global.image.registry | default "docker.io" }}/{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
           args: [ "label-studio-migrate" ]
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           {{- if .Values.app.containerSecurityContext.enabled }}
@@ -115,7 +115,7 @@ spec:
       terminationGracePeriodSeconds: {{ .Values.app.terminationGracePeriodSeconds }}
       containers:
         - name: app
-          image: "{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.global.image.registry | default "docker.io" }}/{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           {{- if .Values.app.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
@@ -194,7 +194,7 @@ spec:
               containerPort: 8000
           {{- end }}
         - name: nginx
-          image: "{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.global.image.registry | default "docker.io" }}/{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           {{- if .Values.app.containerSecurityContext.enabled }}
           securityContext: {{- omit .Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}

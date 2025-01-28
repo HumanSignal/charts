@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.1
+### Improvements
+* Add support for Values.global.image.registry.
+
 ## 1.9.0
 ### Improvements
 * Upgrade redis subchart to `20.6.3`.

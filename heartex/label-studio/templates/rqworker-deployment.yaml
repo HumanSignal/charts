@@ -46,7 +46,7 @@ spec:
       terminationGracePeriodSeconds: {{ $.Values.rqworker.terminationGracePeriodSeconds }}
       containers:
         - name: rqworker
-          image: "{{ $.Values.global.image.repository }}:{{ $.Values.global.image.tag | default $.Chart.AppVersion }}"
+          image: "{{ $.Values.global.image.registry | default "docker.io" }}/{{ $.Values.global.image.repository }}:{{ $.Values.global.image.tag | default $.Chart.AppVersion }}"
           args: [ "python3", "/label-studio-enterprise/label_studio_enterprise/manage.py", "rqworker", {{ $val.args }} ]
           imagePullPolicy: {{ $.Values.global.image.pullPolicy }}
           {{- if $.Values.rqworker.containerSecurityContext.enabled }}

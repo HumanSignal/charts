@@ -8,6 +8,7 @@ global:
   imagePullSecrets: []
 
   image:
+    registry: docker.io
     repository: heartexlabs/label-studio
     pullPolicy: IfNotPresent
     tag: ""
