@@ -166,6 +166,7 @@ directory.
 | Parameter                                                                   | Description                                                                                                                         | Default                    |
 |-----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|----------------------------|
 | `global.imagePullSecrets`                                                   | Global Docker registry secret names as an array                                                                                     | `[]`                       |
+| `global.image.registry`                                                     | Image registry                                                                                                                      | `docker.io`                |
 | `global.image.repository`                                                   | Image repository                                                                                                                    | `heartexlabs/label-studio` |
 | `global.image.pullPolicy`                                                   | Image pull policy                                                                                                                   | `IfNotPresent`             |
 | `global.image.tag`                                                          | Image tag (immutable tags are recommended)                                                                                          | `develop`                  |
@@ -445,7 +446,6 @@ Supported only in LabelStudio Enterprise
 
 | Parameter                   | Description                                      | Default         |
 |-----------------------------|--------------------------------------------------|-----------------|
-| `upgradeCheck.enabled`      | Enable upgradecheck                              | `false`         |
 | `ci`                        | Indicate that deployment running for CI purposes | `false`         |
 | `clusterDomain`             | Kubernetes Cluster Domain                        | `cluster.local` |
 | `checkConfig.skipEnvValues` | Skip validation for env variables                | `false`         |

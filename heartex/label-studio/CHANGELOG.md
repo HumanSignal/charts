@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.2
+### Improvements
+* Remove unused upgrade hook.
+* Remove outdated helm tests.
+* Switch to Bitnami OCI registry.
+
 ## 1.9.1
 ### Improvements
 * Add support for Values.global.image.registry.

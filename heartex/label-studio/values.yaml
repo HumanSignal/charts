@@ -111,18 +111,6 @@ global:
   # "- /tmp/my_cool_root_cert"
   customCaCerts: [ ]
 
-upgradeCheck:
-  enabled: false
-  resources:
-    requests: {}
-    ## Example:
-    ##  memory: ""
-    ##  cpu: ""
-    limits: {}
-    ## Example:
-    ##  memory: ""
-    ##  cpu: ""
-
 app:
   # Update strategy - only really applicable for deployments with RWO PVs attached
   # If replicas = 1, an update can get "stuck", as the previous pod remains attached to the
