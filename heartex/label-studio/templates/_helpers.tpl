@@ -341,11 +341,13 @@ Set's common environment variables
 {{- end }}
 {{- if .Values.global.extraEnvironmentSecrets -}}
 {{- range $key, $value := .Values.global.extraEnvironmentSecrets }}
+{{- if and $value.secretName $value.secretKey }}
 - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
   valueFrom:
     secretKeyRef:
       name: {{ $value.secretName }}
       key: {{ $value.secretKey }}
+{{- end }}
 {{- end }}
 {{- end }}
 - name: STORAGE_PERSISTENCE

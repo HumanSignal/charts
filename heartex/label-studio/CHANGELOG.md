@@ -1,4 +1,7 @@
 # Changelog
+## 1.9.3
+### Improvements
+* Support to omit secrets in downstream values.
 
 ## 1.9.2
 ### Improvements
