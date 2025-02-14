@@ -1,4 +1,9 @@
 # Changelog
+## 1.9.5
+### Fixes
+* Add missing readiness probe for app deployment app container.
+* Fix nginx container readiness probe reference in app deployment.
+
 ## 1.9.3
 ### Improvements
 * Support to omit secrets in downstream values.
@@ -28,7 +33,7 @@
 ## 1.7.0
 ### Improvements
 * Explicitly set dnsPolicy, shareProcessNamespace and enableServiceLinks.
-* Set shareProcessNamespace and enableServiceLinks to `false`. 
+* Set shareProcessNamespace and enableServiceLinks to `false`.
 
 ## 1.6.0
 ### Improvements
