@@ -146,6 +146,17 @@ spec:
             - name: CMD_WRAPPER
               value: {{ coalesce $.Values.app.cmdWrapper $.Values.global.cmdWrapper }}
             {{- end }}
+          {{- if .Values.app.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.readinessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.readinessProbe.path }}{{ end }}"
+              port: 8000
+            failureThreshold: {{ .Values.app.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.app.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.app.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.app.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.app.readinessProbe.timeoutSeconds }}
+          {{- end }}
           {{- if .Values.app.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
@@ -234,11 +245,11 @@ spec:
             httpGet:
               path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.nginx.readinessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.nginx.readinessProbe.path }}{{ end }}"
               port: 8085
-            failureThreshold: {{ .Values.app.readinessProbe.failureThreshold }}
-            initialDelaySeconds: {{ .Values.app.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.app.readinessProbe.periodSeconds }}
-            successThreshold: {{ .Values.app.readinessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.app.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.app.nginx.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ .Values.app.nginx.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.app.nginx.readinessProbe.periodSeconds }}
+            successThreshold: {{ .Values.app.nginx.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ .Values.app.nginx.readinessProbe.timeoutSeconds }}
           {{- end }}
           {{- if .Values.app.nginx.livenessProbe.enabled }}
           livenessProbe:
