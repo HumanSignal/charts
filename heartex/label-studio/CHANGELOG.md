@@ -1,4 +1,9 @@
 # Changelog
+## 1.9.6
+### Fixes
+* Add `scheme` field to readinessProbe and livenessProbe for nginx container.
+* Add configuration for additional sidecar containers to run alongside the app's USWGI and nginx containers.
+
 ## 1.9.5
 ### Fixes
 * Add missing readiness probe for app deployment app container.

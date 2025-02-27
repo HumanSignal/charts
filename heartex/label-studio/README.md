@@ -300,6 +300,7 @@ directory.
 | `app.nginx.livenessProbe.periodSeconds`        | Nginx sidecar container: How often (in seconds) to perform the probe                                                                                   | `5`                      |
 | `app.nginx.livenessProbe.successThreshold`     | Nginx sidecar container: Minimum consecutive successes for the probe to be considered successful after having failed                                   | `1`                      |
 | `app.nginx.livenessProbe.timeoutSeconds`       | Nginx sidecar container: Number of seconds after which the probe times out                                                                             | `3`                      |
+| `app.nginx.livenessProbe.scheme`               | Nginx sidecar container: Scheme for livenessProbe                                                                                                       | `HTTP`                   |
 | `app.nginx.readinessProbe.enabled`             | Nginx sidecar container: Enable redinessProbe                                                                                                          | `true`                   |
 | `app.nginx.readinessProbe.path`                | Nginx sidecar container: Path for reasinessProbe                                                                                                       | `/version`               |
 | `app.nginx.readinessProbe.failureThreshold`    | Nginx sidecar container: When a probe fails, Kubernetes will try failureThreshold times before giving up                                               | `2`                      |
@@ -307,6 +308,7 @@ directory.
 | `app.nginx.readinessProbe.periodSeconds`       | Nginx sidecar container: How often (in seconds) to perform the probe                                                                                   | `10`                     |
 | `app.nginx.readinessProbe.successThreshold`    | Nginx sidecar container: Minimum consecutive successes for the probe to be considered successful after having failed                                   | `1`                      |
 | `app.nginx.readinessProbe.timeoutSeconds`      | Nginx sidecar container: Number of seconds after which the probe times out                                                                             | `5`                      |
+| `app.nginx.readinessProbe.scheme`              | Nginx sidecar container: Scheme for readinessProbe                                                                                                      | `HTTP`                   |
 | `app.service.type`                             | k8s service type                                                                                                                                       | `ClusterIP`              |
 | `app.service.port`                             | k8s service port                                                                                                                                       | `80`                     |
 | `app.service.targetPort`                       | k8s service target port                                                                                                                                | `8085`                   |
@@ -331,6 +333,7 @@ directory.
 | `app.pdb.create`                               | Enable/disable a Pod Disruption Budget creation                                                                                                        | `true`                   |
 | `app.pdb.minAvailable`                         | Minimum number/percentage of pods that should remain scheduled                                                                                         | `""`                     |
 | `app.pdb.maxUnavailable`                       | Maximum number/percentage of pods that may be made unavailable. Defaults to `1` if both `app.pdb.minAvailable` and `app.pdb.maxUnavailable` are empty. | `""`                     |
+| `app.sidecarContainers`                        | Additional sidecar containers to the App Deployment pod                                                                                                | `[]`                     |
 
 ### Rqworker parameters
 

@@ -245,6 +245,7 @@ spec:
             httpGet:
               path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.nginx.readinessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.nginx.readinessProbe.path }}{{ end }}"
               port: 8085
+              scheme: {{ .Values.app.nginx.readinessProbe.scheme | default "HTTP" }}
             failureThreshold: {{ .Values.app.nginx.readinessProbe.failureThreshold }}
             initialDelaySeconds: {{ .Values.app.nginx.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.app.nginx.readinessProbe.periodSeconds }}
@@ -256,6 +257,7 @@ spec:
             httpGet:
               path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.nginx.livenessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.nginx.livenessProbe.path }}{{ end }}"
               port: 8085
+              scheme: {{ .Values.app.nginx.livenessProbe.scheme | default "HTTP" }}
             failureThreshold: {{ .Values.app.nginx.livenessProbe.failureThreshold }}
             initialDelaySeconds: {{ .Values.app.nginx.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.app.nginx.livenessProbe.periodSeconds }}
@@ -312,6 +314,45 @@ spec:
             - name: "uwsgimetrics"
               containerPort: 9117
           {{- end }}
+        {{- if .Values.app.sidecarContainers }}
+        {{- range .Values.app.sidecarContainers }}
+        - name: {{ .name }}
+          image: {{ .image }}
+          imagePullPolicy: {{ .imagePullPolicy | default "IfNotPresent" }}
+          {{- if .securityContext }}
+          securityContext: {{ toYaml .securityContext | nindent 12 }}
+          {{- end }}
+          env:
+            {{- include "ls.common.envs" $ | nindent 12 }}
+            {{- if .extraEnvironmentVars -}}
+            {{- range $key, $value := .extraEnvironmentVars }}
+            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- end }}
+            {{- if .extraEnvironmentSecrets -}}
+            {{- range $key, $value := .extraEnvironmentSecrets }}
+            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $value.secretName }}
+                  key: {{ $value.secretKey }}
+            {{- end }}
+            {{- end }}
+          {{- if .readinessProbe }}
+          readinessProbe: {{ toYaml .readinessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .livenessProbe }}
+          livenessProbe: {{ toYaml .livenessProbe | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+          volumeMounts:
+            {{- if .volumeMounts }}
+              {{ toYaml .volumeMounts | nindent 12 }}
+            {{- end }}
+        {{- end }}
+        {{- end }}
       {{- with .Values.app.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

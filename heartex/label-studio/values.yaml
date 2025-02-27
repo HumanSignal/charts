@@ -176,6 +176,7 @@ app:
       periodSeconds: 5
       successThreshold: 1
       timeoutSeconds: 3
+      scheme: "HTTP"
     readinessProbe:
       enabled: true
       path: "/version"
@@ -184,6 +185,7 @@ app:
       periodSeconds: 10
       successThreshold: 1
       timeoutSeconds: 5
+      scheme: "HTTP"
 
   # extraEnvironmentVars is a list of extra environment variables to set in the
   # app deployment.
@@ -390,6 +392,17 @@ app:
     minAvailable: ""
     maxUnavailable: ""
 
+  ## Add additional sidecar containers to the App Deployment pod
+  ## ref: https://kubernetes.io/docs/concepts/workloads/pods/#sidecar-containers
+  ## e.g:
+  ## sidecarContainers:
+  ##  - name: your-sidecar-name
+  ##    image: your-sidecar-image
+  ##    imagePullPolicy: Always
+  ##    command: ['sh', '-c', 'echo "hello world"']
+  ##
+  sidecarContainers: [ ]
+
 rqworker:
   enabled: true
 
@@ -473,7 +486,7 @@ rqworker:
 
   # Extra k8s annotations to attach to the rqworker pods
   # This can either be YAML or a YAML-formatted multi-line templated string map
-  # of the k8s annotations to apply to the rqworker pods
+  # of the annotations to apply to the rqworker pods
   annotations: { }
 
   # Extra k8s labels to attach to the rqworker
@@ -525,7 +538,7 @@ rqworker:
     name: ""
     # Extra k8s annotations for the serviceAccount definition. This can either be
     # YAML or a YAML-formatted multi-line templated string map of the
-    # annotations to apply to the serviceAccount.
+    # k8s annotations to apply to the serviceAccount.
     annotations: { }
 
   # Array to add extra volumes
@@ -572,7 +585,7 @@ rqworker:
 
   ## @param app.cmdWrapper Additional commands to run prior to starting App. Useful to run wrappers before startup command
   ## e.g:
-  ## cmdWrapper: "newrelic-admin run-python"
+  ## cmdWrapper: "newrelic-admin run-program"
   ##
   cmdWrapper: ""
 
