@@ -459,6 +459,9 @@
                 },
                 "timeoutSeconds": {
                   "type": "integer"
+                },
+                "scheme": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false
@@ -486,6 +489,9 @@
                 },
                 "timeoutSeconds": {
                   "type": "integer"
+                },
+                "scheme": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false
@@ -748,6 +754,52 @@
             }
           },
           "additionalProperties": false
+        },
+        "sidecarContainers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "image": {
+                "type": "string"
+              },
+              "imagePullPolicy": {
+                "type": "string"
+              },
+              "securityContext": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "extraEnvironmentVars": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "extraEnvironmentSecrets": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "readinessProbe": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "livenessProbe": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "resources": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "volumeMounts": {
+                "type": "array",
+                "additionalProperties": true
+              }
+            },
+            "additionalProperties": false
+          }
         }
       },
       "additionalProperties": false
