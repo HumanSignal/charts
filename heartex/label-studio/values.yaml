@@ -103,7 +103,9 @@ global:
 
   ## @param app.cmdWrapper Additional commands to run prior to starting App. Useful to run wrappers before startup command
   ## e.g:
-  ## cmdWrapper: ""
+  ## cmdWrapper: "newrelic-admin run-program"
+  ##
+  cmdWrapper: ""
 
   # File names of a custom SSL root certs. These filename will be appended to existing root certs.
   # "- /tmp/my_cool_root_cert"
@@ -357,7 +359,9 @@ app:
   contextPath: /
   ## @param app.cmdWrapper Additional commands to run prior to starting App. Useful to run wrappers before startup command
   ## e.g:
-  ## cmdWrapper: ""
+  ## cmdWrapper: "newrelic-admin run-program"
+  ##
+  cmdWrapper: ""
 
   ## Minimal number of seconds preStop hook waits before LS is stopped to finish processing requests
   ## Note: must be set to lower value than terminationGracePeriodSeconds so that preStop hook finishes
@@ -581,7 +585,9 @@ rqworker:
 
   ## @param app.cmdWrapper Additional commands to run prior to starting App. Useful to run wrappers before startup command
   ## e.g:
-  ## cmdWrapper: ""
+  ## cmdWrapper: "newrelic-admin run-program"
+  ##
+  cmdWrapper: ""
 
   # Seconds rqworker pod needs to terminate gracefully
   terminationGracePeriodSeconds: 30
