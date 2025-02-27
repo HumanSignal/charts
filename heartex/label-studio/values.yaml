@@ -486,7 +486,7 @@ rqworker:
 
   # Extra k8s annotations to attach to the rqworker pods
   # This can either be YAML or a YAML-formatted multi-line templated string map
-  # of the k8s annotations to apply to the rqworker pods
+  # of the annotations to apply to the rqworker pods
   annotations: { }
 
   # Extra k8s labels to attach to the rqworker
