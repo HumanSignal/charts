@@ -831,6 +831,10 @@
           },
           "additionalProperties": true
         },
+        "deploymentAnnotations": {
+          "type": "object",
+          "additionalProperties": true
+        },
         "queues": {
           "type": "object",
           "properties": {
