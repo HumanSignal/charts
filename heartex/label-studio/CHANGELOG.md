@@ -1,4 +1,9 @@
 # Changelog
+
+## 1.9.7
+### Improvements
+* Add deployment annotations for rq workers using `.Values.rqworker.deploymentAnnotations`.
+
 ## 1.9.6
 ### Fixes
 * Add `scheme` field to readinessProbe and livenessProbe for nginx container.

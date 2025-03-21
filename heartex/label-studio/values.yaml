@@ -414,6 +414,8 @@ rqworker:
   deploymentStrategy:
     type: Recreate
 
+  deploymentAnnotations: { }
+
   queues:
     high:
       replicas: 1
