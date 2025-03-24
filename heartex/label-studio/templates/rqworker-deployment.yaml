@@ -5,7 +5,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "ls-rqworker.fullname" $ }}-{{ $queue_name }}
-  {{- with .Values.rqworker.deploymentAnnotations }}
+  {{- with $.Values.rqworker.deploymentAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
