@@ -60,6 +60,8 @@ spec:
               value: "true"
             {{- end }}
           volumeMounts:
+            - name: data
+              mountPath: /label-studio/data
             - mountPath: /opt/heartex/instance-data/etc
               name: opt-heartex-init
             - mountPath: /tmp
@@ -95,6 +97,8 @@ spec:
               value: "true"
             {{- end }}
           volumeMounts:
+            - name: data
+              mountPath: /label-studio/data
             - mountPath: /opt/heartex/instance-data/etc
               name: opt-heartex-init
             - mountPath: /tmp

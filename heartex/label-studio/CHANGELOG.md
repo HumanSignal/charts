@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.8
+### Fixes
+* Add data dir as volume mount to db-migration initContainer and extra initContainers.
+
 ## 1.9.7
 ### Improvements
 * Add deployment annotations for rq workers using `.Values.rqworker.deploymentAnnotations`.
