@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.17.0
+- Upgraded Label Studio application version to 1.17.0
+
 ## 1.9.8
 ### Fixes
 * Add data dir as volume mount to db-migration initContainer and extra initContainers.
