@@ -70,7 +70,7 @@ jobs:
 
       - name: Post to a Slack channel
         id: slack
-        uses: slackapi/slack-github-action@v1.27
+        uses: slackapi/slack-github-action@v2.0
         with:
           channel-id: 'C02LMULF4NA'
           slack-message: "New versions of helm charts released:\n${{ env.CHANGED_CHARTS_MAP }}<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|[Workflow run]>"
