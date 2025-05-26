@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.11
+- Added `args` to `sidecarContainers`.
+
 ## 1.9.9
 - Upgraded Label Studio application version to 1.17.0
 
