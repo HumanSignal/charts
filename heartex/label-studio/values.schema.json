@@ -769,6 +769,10 @@
               "imagePullPolicy": {
                 "type": "string"
               },
+              "args": {
+                "type": "object",
+                "additionalProperties": true
+              },
               "securityContext": {
                 "type": "object",
                 "additionalProperties": true
