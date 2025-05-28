@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.12
+- Added support for native sidecar containers (`initContainers` with `restartPolicy` of `Always`).
+
 ## 1.9.11
 - Added `args` to `sidecarContainers`.
 
