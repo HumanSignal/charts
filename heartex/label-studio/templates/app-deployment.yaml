@@ -85,6 +85,7 @@ spec:
             - {{ . }}
           {{- end }}
           imagePullPolicy: {{ or .pullPolicy $.Values.global.image.pullPolicy }}
+          restartPolicy: {{ or .restartPolicy "OnFailure" }}
           {{- if $.Values.app.containerSecurityContext.enabled }}
           securityContext: {{- omit $.Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
