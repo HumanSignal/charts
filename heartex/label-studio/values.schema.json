@@ -770,7 +770,7 @@
                 "type": "string"
               },
               "args": {
-                "type": "object",
+                "type": "array",
                 "additionalProperties": true
               },
               "securityContext": {

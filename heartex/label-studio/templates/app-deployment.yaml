@@ -324,7 +324,9 @@ spec:
           image: {{ .image }}
           imagePullPolicy: {{ .imagePullPolicy | default "IfNotPresent" }}
           {{- if .args }}
-          args: {{ .args }}
+          args: {{- range .args }}
+            - {{ . }}
+          {{- end }}
           {{- end }}
           {{- if .securityContext }}
           securityContext: {{ toYaml .securityContext | nindent 12 }}
