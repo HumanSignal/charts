@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.12
+- Fixed `args` support in `sidecarContainers`.
+
 ## 1.9.11
 - Added `args` to `sidecarContainers`.
 
