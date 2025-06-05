@@ -39,7 +39,7 @@ jobs:
           for chart in $CHANGED_CHARTS; do
             chart_version=$(cat heartex/$chart/Chart.yaml | yq eval '.version' -)
             helm package ./heartex/$chart -d ${{ env.SYNC_DIR }} -u
-            CHANGED_CHARTS_MAP="${CHANGED_CHARTS_MAP}$chart => $chart_version\n"
+            CHANGED_CHARTS_MAP="${CHANGED_CHARTS_MAP}\n$chart => $chart_version"
           done
           echo "CHANGED_CHARTS_MAP<<EOF" >> $GITHUB_ENV
           echo "${CHANGED_CHARTS_MAP}" >> $GITHUB_ENV
@@ -70,9 +70,13 @@ jobs:
 
       - name: Post to a Slack channel
         id: slack
-        uses: slackapi/slack-github-action@v1.27
+        uses: slackapi/slack-github-action@v2
         with:
-          channel-id: 'C02LMULF4NA'
-          slack-message: "New versions of helm charts released:\n${{ env.CHANGED_CHARTS_MAP }}<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|[Workflow run]>"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: 'C02LMULF4NA'
+            text: |
+              New versions of helm charts released:
+              ${{ env.CHANGED_CHARTS_MAP }}
+              <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|[Workflow run]>
