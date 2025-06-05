@@ -754,56 +754,6 @@
             }
           },
           "additionalProperties": false
-        },
-        "sidecarContainers": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "image": {
-                "type": "string"
-              },
-              "imagePullPolicy": {
-                "type": "string"
-              },
-              "args": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "securityContext": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "extraEnvironmentVars": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "extraEnvironmentSecrets": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "readinessProbe": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "livenessProbe": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "resources": {
-                "type": "object",
-                "additionalProperties": true
-              },
-              "volumeMounts": {
-                "type": "array",
-                "additionalProperties": true
-              }
-            },
-            "additionalProperties": false
-          }
         }
       },
       "additionalProperties": false

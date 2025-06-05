@@ -42,6 +42,48 @@ spec:
       {{- end }}
       automountServiceAccountToken: {{ .Values.app.automountServiceAccountToken }}
       initContainers:
+        {{- if .Values.app.initContainers }}
+        {{- range .Values.app.initContainers }}
+        - name: {{ .name }}
+          image: {{ or .image (printf "%s/%s:%s" ($.Values.global.image.registry | default "docker.io") $.Values.global.image.repository $.Values.global.image.tag) ($.Chart.AppVersion) }}
+          args: {{- range .args }}
+            - {{ . }}
+          {{- end }}
+          imagePullPolicy: {{ or .pullPolicy $.Values.global.image.pullPolicy }}
+          {{- if .restartPolicy }}
+          restartPolicy: {{ .restartPolicy }}
+          {{- end }}
+          {{- if $.Values.app.containerSecurityContext.enabled }}
+          securityContext: {{- omit $.Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+            {{- include "ls.common.envs" $ | nindent 12 }}
+            - name: INIT_CONTAINER
+              value: "true"
+            {{- if $.Values.app.debug }}
+            - name: DEBUG
+              value: "true"
+            {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /label-studio/data
+            - mountPath: /opt/heartex/instance-data/etc
+              name: opt-heartex-init
+            - mountPath: /tmp
+              name: tmp-dir-init
+            {{- if $.Values.global.pgConfig.ssl.pgSslSecretName }}
+            - name: pg-ssl-certs
+              mountPath: /opt/heartex/secrets/pg_certs
+            {{- end }}
+            {{- if $.Values.global.redisConfig.ssl.redisSslSecretName }}
+            - name: redis-ssl-certs
+              mountPath: /opt/heartex/secrets/redis_certs
+            {{- end }}
+            {{- if .extraVolumeMounts }}
+              {{ toYaml .extraVolumeMounts | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          {{- end }}
         - name: db-migrations
           image: "{{ .Values.global.image.registry | default "docker.io" }}/{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
           args: [ "label-studio-migrate" ]
@@ -77,45 +119,6 @@ spec:
             {{- if .Values.app.extraVolumeMounts }}
               {{ toYaml .Values.app.extraVolumeMounts | nindent 12 }}
             {{- end }}
-        {{- if .Values.app.initContainers }}
-        {{- range .Values.app.initContainers }}
-        - name: {{ .name }}
-          image: {{ or .image (printf "%s:%s" $.Values.global.image.repository $.Values.global.image.tag) ($.Chart.AppVersion) }}
-          args: {{- range .args }}
-            - {{ . }}
-          {{- end }}
-          imagePullPolicy: {{ or .pullPolicy $.Values.global.image.pullPolicy }}
-          {{- if $.Values.app.containerSecurityContext.enabled }}
-          securityContext: {{- omit $.Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
-          {{- end }}
-          env:
-            {{- include "ls.common.envs" $ | nindent 12 }}
-            - name: INIT_CONTAINER
-              value: "true"
-            {{- if $.Values.app.debug }}
-            - name: DEBUG
-              value: "true"
-            {{- end }}
-          volumeMounts:
-            - name: data
-              mountPath: /label-studio/data
-            - mountPath: /opt/heartex/instance-data/etc
-              name: opt-heartex-init
-            - mountPath: /tmp
-              name: tmp-dir-init
-            {{- if $.Values.global.pgConfig.ssl.pgSslSecretName }}
-            - name: pg-ssl-certs
-              mountPath: /opt/heartex/secrets/pg_certs
-            {{- end }}
-            {{- if $.Values.global.redisConfig.ssl.redisSslSecretName }}
-            - name: redis-ssl-certs
-              mountPath: /opt/heartex/secrets/redis_certs
-            {{- end }}
-            {{- if .extraVolumeMounts }}
-              {{ toYaml .extraVolumeMounts | nindent 12 }}
-            {{- end }}
-          {{- end }}
-          {{- end }}
       terminationGracePeriodSeconds: {{ .Values.app.terminationGracePeriodSeconds }}
       containers:
         - name: app
@@ -318,49 +321,7 @@ spec:
             - name: "uwsgimetrics"
               containerPort: 9117
           {{- end }}
-        {{- if .Values.app.sidecarContainers }}
-        {{- range .Values.app.sidecarContainers }}
-        - name: {{ .name }}
-          image: {{ .image }}
-          imagePullPolicy: {{ .imagePullPolicy | default "IfNotPresent" }}
-          {{- if .args }}
-          args: {{ .args }}
-          {{- end }}
-          {{- if .securityContext }}
-          securityContext: {{ toYaml .securityContext | nindent 12 }}
-          {{- end }}
-          env:
-            {{- include "ls.common.envs" $ | nindent 12 }}
-            {{- if .extraEnvironmentVars -}}
-            {{- range $key, $value := .extraEnvironmentVars }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              value: {{ $value | quote }}
-            {{- end }}
-            {{- end }}
-            {{- if .extraEnvironmentSecrets -}}
-            {{- range $key, $value := .extraEnvironmentSecrets }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $value.secretName }}
-                  key: {{ $value.secretKey }}
-            {{- end }}
-            {{- end }}
-          {{- if .readinessProbe }}
-          readinessProbe: {{ toYaml .readinessProbe | nindent 12 }}
-          {{- end }}
-          {{- if .livenessProbe }}
-          livenessProbe: {{ toYaml .livenessProbe | nindent 12 }}
-          {{- end }}
-          resources:
-            {{- toYaml .resources | nindent 12 }}
-          volumeMounts:
-            {{- if .volumeMounts }}
-              {{ toYaml .volumeMounts | nindent 12 }}
-            {{- end }}
-        {{- end }}
-        {{- end }}
-      {{- with .Values.app.nodeSelector }}
+        {{- with .Values.app.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
