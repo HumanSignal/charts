@@ -45,12 +45,12 @@ spec:
         {{- if .Values.app.initContainers }}
         {{- range .Values.app.initContainers }}
         - name: {{ .name }}
-          image: {{ or .image (printf "%s:%s" $.Values.global.image.repository $.Values.global.image.tag) ($.Chart.AppVersion) }}
+          image: {{ or .image (printf "%s/%s:%s" ($.Values.global.image.registry | default "docker.io") $.Values.global.image.repository $.Values.global.image.tag) ($.Chart.AppVersion) }}
           args: {{- range .args }}
             - {{ . }}
           {{- end }}
           imagePullPolicy: {{ or .pullPolicy $.Values.global.image.pullPolicy }}
-          restartPolicy: {{ or .restartPolicy "OnFailure" }}
+          restartPolicy: {{ or .restartPolicy "Always" }}
           {{- if $.Values.app.containerSecurityContext.enabled }}
           securityContext: {{- omit $.Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}

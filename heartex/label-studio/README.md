@@ -333,7 +333,6 @@ directory.
 | `app.pdb.create`                               | Enable/disable a Pod Disruption Budget creation                                                                                                        | `true`                   |
 | `app.pdb.minAvailable`                         | Minimum number/percentage of pods that should remain scheduled                                                                                         | `""`                     |
 | `app.pdb.maxUnavailable`                       | Maximum number/percentage of pods that may be made unavailable. Defaults to `1` if both `app.pdb.minAvailable` and `app.pdb.maxUnavailable` are empty. | `""`                     |
-| `app.sidecarContainers`                        | Additional sidecar containers to the App Deployment pod                                                                                                | `[]`                     |
 
 ### Rqworker parameters
 

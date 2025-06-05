@@ -392,17 +392,6 @@ app:
     minAvailable: ""
     maxUnavailable: ""
 
-  ## Add additional sidecar containers to the App Deployment pod
-  ## ref: https://kubernetes.io/docs/concepts/workloads/pods/#sidecar-containers
-  ## e.g:
-  ## sidecarContainers:
-  ##  - name: your-sidecar-name
-  ##    image: your-sidecar-image
-  ##    imagePullPolicy: Always
-  ##    command: ['sh', '-c', 'echo "hello world"']
-  ##
-  sidecarContainers: [ ]
-
 rqworker:
   enabled: true
 
