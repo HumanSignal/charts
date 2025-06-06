@@ -16,7 +16,9 @@ metadata:
     {{- toYaml $.Values.rqworker.labels | nindent 4 }}
     {{- end }}
 spec:
+  {{- if $val.replicas }}
   replicas: {{ $val.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "ls-rqworker.name" $ }}-{{ $queue_name }}

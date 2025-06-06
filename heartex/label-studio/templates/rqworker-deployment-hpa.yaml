@@ -1,0 +1,60 @@
+{{- if and $.Values.enterprise.enabled $.Values.rqworker.enabled -}}
+{{- if and $.Values.rqworker.autoscaling.enabled (eq $.Values.rqworker.autoscaling.scalingType "deployment") -}}
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: {{ include "ls-rqworker-hpa.fullname" $ }}-keda-trigger-auth
+  namespace: {{ $.Release.Namespace }}
+spec:
+  secretTargetRef:
+  {{- if $.Values.global.redisConfig.password.secretName }}
+  - parameter: password
+    name: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.password.secretName "context" $) }}
+    key: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.password.secretKey "context" $) }}
+  {{- end }}
+  {{- if $.Values.global.redisConfig.ssl.redisSslSecretName }}
+  - parameter: ca
+    name: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
+    key: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslCaCertsSecretKey "context" $) }}
+  - parameter: cert
+    name: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
+    key: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslCertFileSecretKey "context" $) }}
+  - parameter: key
+    name: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
+    key: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslKeyFileSecretKey "context" $) }}
+  {{- end }}
+{{- range $queue_name, $val := $.Values.rqworker.queues }}
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ include "ls-rqworker-hpa.fullname" $ }}-{{ $queue_name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "ls-rqworker.name" $ }}-{{ $queue_name }}
+    {{- include "ls-rqworker.labels" $ | nindent 4 }}
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: {{ include "ls-rqworker.fullname" $ }}-{{ $queue_name }}
+  minReplicaCount: {{ $val.scaledOptions.minReplicaCount }}
+  maxReplicaCount: {{ $val.scaledOptions.maxReplicaCount }}
+  pollingInterval: {{ $val.scaledOptions.pollingInterval }}
+  cooldownPeriod: {{ $val.scaledOptions.cooldownPeriod }}
+  triggers:
+  - type: redis
+    authenticationRef:
+      name: {{ include "ls-rqworker-hpa.fullname" $ }}-keda-trigger-auth
+    metadata:
+      address: {{ if $.Values.global.redisConfig.host }}{{ include "render-values" ( dict "value" $.Values.global.redisConfig.host "context" $) | regexFind "//(.*?)/" | trimPrefix "//" | trimSuffix "/" }}{{ else }}{{ $.Release.Name }}-redis-headless.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:6379{{ end }}
+      databaseIndex: "{{ if $.Values.global.redisConfig.host }}{{ regexFind "/[0-9]+$" $.Values.global.redisConfig.host | trimPrefix "/" | default 0 }}{{ else }}1{{ end }}"
+      listName: "rq:queue:{{ $queue_name }}"
+      listLength: "{{ $val.scaledOptions.listLength }}"
+      activationListLength: "0"
+      {{- if or $.Values.global.redisConfig.ssl.redisSslSecretName (hasPrefix "rediss://" (include "render-values" ( dict "value" $.Values.global.redisConfig.host "context" $))) }}
+      enableTLS: "true"
+      unsafeSsl: "true"
+      {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

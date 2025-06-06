@@ -416,6 +416,10 @@ rqworker:
 
   deploymentAnnotations: { }
 
+  autoscaling:
+    enabled: false
+    scalingType: deployment
+
   queues:
     high:
       replicas: 1
@@ -423,25 +427,48 @@ rqworker:
       resources:
         requests: {}
         limits: {}
+      scaledOptions:
+        minReplicaCount: 0
+        maxReplicaCount: 5
+        pollingInterval: 5
+        cooldownPeriod: 60
+        listLength: 10
     low:
       replicas: 1
       args: '"low"'
       resources:
         requests: {}
         limits: {}
+      scaledOptions:
+        minReplicaCount: 0
+        maxReplicaCount: 5
+        pollingInterval: 5
+        cooldownPeriod: 60
+        listLength: 10
     default:
       replicas: 4
       args: '"default"'
       resources:
         requests: {}
         limits: {}
+      scaledOptions:
+        minReplicaCount: 0
+        maxReplicaCount: 5
+        pollingInterval: 5
+        cooldownPeriod: 60
+        listLength: 10
     critical:
       replicas: 1
       args: '"critical"'
       resources:
         requests: {}
         limits: {}
-
+      scaledOptions:
+        minReplicaCount: 0
+        maxReplicaCount: 5
+        pollingInterval: 5
+        cooldownPeriod: 60
+        listLength: 10
   # Default fallback in the case if queue-specific resources are not set
   resources:
     requests: {}

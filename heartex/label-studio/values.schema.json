@@ -764,6 +764,17 @@
     "rqworker": {
       "type": "object",
       "properties": {
+        "autoscaling": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "scalingType": {
+              "type": "string"
+            }
+          }
+        },
         "enabled": {
           "type": "boolean"
         },
@@ -833,6 +844,27 @@
                     }
                   },
                   "additionalProperties": false
+                },
+                "scaledOptions": {
+                  "type": "object",
+                  "properties": {
+                    "minReplicaCount": {
+                      "type": "integer"
+                    },
+                    "maxReplicaCount": {
+                      "type": "integer"
+                    },
+                    "pollingInterval": {
+                      "type": "integer"
+                    },
+                    "cooldownPeriod": {
+                      "type": "integer"
+                    },
+                    "listLength": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": true
                 }
               },
               "additionalProperties": false
@@ -875,6 +907,27 @@
                     }
                   },
                   "additionalProperties": false
+                },
+                "scaledOptions": {
+                  "type": "object",
+                  "properties": {
+                    "minReplicaCount": {
+                      "type": "integer"
+                    },
+                    "maxReplicaCount": {
+                      "type": "integer"
+                    },
+                    "pollingInterval": {
+                      "type": "integer"
+                    },
+                    "cooldownPeriod": {
+                      "type": "integer"
+                    },
+                    "listLength": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": true
                 }
               },
               "additionalProperties": false
@@ -917,6 +970,27 @@
                     }
                   },
                   "additionalProperties": false
+                },
+                "scaledOptions": {
+                  "type": "object",
+                  "properties": {
+                    "minReplicaCount": {
+                      "type": "integer"
+                    },
+                    "maxReplicaCount": {
+                      "type": "integer"
+                    },
+                    "pollingInterval": {
+                      "type": "integer"
+                    },
+                    "cooldownPeriod": {
+                      "type": "integer"
+                    },
+                    "listLength": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": true
                 }
               },
               "additionalProperties": false
@@ -959,6 +1033,27 @@
                     }
                   },
                   "additionalProperties": false
+                },
+                "scaledOptions": {
+                  "type": "object",
+                  "properties": {
+                    "minReplicaCount": {
+                      "type": "integer"
+                    },
+                    "maxReplicaCount": {
+                      "type": "integer"
+                    },
+                    "pollingInterval": {
+                      "type": "integer"
+                    },
+                    "cooldownPeriod": {
+                      "type": "integer"
+                    },
+                    "listLength": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": true
                 }
               },
               "additionalProperties": false

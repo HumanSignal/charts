@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.15
+- Enterprise: add rqworker support for HPA scaling using KEDA metrics.
+
 ## 1.9.13
 - Add postMigrationInitContainers to run containers that requires database tables.
 
