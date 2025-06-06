@@ -381,6 +381,17 @@ app:
   ##
   initContainers: [ ]
 
+  ## Add additional init containers to the App Deployment pod after sql migration
+  ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+  ## e.g:
+  ## postMigrationInitContainers:
+  ##  - name: your-image-name
+  ##    image: your-image
+  ##    imagePullPolicy: Always
+  ##    command: ['sh', '-c', 'echo "hello world"']
+  ##
+  postMigrationInitContainers: [ ]
+
   ## Pod Disruption Budget configuration
   ## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb
   ## @param app.pdb.create Enable/disable a Pod Disruption Budget creation

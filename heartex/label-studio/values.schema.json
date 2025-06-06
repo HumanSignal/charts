@@ -740,6 +740,9 @@
         "initContainers": {
           "type": "array"
         },
+        "postMigrationInitContainers": {
+          "type": "array"
+        },
         "pdb": {
           "type": "object",
           "properties": {

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.13
+- Add postMigrationInitContainers to run containers that requires database tables.
+
 ## 1.9.12
 - Added support for native sidecar containers (`initContainers` with `restartPolicy` of `Always`). Drop support for the old `sidecarContainers` values.
 

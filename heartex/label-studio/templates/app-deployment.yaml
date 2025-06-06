@@ -60,10 +60,6 @@ spec:
             {{- include "ls.common.envs" $ | nindent 12 }}
             - name: INIT_CONTAINER
               value: "true"
-            {{- if $.Values.app.debug }}
-            - name: DEBUG
-              value: "true"
-            {{- end }}
           volumeMounts:
             - name: data
               mountPath: /label-studio/data
@@ -97,10 +93,6 @@ spec:
             {{- include "ls.common.envs" . | nindent 12 }}
             - name: INIT_CONTAINER
               value: "true"
-            {{- if .Values.app.debug }}
-            - name: DEBUG
-              value: "true"
-            {{- end }}
           volumeMounts:
             - name: data
               mountPath: /label-studio/data
@@ -119,6 +111,44 @@ spec:
             {{- if .Values.app.extraVolumeMounts }}
               {{ toYaml .Values.app.extraVolumeMounts | nindent 12 }}
             {{- end }}
+        {{- if .Values.app.postMigrationInitContainers }}
+        {{- range .Values.app.postMigrationInitContainers }}
+        - name: {{ .name }}
+          image: {{ or .image (printf "%s/%s:%s" ($.Values.global.image.registry | default "docker.io") $.Values.global.image.repository $.Values.global.image.tag) ($.Chart.AppVersion) }}
+          args: {{- range .args }}
+            - {{ . }}
+          {{- end }}
+          imagePullPolicy: {{ or .pullPolicy $.Values.global.image.pullPolicy }}
+          {{- if .restartPolicy }}
+          restartPolicy: {{ .restartPolicy }}
+          {{- end }}
+          {{- if $.Values.app.containerSecurityContext.enabled }}
+          securityContext: {{- omit $.Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+            {{- include "ls.common.envs" $ | nindent 12 }}
+            - name: INIT_CONTAINER
+              value: "true"
+          volumeMounts:
+            - name: data
+              mountPath: /label-studio/data
+            - mountPath: /opt/heartex/instance-data/etc
+              name: opt-heartex-init
+            - mountPath: /tmp
+              name: tmp-dir-init
+            {{- if $.Values.global.pgConfig.ssl.pgSslSecretName }}
+            - name: pg-ssl-certs
+              mountPath: /opt/heartex/secrets/pg_certs
+            {{- end }}
+            {{- if $.Values.global.redisConfig.ssl.redisSslSecretName }}
+            - name: redis-ssl-certs
+              mountPath: /opt/heartex/secrets/redis_certs
+            {{- end }}
+            {{- if .extraVolumeMounts }}
+              {{ toYaml .extraVolumeMounts | nindent 12 }}
+            {{- end }}
+          {{- end }}
+          {{- end }}
       terminationGracePeriodSeconds: {{ .Values.app.terminationGracePeriodSeconds }}
       containers:
         - name: app
