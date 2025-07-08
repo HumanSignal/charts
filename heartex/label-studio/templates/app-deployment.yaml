@@ -80,6 +80,7 @@ spec:
             {{- end }}
           {{- end }}
           {{- end }}
+        {{- if not .Values.migrationJob.enabled }}
         - name: db-migrations
           image: "{{ .Values.global.image.registry | default "docker.io" }}/{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
           args: [ "label-studio-migrate" ]
@@ -111,6 +112,7 @@ spec:
             {{- if .Values.app.extraVolumeMounts }}
               {{ toYaml .Values.app.extraVolumeMounts | nindent 12 }}
             {{- end }}
+        {{- end }}
         {{- if .Values.app.postMigrationInitContainers }}
         {{- range .Values.app.postMigrationInitContainers }}
         - name: {{ .name }}

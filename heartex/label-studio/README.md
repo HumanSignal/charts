@@ -334,6 +334,15 @@ directory.
 | `app.pdb.minAvailable`                         | Minimum number/percentage of pods that should remain scheduled                                                                                         | `""`                     |
 | `app.pdb.maxUnavailable`                       | Maximum number/percentage of pods that may be made unavailable. Defaults to `1` if both `app.pdb.minAvailable` and `app.pdb.maxUnavailable` are empty. | `""`                     |
 
+### Migration Job parameters
+
+| Parameter                                 | Description                                                                                      | Default |
+|-------------------------------------------|--------------------------------------------------------------------------------------------------|---------|
+| `migrationJob.enabled`                    | Enable the migration job                                                                         | `false` |
+| `migrationJob.annotations`                | Annotations to apply to the migration job. Useful for ArgoCD hooks or Helm hooks                 | `{}`    |
+| `migrationJob.backoffLimit`               | Maximum number of retries before marking the job as failed                                       | `0`     |
+| `migrationJob.postMigrationInitContainers`| Additional init containers to run after migration                                                | `[]`    |
+
 ### Rqworker parameters
 
 Supported only in LabelStudio Enterprise
@@ -476,6 +485,36 @@ An example:
 global:
   featureFlags:
     fflag_enable_some_cool_feature_short: true
+```
+
+#### Job Migration Configuration
+
+The `migrationJob` section can be used to configure the migration job to work with ArgoCD or Helm hooks.
+This is especially useful when you have multiple replicas and want to ensure that only a single migration job runs, rather than having each container attempt to run its own migration.
+
+##### ArgoCD Hooks
+
+To configure the migration job to run as an ArgoCD PreSync hook:
+
+```yaml
+migrationJob:
+  enabled: true
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+```
+
+##### Helm Hooks
+
+To configure the migration job to run as a Helm pre-install/pre-upgrade hook:
+
+```yaml
+migrationJob:
+  enabled: true
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: before-hook-creation
 ```
 
 ## Label Studio Enterprise Parameters

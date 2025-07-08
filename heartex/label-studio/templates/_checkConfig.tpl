@@ -38,6 +38,7 @@ Due to gotpl scoping, we can't make use of `range`, so we have to add action lin
 {{- $messages = append $messages (include "ls.checkConfig.s3Config" .) -}}
 {{- $messages = append $messages (include "ls.checkConfig.featureFlagsFFprefix" .) -}}
 {{- $messages = append $messages (include "ls.checkConfig.pGandRedisCIonly" .) -}}
+{{- $messages = append $messages (include "ls.checkConfig.migrationJobCI" .) -}}
 
 {{- $messages = append $messages (include "lse.checkConfig.redisHost" .) -}}
 {{- $messages = append $messages (include "lse.checkConfig.redisSslscheme" .) -}}
@@ -205,3 +206,12 @@ Label Studio Enterprise:
 {{- end -}}
 {{- end -}}
 {{/* END ls.checkConfig.ensureLicense */}}
+
+{{/* Ensure that migrationJob.enabled cannot be true when ci is true */}}
+{{- define "ls.checkConfig.migrationJobCI" -}}
+{{- if and .Values.migrationJob.enabled .Values.ci -}}
+Label Studio:
+  migrationJob: `migrationJob.enabled` cannot be set to `true` when `.Values.ci` is `true`. PostgreSQL should be provisioned for the migration job, which is not the case in CI mode.
+{{- end -}}
+{{- end -}}
+{{/* END ls.checkConfig.migrationJobCI */}}
