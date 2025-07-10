@@ -17,12 +17,6 @@ spec:
   backoffLimit: {{ .Values.migrationJob.backoffLimit }}
   {{- end }}
   template:
-    metadata:
-      labels:
-        {{- include "ls-app.selectorLabels" . | nindent 8 }}
-        {{- if .Values.app.podLabels }}
-        {{- toYaml .Values.app.podLabels | nindent 8 }}
-        {{- end }}
     spec:
       {{- if .Values.app.serviceAccount.create }}
       serviceAccountName: {{ include "ls-app.serviceAccountName" . }}
