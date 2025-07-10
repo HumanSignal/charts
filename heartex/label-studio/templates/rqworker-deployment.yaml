@@ -53,7 +53,7 @@ spec:
       containers:
         - name: rqworker
           image: "{{ $.Values.global.image.registry | default "docker.io" }}/{{ $.Values.global.image.repository }}:{{ $.Values.global.image.tag | default $.Chart.AppVersion }}"
-          args: [ "python3", "/label-studio-enterprise/label_studio_enterprise/manage.py", "rqworker", {{ $val.args }} ]
+          args: [ "python3", "/label-studio-enterprise/label_studio_enterprise/manage.py", "rqworker", "--with-scheduler", {{ $val.args }} ]
           imagePullPolicy: {{ $.Values.global.image.pullPolicy }}
           {{- if $.Values.rqworker.containerSecurityContext.enabled }}
           securityContext: {{- omit $.Values.rqworker.containerSecurityContext "enabled" | toYaml | nindent 12 }}
