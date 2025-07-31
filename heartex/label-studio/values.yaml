@@ -414,7 +414,6 @@ migrationJob:
   #  "argocd.argoproj.io/hook": PreSync
   #  "argocd.argoproj.io/hook-delete-policy": BeforeHookCreation
   annotations: {}
-  backoffLimit: 0
 
 rqworker:
   enabled: true

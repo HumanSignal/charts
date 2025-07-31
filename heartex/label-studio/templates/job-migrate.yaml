@@ -13,9 +13,9 @@ metadata:
     {{- toYaml .Values.migrationJob.annotations | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.migrationJob.backoffLimit }}
-  backoffLimit: {{ .Values.migrationJob.backoffLimit }}
-  {{- end }}
+  backoffLimit: 0
+  completions: 1
+  parallelism: 1
   template:
     spec:
       {{- if .Values.app.serviceAccount.create }}

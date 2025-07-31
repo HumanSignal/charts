@@ -172,13 +172,13 @@ Label Studio:
 {{- end -}}
 {{/* END ls.checkConfig.gcsConfig */}}
 
-{{/* Ensure that feature flags has ff_ or fflag_ prefix */}}
+{{/* Ensure that feature flags has ff_, fflag_, or fflag- (deprecated) prefix */}}
 {{- define "ls.checkConfig.featureFlagsFFprefix" -}}
 {{- if .Values.global.featureFlags -}}
 {{- range $key, $value := .Values.global.featureFlags -}}
-{{- if and (not (hasPrefix "ff_" (printf "%s" $key))) (not (hasPrefix "fflag_" (printf "%s" $key))) }}
+{{- if and (not (hasPrefix "ff_" (printf "%s" $key))) (not (hasPrefix "fflag_" (printf "%s" $key))) (not (hasPrefix "fflag-" (printf "%s" $key))) }}
 Label Studio:
-  Feature Flags: flags should starts from `ff_` or `fflag_` in lower case. Please check spelling in `.Values.global.featureFlags`
+  Feature Flags: flags should start with `ff_`, `fflag_`, or `fflag-`(deprecated) in lower case. Please check spelling in `.Values.global.featureFlags`
 {{- end -}}
 {{- end -}}
 {{- end -}}

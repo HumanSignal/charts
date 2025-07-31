@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.10.1
+- Fix migraiton job to avoid accidental concurrency and reruns on failure.
+- Fix validation for deprecated feature flags in a format fflag-.
+
 ## 1.10.0
 - Added an optional migration job feature (supported only in GitOps and Helm) to support deployment workflows.
 
