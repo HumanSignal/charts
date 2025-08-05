@@ -170,22 +170,23 @@ app:
         ## cpu: 1000m
     livenessProbe:
       enabled: true
-      path: "/nginx_health"
-      failureThreshold: 2
-      initialDelaySeconds: 60
-      periodSeconds: 5
-      successThreshold: 1
+      tcpSocket:
+        port: 8085
+      initialDelaySeconds: 10
+      periodSeconds: 10
       timeoutSeconds: 3
-      scheme: "HTTP"
+      failureThreshold: 3
+      successThreshold: 1
     readinessProbe:
       enabled: true
-      path: "/version"
-      failureThreshold: 2
-      initialDelaySeconds: 60
-      periodSeconds: 10
+      httpGet:
+        path: /nginx_health
+        port: 8085
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 3
+      failureThreshold: 1
       successThreshold: 1
-      timeoutSeconds: 5
-      scheme: "HTTP"
 
   # extraEnvironmentVars is a list of extra environment variables to set in the
   # app deployment.
@@ -234,26 +235,30 @@ app:
 
   # Used to define custom readinessProbe settings
   readinessProbe:
-    enabled: false
-    path: /version
+    enabled: true
+    httpGet:
+      path: /health
+      port: 8000
+      scheme: HTTP
     # When a probe fails, Kubernetes will try failureThreshold times before giving up
-    failureThreshold: 2
+    failureThreshold: 1
     # Number of seconds after the container has started before probe initiates
     initialDelaySeconds: 60
     # How often (in seconds) to perform the probe
-    periodSeconds: 10
+    periodSeconds: 5
     # Minimum consecutive successes for the probe to be considered successful after having failed
     successThreshold: 1
     # Number of seconds after which the probe times out.
-    timeoutSeconds: 5
+    timeoutSeconds: 1
   # Used to enable a livenessProbe for the pods
   livenessProbe:
     enabled: true
-    path: "/health"
+    tcpSocket:
+      port: 8000
     # When a probe fails, Kubernetes will try failureThreshold times before giving up
     failureThreshold: 3
     # Number of seconds after the container has started before probe initiates
-    initialDelaySeconds: 60
+    initialDelaySeconds: 10
     # How often (in seconds) to perform the probe
     periodSeconds: 10
     # Minimum consecutive successes for the probe to be considered successful after having failed
@@ -717,7 +722,7 @@ metrics:
       #        memory: "128Mi"
 
     livenessProbe:
-      enabled: true
+      enabled: false
       httpGet:
         path: "/-/healthy"
         port: "uwsgimetrics"
@@ -728,7 +733,7 @@ metrics:
       successThreshold: 1
 
     readinessProbe:
-      enabled: true
+      enabled: false
       httpGet:
         path: "/metrics"
         port: "uwsgimetrics"

@@ -437,64 +437,10 @@
               "additionalProperties": false
             },
             "livenessProbe": {
-              "type": "object",
-              "properties": {
-                "enabled": {
-                  "type": "boolean"
-                },
-                "path": {
-                  "type": "string"
-                },
-                "failureThreshold": {
-                  "type": "integer"
-                },
-                "initialDelaySeconds": {
-                  "type": "integer"
-                },
-                "periodSeconds": {
-                  "type": "integer"
-                },
-                "successThreshold": {
-                  "type": "integer"
-                },
-                "timeoutSeconds": {
-                  "type": "integer"
-                },
-                "scheme": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false
+              "type": "object"
             },
             "readinessProbe": {
-              "type": "object",
-              "properties": {
-                "enabled": {
-                  "type": "boolean"
-                },
-                "path": {
-                  "type": "string"
-                },
-                "failureThreshold": {
-                  "type": "integer"
-                },
-                "initialDelaySeconds": {
-                  "type": "integer"
-                },
-                "periodSeconds": {
-                  "type": "integer"
-                },
-                "successThreshold": {
-                  "type": "integer"
-                },
-                "timeoutSeconds": {
-                  "type": "integer"
-                },
-                "scheme": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false
+              "type": "object"
             },
             "extraEnvironmentVars": {
               "type": "object",
@@ -563,58 +509,10 @@
           "type": "array"
         },
         "readinessProbe": {
-          "type": "object",
-          "properties": {
-            "enabled": {
-              "type": "boolean"
-            },
-            "path": {
-              "type": "string"
-            },
-            "failureThreshold": {
-              "type": "integer"
-            },
-            "initialDelaySeconds": {
-              "type": "integer"
-            },
-            "periodSeconds": {
-              "type": "integer"
-            },
-            "successThreshold": {
-              "type": "integer"
-            },
-            "timeoutSeconds": {
-              "type": "integer"
-            }
-          },
-          "additionalProperties": false
+          "type": "object"
         },
         "livenessProbe": {
-          "type": "object",
-          "properties": {
-            "enabled": {
-              "type": "boolean"
-            },
-            "path": {
-              "type": "string"
-            },
-            "failureThreshold": {
-              "type": "integer"
-            },
-            "initialDelaySeconds": {
-              "type": "integer"
-            },
-            "periodSeconds": {
-              "type": "integer"
-            },
-            "successThreshold": {
-              "type": "integer"
-            },
-            "timeoutSeconds": {
-              "type": "integer"
-            }
-          },
-          "additionalProperties": false
+          "type": "object"
         },
         "service": {
           "type": "object",
@@ -1203,58 +1101,10 @@
           "type": "array"
         },
         "readinessProbe": {
-          "type": "object",
-          "properties": {
-            "enabled": {
-              "type": "boolean"
-            },
-            "path": {
-              "type": "string"
-            },
-            "failureThreshold": {
-              "type": "integer"
-            },
-            "initialDelaySeconds": {
-              "type": "integer"
-            },
-            "periodSeconds": {
-              "type": "integer"
-            },
-            "successThreshold": {
-              "type": "integer"
-            },
-            "timeoutSeconds": {
-              "type": "integer"
-            }
-          },
-          "additionalProperties": false
+          "type": "object"
         },
         "livenessProbe": {
-          "type": "object",
-          "properties": {
-            "enabled": {
-              "type": "boolean"
-            },
-            "path": {
-              "type": "string"
-            },
-            "failureThreshold": {
-              "type": "integer"
-            },
-            "initialDelaySeconds": {
-              "type": "integer"
-            },
-            "periodSeconds": {
-              "type": "integer"
-            },
-            "successThreshold": {
-              "type": "integer"
-            },
-            "timeoutSeconds": {
-              "type": "integer"
-            }
-          },
-          "additionalProperties": false
+          "type": "object"
         },
         "serviceAccount": {
           "type": "object",

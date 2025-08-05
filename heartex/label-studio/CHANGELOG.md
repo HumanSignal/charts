@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.11.0
+- Refactored readinessProbe and livenessProbe to accept full Kubernetes manifest objects instead of field mappings.
+- Removed duplicate render-values template function.
+- Updated health and readiness probe configurations for both app and nginx containers.
+
 ## 1.10.1
 - Fix migraiton job to avoid accidental concurrency and reruns on failure.
 - Fix validation for deprecated feature flags in a format fflag-.

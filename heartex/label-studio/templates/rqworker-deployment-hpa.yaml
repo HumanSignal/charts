@@ -9,19 +9,19 @@ spec:
   secretTargetRef:
   {{- if $.Values.global.redisConfig.password.secretName }}
   - parameter: password
-    name: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.password.secretName "context" $) }}
-    key: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.password.secretKey "context" $) }}
+    name: {{ include "tplvalues.render" ( dict "value" $.Values.global.redisConfig.password.secretName "context" $) }}
+    key: {{ include "tplvalues.render" ( dict "value" $.Values.global.redisConfig.password.secretKey "context" $) }}
   {{- end }}
   {{- if $.Values.global.redisConfig.ssl.redisSslSecretName }}
   - parameter: ca
-    name: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
-    key: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslCaCertsSecretKey "context" $) }}
+    name: {{ include "tplvalues.render" ( dict "value" $.Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
+    key: {{ include "tplvalues.render" ( dict "value" $.Values.global.redisConfig.ssl.redisSslCaCertsSecretKey "context" $) }}
   - parameter: cert
-    name: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
-    key: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslCertFileSecretKey "context" $) }}
+    name: {{ include "tplvalues.render" ( dict "value" $.Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
+    key: {{ include "tplvalues.render" ( dict "value" $.Values.global.redisConfig.ssl.redisSslCertFileSecretKey "context" $) }}
   - parameter: key
-    name: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
-    key: {{ include "render-values" ( dict "value" $.Values.global.redisConfig.ssl.redisSslKeyFileSecretKey "context" $) }}
+    name: {{ include "tplvalues.render" ( dict "value" $.Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
+    key: {{ include "tplvalues.render" ( dict "value" $.Values.global.redisConfig.ssl.redisSslKeyFileSecretKey "context" $) }}
   {{- end }}
 {{- range $queue_name, $val := $.Values.rqworker.queues }}
 ---
@@ -46,12 +46,12 @@ spec:
     authenticationRef:
       name: {{ include "ls-rqworker-hpa.fullname" $ }}-keda-trigger-auth
     metadata:
-      address: {{ if $.Values.global.redisConfig.host }}{{ include "render-values" ( dict "value" $.Values.global.redisConfig.host "context" $) | regexFind "//(.*?)/" | trimPrefix "//" | trimSuffix "/" }}{{ else }}{{ $.Release.Name }}-redis-headless.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:6379{{ end }}
+      address: {{ if $.Values.global.redisConfig.host }}{{ include "tplvalues.render" ( dict "value" $.Values.global.redisConfig.host "context" $) | regexFind "//(.*?)/" | trimPrefix "//" | trimSuffix "/" }}{{ else }}{{ $.Release.Name }}-redis-headless.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:6379{{ end }}
       databaseIndex: "{{ if $.Values.global.redisConfig.host }}{{ regexFind "/[0-9]+$" $.Values.global.redisConfig.host | trimPrefix "/" | default 0 }}{{ else }}1{{ end }}"
       listName: "rq:queue:{{ $queue_name }}"
       listLength: "{{ $val.scaledOptions.listLength }}"
       activationListLength: "0"
-      {{- if or $.Values.global.redisConfig.ssl.redisSslSecretName (hasPrefix "rediss://" (include "render-values" ( dict "value" $.Values.global.redisConfig.host "context" $))) }}
+      {{- if or $.Values.global.redisConfig.ssl.redisSslSecretName (hasPrefix "rediss://" (include "tplvalues.render" ( dict "value" $.Values.global.redisConfig.host "context" $))) }}
       enableTLS: "true"
       unsafeSsl: "true"
       {{- end }}
