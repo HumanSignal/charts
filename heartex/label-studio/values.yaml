@@ -655,11 +655,21 @@ postgresql:
   clusterDomain: cluster.local
   architecture: standalone
   image:
-    tag: 13.15.0
+    repository: bitnamilegacy/postgresql
+    tag: 13.18.0
   auth:
     username: "labelstudio"
     password: "labelstudio"
     database: "labelstudio"
+  volumePermissions:
+    image:
+      repository: bitnamilegacy/os-shell
+  metrics:
+    image:
+      repository: bitnamilegacy/postgres-exporter
+  global:
+    security:
+      allowInsecureImages: true
 
 redis:
   enabled: false
@@ -669,6 +679,26 @@ redis:
     enableServiceLinks: false
   auth:
     enabled: false
+  image:
+    repository: bitnamilegacy/redis
+  sentinel:
+    image:
+      repository: bitnamilegacy/redis-sentinel
+  kubectl:
+    image:
+      repository: bitnamilegacy/kubectl
+  sysctl:
+    image:
+      repository: bitnamilegacy/os-shell
+  metrics:
+    image:
+      repository: bitnamilegacy/redis-exporter
+  volumePermissions:
+    image:
+      repository: bitnamilegacy/os-shell
+  global:
+    security:
+      allowInsecureImages: true
 
 ci: false
 clusterDomain: cluster.local

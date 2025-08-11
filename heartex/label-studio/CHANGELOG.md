@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.1
+- Prepare for Bitnami's changes in images catalog: https://github.com/bitnami/charts/issues/35164
+- Upgrade pgsql from 13.15.0 to 13.18.0
+
 ## 1.11.0
 - Refactored readinessProbe and livenessProbe to accept full Kubernetes manifest objects instead of field mappings.
 - Removed duplicate render-values template function.
