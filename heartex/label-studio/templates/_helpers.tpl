@@ -263,12 +263,12 @@ Set's common environment variables
 {{- else }}
 {{- if .Values.global.pgConfig.dbName }}
 - name: POSTGRE_NAME
-  value: {{ include "render-values" ( dict "value" .Values.global.pgConfig.dbName "context" $) }}
+  value: {{ include "tplvalues.render" ( dict "value" .Values.global.pgConfig.dbName "context" $) }}
 {{- end }}
 {{- end }}
 {{- if .Values.global.pgConfig.host }}
 - name: POSTGRE_HOST
-  value: {{ include "render-values" ( dict "value" .Values.global.pgConfig.host "context" $) }}
+  value: {{ include "tplvalues.render" ( dict "value" .Values.global.pgConfig.host "context" $) }}
 {{- else }}
 {{- if .Values.postgresql.enabled }}
 - name: POSTGRE_HOST
@@ -286,7 +286,7 @@ Set's common environment variables
 {{- end }}
 {{- if .Values.global.pgConfig.userName }}
 - name: POSTGRE_USER
-  value: {{ include "render-values" ( dict "value" .Values.global.pgConfig.userName "context" $) }}
+  value: {{ include "tplvalues.render" ( dict "value" .Values.global.pgConfig.userName "context" $) }}
 {{- else }}
 {{- if (and .Values.postgresql.enabled .Values.postgresql.auth.username) }}
 - name: POSTGRE_USER
@@ -297,8 +297,8 @@ Set's common environment variables
 - name: POSTGRE_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ include "render-values" ( dict "value" .Values.global.pgConfig.password.secretName "context" $) }}
-      key: {{ include "render-values" ( dict "value" .Values.global.pgConfig.password.secretKey "context" $) }}
+      name: {{ include "tplvalues.render" ( dict "value" .Values.global.pgConfig.password.secretName "context" $) }}
+      key: {{ include "tplvalues.render" ( dict "value" .Values.global.pgConfig.password.secretKey "context" $) }}
 {{- else }}
 {{- if (and .Values.postgresql.enabled .Values.postgresql.auth.password) }}
 - name: POSTGRE_PASSWORD
@@ -307,7 +307,7 @@ Set's common environment variables
 {{- end }}
 {{- if .Values.global.redisConfig.host }}
 - name: REDIS_LOCATION
-  value: {{ include "render-values" ( dict "value" .Values.global.redisConfig.host "context" $) }}
+  value: {{ include "tplvalues.render" ( dict "value" .Values.global.redisConfig.host "context" $) }}
 {{- else }}
 {{- if .Values.redis.enabled }}
 - name: REDIS_LOCATION
@@ -328,8 +328,8 @@ Set's common environment variables
 - name: REDIS_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ include "render-values" ( dict "value" .Values.global.redisConfig.password.secretName "context" $) }}
-      key: {{ include "render-values" ( dict "value" .Values.global.redisConfig.password.secretKey "context" $) }}
+      name: {{ include "tplvalues.render" ( dict "value" .Values.global.redisConfig.password.secretName "context" $) }}
+      key: {{ include "tplvalues.render" ( dict "value" .Values.global.redisConfig.password.secretKey "context" $) }}
 {{- end }}
 {{- end }}
 - name: PYTHONUNBUFFERED
@@ -468,15 +468,15 @@ Set's common environment variables
 {{- end }}
 {{- if .Values.global.pgConfig.ssl.pgSslRootCertSecretKey }}
 - name: POSTGRE_SSLROOTCERT
-  value: "/opt/heartex/secrets/pg_certs/{{ include "render-values" ( dict "value" .Values.global.pgConfig.ssl.pgSslRootCertSecretKey "context" $) }}"
+  value: "/opt/heartex/secrets/pg_certs/{{ include "tplvalues.render" ( dict "value" .Values.global.pgConfig.ssl.pgSslRootCertSecretKey "context" $) }}"
 {{- end }}
 {{- if .Values.global.pgConfig.ssl.pgSslCertSecretKey }}
 - name: POSTGRE_SSLCERT
-  value: "/opt/heartex/secrets/pg_certs/{{ include "render-values" ( dict "value" .Values.global.pgConfig.ssl.pgSslCertSecretKey "context" $) }}"
+  value: "/opt/heartex/secrets/pg_certs/{{ include "tplvalues.render" ( dict "value" .Values.global.pgConfig.ssl.pgSslCertSecretKey "context" $) }}"
 {{- end }}
 {{- if .Values.global.pgConfig.ssl.pgSslKeySecretKey }}
 - name: POSTGRE_SSLKEY
-  value: "/opt/heartex/secrets/pg_certs/{{ include "render-values" ( dict "value" .Values.global.pgConfig.ssl.pgSslKeySecretKey "context" $) }}"
+  value: "/opt/heartex/secrets/pg_certs/{{ include "tplvalues.render" ( dict "value" .Values.global.pgConfig.ssl.pgSslKeySecretKey "context" $) }}"
 {{- end }}
 {{- if .Values.global.redisConfig.ssl.redisSslCertReqs }}
 - name: REDIS_SSL_CERTS_REQS
@@ -486,15 +486,15 @@ Set's common environment variables
 {{- end }}
 {{- if .Values.global.redisConfig.ssl.redisSslCaCertsSecretKey }}
 - name: REDIS_SSL_CA_CERTS
-  value: "/opt/heartex/secrets/redis_certs/{{ include "render-values" ( dict "value" .Values.global.redisConfig.ssl.redisSslCaCertsSecretKey "context" $) }}"
+  value: "/opt/heartex/secrets/redis_certs/{{ include "tplvalues.render" ( dict "value" .Values.global.redisConfig.ssl.redisSslCaCertsSecretKey "context" $) }}"
 {{- end }}
 {{- if .Values.global.redisConfig.ssl.redisSslCertFileSecretKey }}
 - name: REDIS_SSL_CERTFILE
-  value: "/opt/heartex/secrets/redis_certs/{{ include "render-values" ( dict "value" .Values.global.redisConfig.ssl.redisSslCertFileSecretKey "context" $) }}"
+  value: "/opt/heartex/secrets/redis_certs/{{ include "tplvalues.render" ( dict "value" .Values.global.redisConfig.ssl.redisSslCertFileSecretKey "context" $) }}"
 {{- end }}
 {{- if .Values.global.redisConfig.ssl.redisSslKeyFileSecretKey }}
 - name: REDIS_SSL_KEYFILE
-  value: "/opt/heartex/secrets/redis_certs/{{ include "render-values" ( dict "value" .Values.global.redisConfig.ssl.redisSslKeyFileSecretKey "context" $) }}"
+  value: "/opt/heartex/secrets/redis_certs/{{ include "tplvalues.render" ( dict "value" .Values.global.redisConfig.ssl.redisSslKeyFileSecretKey "context" $) }}"
 {{- end }}
 {{- if .Values.global.envInjectSources }}
 - name: ENV_INJECT_SOURCES
@@ -538,15 +538,3 @@ Set's common environment variables
 {{- end -}}
 {{- end -}}
 
-{{/*
-Renders a value that contains template.
-Usage:
-{{ include "render-values" ( dict "value" .Values.path.to.the.Value "context" $) }}
-*/}}
-{{- define "render-values" -}}
-    {{- if typeIs "string" .value }}
-        {{- tpl .value .context }}
-    {{- else }}
-        {{- tpl (.value | toYaml) .context }}
-    {{- end }}
-{{- end -}}

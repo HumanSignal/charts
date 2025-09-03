@@ -80,6 +80,7 @@ spec:
             {{- end }}
           {{- end }}
           {{- end }}
+        {{- if not .Values.migrationJob.enabled }}
         - name: db-migrations
           image: "{{ .Values.global.image.registry | default "docker.io" }}/{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
           args: [ "label-studio-migrate" ]
@@ -111,6 +112,7 @@ spec:
             {{- if .Values.app.extraVolumeMounts }}
               {{ toYaml .Values.app.extraVolumeMounts | nindent 12 }}
             {{- end }}
+        {{- end }}
         {{- if .Values.app.postMigrationInitContainers }}
         {{- range .Values.app.postMigrationInitContainers }}
         - name: {{ .name }}
@@ -184,26 +186,10 @@ spec:
               value: {{ coalesce $.Values.app.cmdWrapper $.Values.global.cmdWrapper }}
             {{- end }}
           {{- if .Values.app.readinessProbe.enabled }}
-          readinessProbe:
-            httpGet:
-              path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.readinessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.readinessProbe.path }}{{ end }}"
-              port: 8000
-            failureThreshold: {{ .Values.app.readinessProbe.failureThreshold }}
-            initialDelaySeconds: {{ .Values.app.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.app.readinessProbe.periodSeconds }}
-            successThreshold: {{ .Values.app.readinessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.app.readinessProbe.timeoutSeconds }}
+          readinessProbe: {{- include "tplvalues.render" (dict "value" (omit .Values.app.readinessProbe "enabled") "context" $) | nindent 12 }}
           {{- end }}
           {{- if .Values.app.livenessProbe.enabled }}
-          livenessProbe:
-            httpGet:
-              path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.livenessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.livenessProbe.path }}{{ end }}"
-              port: 8000
-            failureThreshold: {{ .Values.app.livenessProbe.failureThreshold }}
-            initialDelaySeconds: {{ .Values.app.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.app.livenessProbe.periodSeconds }}
-            successThreshold: {{ .Values.app.livenessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.app.livenessProbe.timeoutSeconds }}
+          livenessProbe: {{- include "tplvalues.render" (dict "value" (omit .Values.app.livenessProbe "enabled") "context" $) | nindent 12 }}
           {{- end }}
           lifecycle:
             preStop:
@@ -278,28 +264,10 @@ spec:
               exec:
                 command: [ '/bin/sh', '-c', 'sleep {{ .Values.app.preStopDelaySeconds }}' ]
           {{- if .Values.app.nginx.readinessProbe.enabled }}
-          readinessProbe:
-            httpGet:
-              path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.nginx.readinessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.nginx.readinessProbe.path }}{{ end }}"
-              port: 8085
-              scheme: {{ .Values.app.nginx.readinessProbe.scheme | default "HTTP" }}
-            failureThreshold: {{ .Values.app.nginx.readinessProbe.failureThreshold }}
-            initialDelaySeconds: {{ .Values.app.nginx.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.app.nginx.readinessProbe.periodSeconds }}
-            successThreshold: {{ .Values.app.nginx.readinessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.app.nginx.readinessProbe.timeoutSeconds }}
+          readinessProbe: {{- include "tplvalues.render" (dict "value" (omit .Values.app.nginx.readinessProbe "enabled") "context" $) | nindent 12 }}
           {{- end }}
           {{- if .Values.app.nginx.livenessProbe.enabled }}
-          livenessProbe:
-            httpGet:
-              path: "{{ if eq .Values.app.contextPath "/" }}{{ .Values.app.nginx.livenessProbe.path }}{{ else }}{{ .Values.app.contextPath }}{{ .Values.app.nginx.livenessProbe.path }}{{ end }}"
-              port: 8085
-              scheme: {{ .Values.app.nginx.livenessProbe.scheme | default "HTTP" }}
-            failureThreshold: {{ .Values.app.nginx.livenessProbe.failureThreshold }}
-            initialDelaySeconds: {{ .Values.app.nginx.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.app.nginx.livenessProbe.periodSeconds }}
-            successThreshold: {{ .Values.app.nginx.livenessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.app.nginx.livenessProbe.timeoutSeconds }}
+          livenessProbe: {{- include "tplvalues.render" (dict "value" (omit .Values.app.nginx.livenessProbe "enabled") "context" $) | nindent 12 }}
           {{- end }}
           resources:
             {{- toYaml .Values.app.nginx.resources | nindent 12 }}
@@ -326,26 +294,10 @@ spec:
           resources: {{- toYaml .Values.metrics.uwsgiExporter.resources | nindent 12 }}
           {{- end }}
           {{- if .Values.metrics.uwsgiExporter.readinessProbe.enabled }}
-          readinessProbe:
-            httpGet:
-              path: "{{ .Values.metrics.uwsgiExporter.readinessProbe.httpGet.path }}"
-              port: "{{ .Values.metrics.uwsgiExporter.readinessProbe.httpGet.port }}"
-            failureThreshold: {{ .Values.metrics.uwsgiExporter.readinessProbe.failureThreshold }}
-            initialDelaySeconds: {{ .Values.metrics.uwsgiExporter.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.metrics.uwsgiExporter.readinessProbe.periodSeconds }}
-            successThreshold: {{ .Values.metrics.uwsgiExporter.readinessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.metrics.uwsgiExporter.readinessProbe.timeoutSeconds }}
+          readinessProbe: {{- include "tplvalues.render" (dict "value" (omit .Values.metrics.uwsgiExporter.readinessProbe "enabled") "context" $) | nindent 12 }}
           {{- end }}
           {{- if .Values.metrics.uwsgiExporter.livenessProbe.enabled }}
-          livenessProbe:
-            httpGet:
-              path: "{{ .Values.metrics.uwsgiExporter.livenessProbe.httpGet.path }}"
-              port: "{{ .Values.metrics.uwsgiExporter.livenessProbe.httpGet.port }}"
-            failureThreshold: {{ .Values.metrics.uwsgiExporter.livenessProbe.failureThreshold }}
-            initialDelaySeconds: {{ .Values.metrics.uwsgiExporter.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.metrics.uwsgiExporter.livenessProbe.periodSeconds }}
-            successThreshold: {{ .Values.metrics.uwsgiExporter.livenessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.metrics.uwsgiExporter.livenessProbe.timeoutSeconds }}
+          livenessProbe: {{- include "tplvalues.render" (dict "value" (omit .Values.metrics.uwsgiExporter.livenessProbe "enabled") "context" $) | nindent 12 }}
           {{- end }}
           ports:
             - name: "uwsgimetrics"
@@ -391,13 +343,13 @@ spec:
         {{- if .Values.global.pgConfig.ssl.pgSslSecretName }}
         - name: pg-ssl-certs
           secret:
-            secretName: {{ include "render-values" ( dict "value" .Values.global.pgConfig.ssl.pgSslSecretName "context" $) }}
+            secretName: {{ include "tplvalues.render" ( dict "value" .Values.global.pgConfig.ssl.pgSslSecretName "context" $) }}
             defaultMode: 0640
         {{- end }}
         {{- if .Values.global.redisConfig.ssl.redisSslSecretName }}
         - name: redis-ssl-certs
           secret:
-            secretName: {{ include "render-values" ( dict "value" .Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
+            secretName: {{ include "tplvalues.render" ( dict "value" .Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
             defaultMode: 0640
         {{- end }}
         {{- if .Values.app.extraVolumes -}}

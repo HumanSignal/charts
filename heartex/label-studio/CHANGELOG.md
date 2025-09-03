@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.11.1
+- Prepare for Bitnami's changes in images catalog: https://github.com/bitnami/charts/issues/35164
+- Upgrade pgsql from 13.15.0 to 13.18.0
+
+## 1.11.0
+- Refactored readinessProbe and livenessProbe to accept full Kubernetes manifest objects instead of field mappings.
+- Removed duplicate render-values template function.
+- Updated health and readiness probe configurations for both app and nginx containers.
+
+## 1.10.1
+- Fix migraiton job to avoid accidental concurrency and reruns on failure.
+- Fix validation for deprecated feature flags in a format fflag-.
+
+## 1.10.0
+- Added an optional migration job feature (supported only in GitOps and Helm) to support deployment workflows.
+
 ## 1.9.15
 - Enterprise: add rqworker support for HPA scaling using KEDA metrics.
 

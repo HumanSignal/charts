@@ -38,6 +38,7 @@ Due to gotpl scoping, we can't make use of `range`, so we have to add action lin
 {{- $messages = append $messages (include "ls.checkConfig.s3Config" .) -}}
 {{- $messages = append $messages (include "ls.checkConfig.featureFlagsFFprefix" .) -}}
 {{- $messages = append $messages (include "ls.checkConfig.pGandRedisCIonly" .) -}}
+{{- $messages = append $messages (include "ls.checkConfig.migrationJobCI" .) -}}
 
 {{- $messages = append $messages (include "lse.checkConfig.redisHost" .) -}}
 {{- $messages = append $messages (include "lse.checkConfig.redisSslscheme" .) -}}
@@ -171,13 +172,13 @@ Label Studio:
 {{- end -}}
 {{/* END ls.checkConfig.gcsConfig */}}
 
-{{/* Ensure that feature flags has ff_ or fflag_ prefix */}}
+{{/* Ensure that feature flags has ff_, fflag_, or fflag- (deprecated) prefix */}}
 {{- define "ls.checkConfig.featureFlagsFFprefix" -}}
 {{- if .Values.global.featureFlags -}}
 {{- range $key, $value := .Values.global.featureFlags -}}
-{{- if and (not (hasPrefix "ff_" (printf "%s" $key))) (not (hasPrefix "fflag_" (printf "%s" $key))) }}
+{{- if and (not (hasPrefix "ff_" (printf "%s" $key))) (not (hasPrefix "fflag_" (printf "%s" $key))) (not (hasPrefix "fflag-" (printf "%s" $key))) }}
 Label Studio:
-  Feature Flags: flags should starts from `ff_` or `fflag_` in lower case. Please check spelling in `.Values.global.featureFlags`
+  Feature Flags: flags should start with `ff_`, `fflag_`, or `fflag-`(deprecated) in lower case. Please check spelling in `.Values.global.featureFlags`
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -205,3 +206,12 @@ Label Studio Enterprise:
 {{- end -}}
 {{- end -}}
 {{/* END ls.checkConfig.ensureLicense */}}
+
+{{/* Ensure that migrationJob.enabled cannot be true when ci is true */}}
+{{- define "ls.checkConfig.migrationJobCI" -}}
+{{- if and .Values.migrationJob.enabled .Values.ci -}}
+Label Studio:
+  migrationJob: `migrationJob.enabled` cannot be set to `true` when `.Values.ci` is `true`. PostgreSQL should be provisioned for the migration job, which is not the case in CI mode.
+{{- end -}}
+{{- end -}}
+{{/* END ls.checkConfig.migrationJobCI */}}
