@@ -12,7 +12,9 @@ metadata:
     {{- toYaml .Values.app.labels | nindent 4 }}
     {{- end }}
 spec:
+  {{- if .Values.app.replicas }}
   replicas: {{ .Values.app.replicas }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "ls-app.selectorLabels" . | nindent 6 }}

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.3
+- Make the app's replicas setting optional.
+
 ## 1.11.2
 - Running RQ workers with the scheduler component.
 
