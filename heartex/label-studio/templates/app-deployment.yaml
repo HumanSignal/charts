@@ -12,7 +12,7 @@ metadata:
     {{- toYaml .Values.app.labels | nindent 4 }}
     {{- end }}
 spec:
-  {{- if .Values.app.replicas }}
+  {{- if ne .Values.app.replicas nil }}
   replicas: {{ .Values.app.replicas }}
   {{- end }}
   selector:

@@ -1,6 +1,9 @@
 # Changelog
 
 ## 1.11.3
+- Fixed to make it possible to set app's replicas to 0 again.
+
+## 1.11.3
 - Make the app's replicas setting optional.
 
 ## 1.11.2
