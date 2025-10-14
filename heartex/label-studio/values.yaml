@@ -241,7 +241,7 @@ app:
       port: 8000
       scheme: HTTP
     # When a probe fails, Kubernetes will try failureThreshold times before giving up
-    failureThreshold: 1
+    failureThreshold: 3
     # Number of seconds after the container has started before probe initiates
     initialDelaySeconds: 60
     # How often (in seconds) to perform the probe
@@ -249,7 +249,7 @@ app:
     # Minimum consecutive successes for the probe to be considered successful after having failed
     successThreshold: 1
     # Number of seconds after which the probe times out.
-    timeoutSeconds: 1
+    timeoutSeconds: 3
   # Used to enable a livenessProbe for the pods
   livenessProbe:
     enabled: true

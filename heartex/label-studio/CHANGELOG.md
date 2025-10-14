@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.5
+- Loosen the readiness check thresholds in the app to support smaller environments.
+
 ## 1.11.3
 - Fixed to make it possible to set app's replicas to 0 again.
 
