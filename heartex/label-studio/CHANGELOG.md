@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.6
+- Update `appVersion` to `1.16.0`.
+
 ## 1.11.5
 - Loosen the readiness check thresholds in the app to support smaller environments.
 
