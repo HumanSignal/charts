@@ -656,7 +656,27 @@ postgresql:
   architecture: standalone
   image:
     repository: bitnamilegacy/postgresql
-    tag: 13.18.0
+    tag: 17.6.0
+## Uncomment next block to perform pg_upgrade
+#  primary:
+#    initContainers:
+#      - name: upgrade-postgres
+#        image: pgautoupgrade/pgautoupgrade:17-bookworm
+#        securityContext:
+#          runAsUser: 0
+#        volumeMounts:
+#          - mountPath: /bitnami/postgresql
+#            name: data
+#        env:
+#          - name: PGAUTO_ONESHOT
+#            value: "yes"
+#          - name: POSTGRES_DB
+#            value: "labelstudio"
+#          - name: PGDATA
+#            value: /bitnami/postgresql/data
+#          # The value for POSTGRES_PASSWORD does not really matter, as it's never used (but required) in one-shot mode. Leave it as-is.
+#          - name: POSTGRES_PASSWORD
+#            value: password
   auth:
     username: "labelstudio"
     password: "labelstudio"

@@ -1,5 +1,48 @@
 # Changelog
 
+## 2.0.0
+
+## ⚠️ Breaking Changes
+
+### PostgreSQL 13 → 17 Major Version Upgrade
+
+This release upgrades the PostgreSQL dependency from version 13 to version 17. This is a major version upgrade that requires careful planning and execution.
+
+#### Important Considerations
+
+- **Database downtime required**: Expect 5-30 minutes of downtime depending on your database size
+- **Backup is critical**: Create a PVC snapshot or database backup before upgrading
+- **Semi-automatic migration**: The upgrade is handled by the [pgautoupgrade](https://github.com/pgautoupgrade/docker-pgautoupgrade) tool, which runs as an initContainer before the PostgreSQL pod starts
+- **No automatic rollback**: If the upgrade fails, you must restore from your backup
+- **Testing recommended**: Strongly recommended to test the upgrade process in a staging environment first
+
+#### Configuration
+
+Add the following initContainer configuration to your values or find an example in [values.yaml](values.yaml) in commented section `postgresql.primary.initContainers`:
+```yaml
+postgresql:
+  primary:
+    initContainers:
+      - name: upgrade-postgres
+        image: pgautoupgrade/pgautoupgrade:17-bookworm
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+          - mountPath: /bitnami/postgresql
+            name: data
+        env:
+          - name: PGAUTO_ONESHOT
+            value: "yes"
+          - name: POSTGRES_DB
+            value: "labelstudio"
+          - name: PGDATA
+            value: /bitnami/postgresql/data
+          # The value for POSTGRES_PASSWORD does not really matter, as it's never used (but required in one-shot mode. Leave it as-is.
+          - name: POSTGRES_PASSWORD
+            value: password
+```
+Remove this initContainer entry after upgrade.
+
 ## 1.11.6
 - Update `appVersion` to `1.16.0`.
 
