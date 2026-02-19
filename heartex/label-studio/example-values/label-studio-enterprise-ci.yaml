@@ -1,3 +1,5 @@
+ci: true # Not recommended for production
+
 global:
   imagePullSecrets:
     - name: heartex-pull-key
@@ -5,22 +7,6 @@ global:
   image:
     repository: heartexlabs/label-studio-enterprise
     tag: "" # Get the latest version from https://docs.humansignal.com/guide/release_notes
-
-  pgConfig:
-    # PostgreSql instance hostname
-    host: "postgresql"
-    # PostgreSql database name
-    dbName: "my-database"
-    # PostgreSql username
-    userName: "postgres"
-    # PostgreSql password secret coordinates within Kubernetes secrets
-    password:
-      secretName: "postgresql"
-      secretKey: "postgresql-password"
-
-  redisConfig:
-    # Redis connection string
-    host: redis://host:port/db
 
   # extraEnvironmentVars is a list of extra environment variables to set in the deployment, empty by default
   extraEnvironmentVars: {}
@@ -69,4 +55,10 @@ rqworker:
       replicas: 2
 
 postgresql:
-  enabled: false
+  enabled: true
+  primary:
+    persistence:
+      enabled: true
+
+redis:
+  enabled: true
