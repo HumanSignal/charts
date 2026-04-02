@@ -37,6 +37,9 @@ spec:
       tolerations:
         {{- toYaml .Values.app.tolerations | nindent 8 }}
       {{- end }}
+      {{- if .Values.app.hostAliases }}
+      hostAliases: {{- include "tplvalues.render" (dict "value" .Values.app.hostAliases "context" $) | nindent 8 }}
+      {{- end }}
       {{- if .Values.app.podSecurityContext.enabled }}
       securityContext: {{- omit .Values.app.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}

@@ -115,6 +115,9 @@ spec:
           tolerations:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if $.Values.app.hostAliases }}
+          hostAliases: {{- include "tplvalues.render" (dict "value" $.Values.app.hostAliases "context" $) | nindent 12 }}
+          {{- end }}
           volumes:
             - name: data
               {{- if and $.Values.global.persistence.enabled (eq $.Values.global.persistence.type "volume") }}

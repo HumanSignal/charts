@@ -233,6 +233,11 @@ app:
   # in a PodSpec.
   tolerations: []
 
+  ## @param app.hostAliases Set pod host aliases
+  ## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+  ##
+  hostAliases: []
+
   # Used to define custom readinessProbe settings
   readinessProbe:
     enabled: true
@@ -545,6 +550,11 @@ rqworker:
   # Provide either a multi-line string or YAML matching the Toleration array
   # in a PodSpec.
   tolerations: []
+
+  ## @param rqworker.hostAliases Set pod host aliases
+  ## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+  ##
+  hostAliases: []
 
   # Used to define custom readinessProbe settings
   readinessProbe:

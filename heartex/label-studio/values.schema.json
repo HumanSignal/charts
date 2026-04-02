@@ -508,6 +508,9 @@
         "tolerations": {
           "type": "array"
         },
+        "hostAliases": {
+          "type": "array"
+        },
         "readinessProbe": {
           "type": "object"
         },
@@ -1098,6 +1101,9 @@
           "additionalProperties": true
         },
         "tolerations": {
+          "type": "array"
+        },
+        "hostAliases": {
           "type": "array"
         },
         "readinessProbe": {
