@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.3
+- Fix indentation in cronjob Helm template
+
+## 2.0.2
+- Add support for overriding hostAliases
+
 ## 2.0.0
 
 ## ⚠️ Breaking Changes
