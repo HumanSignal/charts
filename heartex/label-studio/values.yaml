@@ -188,6 +188,56 @@ app:
       failureThreshold: 1
       successThreshold: 1
 
+  streamer:
+    ## @param app.streamer.enabled Enable the streamer sidecar container
+    ##
+    enabled: false
+    ## @param app.streamer.args Override default container args for the streamer container
+    ##
+    args:
+      - "label-studio-streamer"
+    ## @param app.streamer.extraEnvironmentVars Extra environment variables for the streamer container
+    ##
+    extraEnvironmentVars: {}
+    ## @param app.streamer.extraEnvironmentSecrets Extra environment variables sourced from secrets for the streamer container
+    ## e.g:
+    ## extraEnvironmentSecrets:
+    ##   STREAMER_TOKEN:
+    ##     secretName: streamer-secret
+    ##     secretKey: token
+    ##
+    extraEnvironmentSecrets: {}
+    resources:
+      requests: {}
+        ## Example
+        ## memory: 128Mi
+        ## cpu: 100m
+      limits: {}
+        ## Example:
+        ## memory: 512Mi
+        ## cpu: 500m
+    livenessProbe:
+      enabled: false
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 3
+      failureThreshold: 3
+      successThreshold: 1
+    readinessProbe:
+      enabled: false
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 3
+      failureThreshold: 1
+      successThreshold: 1
+    ## @param app.streamer.preStopDelaySeconds Seconds the preStop hook waits before the streamer container is stopped
+    ##
+    preStopDelaySeconds: 15
+
   # extraEnvironmentVars is a list of extra environment variables to set in the
   # app deployment.
   extraEnvironmentVars: { }

@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.4
+- Add sidecar for streamer service(wip)
+
 ## 2.0.3
 - Fix indentation in cronjob Helm template
 

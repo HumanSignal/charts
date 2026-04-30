@@ -453,6 +453,66 @@
           },
           "additionalProperties": false
         },
+        "streamer": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "args": {
+              "type": "array",
+              "additionalProperties": true
+            },
+            "resources": {
+              "type": "object",
+              "properties": {
+                "requests": {
+                  "type": "object",
+                  "properties": {
+                    "memory": {
+                      "type": "string"
+                    },
+                    "cpu": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "limits": {
+                  "type": "object",
+                  "properties": {
+                    "memory": {
+                      "type": "string"
+                    },
+                    "cpu": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "livenessProbe": {
+              "type": "object"
+            },
+            "readinessProbe": {
+              "type": "object"
+            },
+            "extraEnvironmentVars": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "extraEnvironmentSecrets": {
+              "type": "object",
+              "additionalProperties": true
+            },
+            "preStopDelaySeconds": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        },
         "extraEnvironmentVars": {
           "type": "object",
           "additionalProperties": true
