@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.5
+- Fix ServiceMonitor manifest: move `interval`, `scrapeTimeout`, `honorLabels`, `metricRelabelings`, and `relabelings` from the spec level to each endpoint, where the Prometheus Operator schema expects them.
+
 ## 2.0.4
 - Add sidecar for streamer service(wip)
 
