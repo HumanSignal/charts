@@ -62,24 +62,9 @@ spec:
           resources:
             {{- toYaml .Values.app.initContainer.resources | nindent 12 }}
           env:
-            {{- include "ls.common.envs" $ | nindent 12 }}
+            {{- include "ls.container.envs" (dict "context" $ "layers" (list .Values.app .Values.migrationJob)) | nindent 12 }}
             - name: INIT_CONTAINER
               value: "true"
-            {{- if .Values.app.extraEnvironmentVars -}}
-            {{- range $key, $value := .Values.app.extraEnvironmentVars }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              value: {{ $value | quote }}
-            {{- end }}
-            {{- end }}
-            {{- if .Values.app.extraEnvironmentSecrets -}}
-            {{- range $key, $value := .Values.app.extraEnvironmentSecrets }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $value.secretName }}
-                  key: {{ $value.secretKey }}
-            {{- end }}
-            {{- end }}
           volumeMounts:
             - name: data
               mountPath: /label-studio/data
@@ -113,7 +98,7 @@ spec:
           securityContext: {{- omit $.Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
-            {{- include "ls.common.envs" $ | nindent 12 }}
+            {{- include "ls.container.envs" (dict "context" $ "layers" (list $.Values.app $.Values.migrationJob .)) | nindent 12 }}
             - name: INIT_CONTAINER
               value: "true"
           volumeMounts:

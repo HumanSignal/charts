@@ -59,7 +59,7 @@ spec:
           securityContext: {{- omit $.Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
-            {{- include "ls.common.envs" $ | nindent 12 }}
+            {{- include "ls.container.envs" (dict "context" $ "layers" (list .)) | nindent 12 }}
             - name: INIT_CONTAINER
               value: "true"
           volumeMounts:
@@ -93,7 +93,7 @@ spec:
           resources:
             {{- toYaml .Values.app.initContainer.resources | nindent 12 }}
           env:
-            {{- include "ls.common.envs" . | nindent 12 }}
+            {{- include "ls.container.envs" (dict "context" $ "layers" (list .Values.app .Values.migrationJob)) | nindent 12 }}
             - name: INIT_CONTAINER
               value: "true"
           volumeMounts:
@@ -130,7 +130,7 @@ spec:
           securityContext: {{- omit $.Values.app.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
-            {{- include "ls.common.envs" $ | nindent 12 }}
+            {{- include "ls.container.envs" (dict "context" $ "layers" (list $.Values.app .)) | nindent 12 }}
             - name: INIT_CONTAINER
               value: "true"
           volumeMounts:
@@ -167,22 +167,7 @@ spec:
           env:
             - name: SKIP_DB_MIGRATIONS
               value: "true"
-            {{- include "ls.common.envs" . | nindent 12 }}
-            {{- if .Values.app.extraEnvironmentVars -}}
-            {{- range $key, $value := .Values.app.extraEnvironmentVars }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              value: {{ $value | quote }}
-            {{- end }}
-            {{- end }}
-            {{- if .Values.app.extraEnvironmentSecrets -}}
-            {{- range $key, $value := .Values.app.extraEnvironmentSecrets }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $value.secretName }}
-                  key: {{ $value.secretKey }}
-            {{- end }}
-            {{- end }}
+            {{- include "ls.container.envs" (dict "context" $ "layers" (list .Values.app)) | nindent 12 }}
             {{- if or $.Values.app.cmdWrapper $.Values.global.cmdWrapper }}
             - name: CMD_WRAPPER
               value: {{ coalesce $.Values.app.cmdWrapper $.Values.global.cmdWrapper }}
@@ -241,22 +226,7 @@ spec:
           env:
             - name: APP_HOST
               value: localhost
-            {{- include "ls.common.envs" . | nindent 12}}
-            {{- if .Values.app.nginx.extraEnvironmentVars -}}
-            {{- range $key, $value := .Values.app.nginx.extraEnvironmentVars }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              value: {{ $value | quote }}
-            {{- end }}
-            {{- end }}
-            {{- if .Values.app.nginx.extraEnvironmentSecrets -}}
-            {{- range $key, $value := .Values.app.nginx.extraEnvironmentSecrets }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $value.secretName }}
-                  key: {{ $value.secretKey }}
-            {{- end }}
-            {{- end }}
+            {{- include "ls.container.envs" (dict "context" $ "layers" (list .Values.app.nginx)) | nindent 12 }}
           ports:
             - name: {{ .Values.app.service.portName }}
               containerPort: 8085
@@ -294,22 +264,7 @@ spec:
             - {{ . }}
           {{- end }}
           env:
-            {{- include "ls.common.envs" $ | nindent 12 }}
-            {{- if .Values.app.streamer.extraEnvironmentVars -}}
-            {{- range $key, $value := .Values.app.streamer.extraEnvironmentVars }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              value: {{ $value | quote }}
-            {{- end }}
-            {{- end }}
-            {{- if .Values.app.streamer.extraEnvironmentSecrets -}}
-            {{- range $key, $value := .Values.app.streamer.extraEnvironmentSecrets }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $value.secretName }}
-                  key: {{ $value.secretKey }}
-            {{- end }}
-            {{- end }}
+            {{- include "ls.container.envs" (dict "context" $ "layers" (list .Values.app.streamer)) | nindent 12 }}
           ports:
             - name: streamer
               containerPort: 8080

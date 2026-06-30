@@ -432,23 +432,37 @@ app:
 
   ## Add additional init containers to the App Deployment pod
   ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+  ## Each item may define its own `extraEnvironmentVars` / `extraEnvironmentSecrets`,
+  ## which override the shared env (e.g. POSTGRE_* from `ls.common.envs`) for that
+  ## container only.
   ## e.g:
   ## initContainers:
   ##  - name: your-image-name
   ##    image: your-image
   ##    imagePullPolicy: Always
   ##    command: ['sh', '-c', 'echo "hello world"']
+  ##    extraEnvironmentVars:
+  ##      POSTGRE_HOST: custom-db.internal
+  ##    extraEnvironmentSecrets:
+  ##      POSTGRE_PASSWORD:
+  ##        secretName: custom-db
+  ##        secretKey: password
   ##
   initContainers: [ ]
 
   ## Add additional init containers to the App Deployment pod after sql migration
   ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+  ## Each item may define its own `extraEnvironmentVars` / `extraEnvironmentSecrets`,
+  ## which override the shared env (e.g. POSTGRE_* from `ls.common.envs`) for that
+  ## container only.
   ## e.g:
   ## postMigrationInitContainers:
   ##  - name: your-image-name
   ##    image: your-image
   ##    imagePullPolicy: Always
   ##    command: ['sh', '-c', 'echo "hello world"']
+  ##    extraEnvironmentVars:
+  ##      POSTGRE_HOST: custom-db.internal
   ##
   postMigrationInitContainers: [ ]
 
@@ -474,6 +488,21 @@ migrationJob:
   #  "argocd.argoproj.io/hook": PreSync
   #  "argocd.argoproj.io/hook-delete-policy": BeforeHookCreation
   annotations: {}
+
+  # extraEnvironmentVars is a map of extra environment variables to set on the
+  # migration container. These are layered on top of `app.extraEnvironmentVars`
+  # and take precedence over both it and the shared env (e.g. POSTGRE_* from
+  # `global`/`ls.common.envs`), so you can point migrations at a different
+  # database than the running app.
+  extraEnvironmentVars: {}
+  # POSTGRE_HOST: my-migration-db.internal
+
+  # extraEnvironmentSecrets is a map of extra environment variables sourced from
+  # secrets on the migration container. Same precedence as extraEnvironmentVars.
+  extraEnvironmentSecrets: {}
+  # POSTGRE_PASSWORD:
+  #   secretName: my-migration-db
+  #   secretKey: password
 
 rqworker:
   enabled: true

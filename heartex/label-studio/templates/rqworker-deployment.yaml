@@ -59,22 +59,7 @@ spec:
           securityContext: {{- omit $.Values.rqworker.containerSecurityContext "enabled" | toYaml | nindent 12 }}
           {{- end }}
           env:
-            {{- include "ls.common.envs" $ | nindent 12}}
-            {{- if $.Values.rqworker.extraEnvironmentVars -}}
-            {{- range $key, $value := $.Values.rqworker.extraEnvironmentVars }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              value: {{ $value | quote }}
-            {{- end }}
-            {{- end }}
-            {{- if $.Values.rqworker.extraEnvironmentSecrets -}}
-            {{- range $key, $value := $.Values.rqworker.extraEnvironmentSecrets }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $value.secretName }}
-                  key: {{ $value.secretKey }}
-            {{- end }}
-            {{- end }}
+            {{- include "ls.container.envs" (dict "context" $ "layers" (list $.Values.rqworker)) | nindent 12 }}
             {{- if or $.Values.rqworker.cmdWrapper $.Values.global.cmdWrapper }}
             - name: CMD_WRAPPER
               value: {{ coalesce $.Values.rqworker.cmdWrapper $.Values.global.cmdWrapper }}

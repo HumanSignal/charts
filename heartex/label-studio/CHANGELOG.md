@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.6
+- Allow per-component environment variable overrides on top of `ls.common.envs`. Each `extraEnvironmentVars`/`extraEnvironmentSecrets` value now replaces the shared value instead of leaving a duplicate env entry, with the per-component value taking precedence.
+
 ## 2.0.5
 - Fix ServiceMonitor manifest: move `interval`, `scrapeTimeout`, `honorLabels`, `metricRelabelings`, and `relabelings` from the spec level to each endpoint, where the Prometheus Operator schema expects them.
 

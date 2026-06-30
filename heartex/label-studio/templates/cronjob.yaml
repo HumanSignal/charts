@@ -49,22 +49,7 @@ spec:
               env:
                 - name: SKIP_DB_MIGRATIONS
                   value: "true"
-                {{- include "ls.common.envs" $ | nindent 16 }}
-                {{- if $val.extraEnvironmentVars -}}
-                {{- range $key, $value := $val.extraEnvironmentVars }}
-                - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-                  value: {{ $value | quote }}
-                {{- end }}
-                {{- end }}
-                {{- if $val.extraEnvironmentSecrets -}}
-                {{- range $key, $value := $val.extraEnvironmentSecrets }}
-                - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-                  valueFrom:
-                    secretKeyRef:
-                      name: {{ $value.secretName }}
-                      key: {{ $value.secretKey }}
-                {{- end }}
-                {{- end }}
+                {{- include "ls.container.envs" (dict "context" $ "layers" (list $val)) | nindent 16 }}
               {{- if $val.resources }}
               resources:
                 {{- toYaml $val.resources | nindent 16 }}

@@ -530,6 +530,55 @@ Set's common environment variables
 {{- end -}}
 
 
+{{/*
+Render a container's environment variables.
+
+Starts from the shared variables in "ls.common.envs", then applies one or more
+per-component override layers supplied via "layers" (a list of values maps, each
+of which may define `extraEnvironmentVars` and/or `extraEnvironmentSecrets`).
+Precedence, lowest to highest:
+  ls.common.envs  <  earlier layers  <  later layers  <  the optional "extra" list.
+The output contains exactly one entry per variable name, so a per-component
+override (e.g. POSTGRE_HOST in rqworker.extraEnvironmentVars) replaces the common
+value instead of leaving a duplicate env entry.
+
+Usage:
+  {{- include "ls.container.envs" (dict "context" $ "layers" (list $.Values.rqworker)) | nindent 12 }}
+  {{- include "ls.container.envs" (dict "context" $ "layers" (list .Values.app .Values.migrationJob)) | nindent 12 }}
+*/}}
+{{- define "ls.container.envs" -}}
+{{- $ctx := .context -}}
+{{- $overrides := list -}}
+{{- range $layer := (.layers | default (list)) -}}
+{{- range $key, $value := ($layer.extraEnvironmentVars | default (dict)) -}}
+{{- $overrides = append $overrides (dict "name" (printf "%s" $key | replace "." "_" | upper) "value" (toString $value)) -}}
+{{- end -}}
+{{- range $key, $value := ($layer.extraEnvironmentSecrets | default (dict)) -}}
+{{- if and $value.secretName $value.secretKey -}}
+{{- $overrides = append $overrides (dict "name" (printf "%s" $key | replace "." "_" | upper) "valueFrom" (dict "secretKeyRef" (dict "name" $value.secretName "key" $value.secretKey))) -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- range $env := (.extra | default (list)) -}}
+{{- $overrides = append $overrides $env -}}
+{{- end -}}
+{{- $byName := dict -}}
+{{- range $env := $overrides -}}{{- $_ := set $byName $env.name $env -}}{{- end -}}
+{{- $result := list -}}
+{{- range $env := (include "ls.common.envs" $ctx | fromYamlArray) -}}
+{{- if not (hasKey $byName $env.name) -}}{{- $result = append $result $env -}}{{- end -}}
+{{- end -}}
+{{- $seen := dict -}}
+{{- range $env := $overrides -}}
+{{- if not (hasKey $seen $env.name) -}}
+{{- $result = append $result (get $byName $env.name) -}}
+{{- $_ := set $seen $env.name true -}}
+{{- end -}}
+{{- end -}}
+{{- toYaml $result -}}
+{{- end -}}
+
+
 {{- define "capabilities.cronjob.apiVersion" -}}
 {{- if semverCompare "<1.21-0" .Capabilities.KubeVersion.Version -}}
 {{- print "batch/v1beta1" -}}
