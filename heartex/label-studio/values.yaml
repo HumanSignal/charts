@@ -188,6 +188,29 @@ app:
       failureThreshold: 1
       successThreshold: 1
 
+    metrics:
+      enabled: false
+      image:
+        registry: "docker.io"
+        repository: "nginx/nginx-prometheus-exporter"
+        tag: "1.5.1"
+        pullPolicy: "IfNotPresent"
+
+      containerSecurityContext:
+        enabled: true
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsUser: 1001
+
+      resources:
+        requests: { }
+        ## Example:
+        #        cpu: "100m"
+        #        memory: "64Mi"
+        limits: { }
+        #        cpu: "200m"
+        #        memory: "128Mi"
+
   streamer:
     ## @param app.streamer.enabled Enable the streamer sidecar container
     ##
@@ -236,7 +259,7 @@ app:
       successThreshold: 1
     ## @param app.streamer.preStopDelaySeconds Seconds the preStop hook waits before the streamer container is stopped
     ##
-    preStopDelaySeconds: 15
+    preStopDelaySeconds: 90
 
   # extraEnvironmentVars is a list of extra environment variables to set in the
   # app deployment.
@@ -296,15 +319,25 @@ app:
       port: 8000
       scheme: HTTP
     # When a probe fails, Kubernetes will try failureThreshold times before giving up
-    failureThreshold: 3
-    # Number of seconds after the container has started before probe initiates
-    initialDelaySeconds: 60
+    failureThreshold: 2
     # How often (in seconds) to perform the probe
-    periodSeconds: 5
+    periodSeconds: 2
     # Minimum consecutive successes for the probe to be considered successful after having failed
-    successThreshold: 1
+    successThreshold: 2
     # Number of seconds after which the probe times out.
     timeoutSeconds: 3
+  # Used to define custom startupProbe settings. Gives the container time to
+  # start before readiness/liveness probes begin, instead of a fixed initialDelaySeconds.
+  startupProbe:
+    enabled: true
+    httpGet:
+      path: /health
+      port: 8000
+      scheme: HTTP
+    # How often (in seconds) to perform the probe
+    periodSeconds: 2
+    # When a probe fails, Kubernetes will try failureThreshold times before giving up
+    failureThreshold: 30
   # Used to enable a livenessProbe for the pods
   livenessProbe:
     enabled: true
@@ -859,25 +892,3 @@ metrics:
       limits: { }
       #        cpu: "20m"
       #        memory: "128Mi"
-
-    livenessProbe:
-      enabled: false
-      httpGet:
-        path: "/-/healthy"
-        port: "uwsgimetrics"
-      initialDelaySeconds: 2
-      periodSeconds: 10
-      timeoutSeconds: 5
-      failureThreshold: 3
-      successThreshold: 1
-
-    readinessProbe:
-      enabled: false
-      httpGet:
-        path: "/metrics"
-        port: "uwsgimetrics"
-      initialDelaySeconds: 2
-      periodSeconds: 10
-      timeoutSeconds: 5
-      failureThreshold: 3
-      successThreshold: 1

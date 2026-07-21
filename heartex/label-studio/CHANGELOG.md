@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.7
+- Add a `startupProbe` to the app container to gate readiness/liveness checks until the app has started, replacing the fixed `initialDelaySeconds` on `app.readinessProbe`.
+- Add an optional `nginx-prometheus-exporter` sidecar to the app pod, enabled via `app.nginx.metrics.enabled`. When enabled it exposes nginx metrics on port `9113` (service port `nginxmetrics`) and is scraped by the ServiceMonitor (which still requires `metrics.enabled` and `metrics.serviceMonitor.enabled`).
+- Remove liveness/readiness probes from sidecar containers.
+
 ## 2.0.6
 - Allow per-component environment variable overrides on top of `ls.common.envs`. Each `extraEnvironmentVars`/`extraEnvironmentSecrets` value now replaces the shared value instead of leaving a duplicate env entry, with the per-component value taking precedence.
 

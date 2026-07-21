@@ -27,6 +27,12 @@ spec:
       protocol: "TCP"
       name: "djangometrics"
     {{- end }}
+    {{- if .Values.app.nginx.metrics.enabled }}
+    - port: 9113
+      targetPort: "nginxmetrics"
+      protocol: "TCP"
+      name: "nginxmetrics"
+    {{- end }}
   selector:
     {{- include "ls-app.selectorLabels" . | nindent 4 }}
   sessionAffinity: {{ .Values.app.service.sessionAffinity }}
