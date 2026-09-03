@@ -1,0 +1,17 @@
+{{- if .Values.rqcron.rbac.create }}
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "ls-rqcron.fullname" . }}-role-binding
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "ls-rqcron.labels" . | nindent 4 }}
+roleRef:
+  kind: Role
+  name: {{ include "ls-rqcron.fullname" . }}-role
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "ls-rqcron.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace | quote }}
+{{- end }}

@@ -1,0 +1,175 @@
+{{- if and $.Values.enterprise.enabled $.Values.rqcron.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ls-rqcron.fullname" $ }}
+  {{- with $.Values.rqcron.deploymentAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/name: {{ include "ls-rqcron.name" $ }}
+    {{- include "ls-rqcron.labels" $ | nindent 4 }}
+    {{- if $.Values.rqcron.labels }}
+    {{- toYaml $.Values.rqcron.labels | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ $.Values.rqcron.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "ls-rqcron.name" $ }}
+      {{- include "ls-rqcron.selectorLabels" $ | nindent 6 }}
+  {{- with $.Values.rqcron.deploymentStrategy }}
+  strategy:
+  {{- toYaml . | trim | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      {{- with $.Values.rqcron.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/name: {{ include "ls-rqcron.name" $ }}
+        {{- include "ls-rqcron.selectorLabels" $ | nindent 8 }}
+        {{- if $.Values.rqcron.podLabels }}
+        {{- toYaml $.Values.rqcron.podLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with $.Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ls-rqcron.serviceAccountName" $ }}
+      {{- if $.Values.rqcron.podSecurityContext.enabled }}
+      securityContext: {{- omit $.Values.rqcron.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
+      automountServiceAccountToken: {{ $.Values.rqcron.automountServiceAccountToken }}
+      terminationGracePeriodSeconds: {{ $.Values.rqcron.terminationGracePeriodSeconds }}
+      containers:
+        - name: rqcron
+          image: "{{ $.Values.global.image.registry | default "docker.io" }}/{{ $.Values.global.image.repository }}:{{ $.Values.global.image.tag | default $.Chart.AppVersion }}"
+          args: [ "python3", "/label-studio-enterprise/label_studio_enterprise/manage.py", "rqcron", "htx.cron_config" ]
+          imagePullPolicy: {{ $.Values.global.image.pullPolicy }}
+          {{- if $.Values.rqcron.containerSecurityContext.enabled }}
+          securityContext: {{- omit $.Values.rqcron.containerSecurityContext "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          env:
+            {{- include "ls.container.envs" (dict "context" $ "layers" (list $.Values.rqcron)) | nindent 12 }}
+            {{- if or $.Values.rqcron.cmdWrapper $.Values.global.cmdWrapper }}
+            - name: CMD_WRAPPER
+              value: {{ coalesce $.Values.rqcron.cmdWrapper $.Values.global.cmdWrapper }}
+            {{- end }}
+          ports:
+            - name: service
+              containerPort: 8000
+              protocol: TCP
+          {{- if $.Values.rqcron.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ $.Values.rqcron.readinessProbe.path | quote }}
+              port: 8000
+            failureThreshold: {{ $.Values.rqcron.readinessProbe.failureThreshold }}
+            initialDelaySeconds: {{ $.Values.rqcron.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.rqcron.readinessProbe.periodSeconds }}
+            successThreshold: {{ $.Values.rqcron.readinessProbe.successThreshold }}
+            timeoutSeconds: {{ $.Values.rqcron.readinessProbe.timeoutSeconds }}
+          {{- end }}
+          {{- if $.Values.rqcron.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: {{ $.Values.rqcron.livenessProbe.path | quote }}
+              port: 8000
+            failureThreshold: {{ $.Values.rqcron.livenessProbe.failureThreshold }}
+            initialDelaySeconds: {{ $.Values.rqcron.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $.Values.rqcron.livenessProbe.periodSeconds }}
+            successThreshold: {{ $.Values.rqcron.livenessProbe.successThreshold }}
+            timeoutSeconds: {{ $.Values.rqcron.livenessProbe.timeoutSeconds }}
+          {{- end }}
+          resources:
+            {{- toYaml $.Values.rqcron.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /label-studio/data
+            {{- if and $.Values.global.persistence.enabled (eq $.Values.global.persistence.type "gcs") }}
+              {{- if or $.Values.global.persistence.config.gcs.applicationCredentialsJSON (and $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecretKey) }}
+            - name: gcs-storage-credentials
+              mountPath: /opt/heartex/secrets/gcs
+              readOnly: true
+              {{- end }}
+            {{- end }}
+            {{- if $.Values.global.pgConfig.ssl.pgSslSecretName }}
+            - name: pg-ssl-certs
+              mountPath: /opt/heartex/secrets/pg_certs
+            {{- end }}
+            {{- if $.Values.global.redisConfig.ssl.redisSslSecretName }}
+            - name: redis-ssl-certs
+              mountPath: /opt/heartex/secrets/redis_certs
+            {{- end }}
+            {{- if $.Values.rqcron.extraVolumeMounts }}
+              {{ toYaml $.Values.rqcron.extraVolumeMounts | nindent 12 }}
+            {{- end }}
+            - mountPath: /opt/heartex/instance-data/etc
+              name: opt-heartex
+            - mountPath: /tmp
+              name: tmp-dir
+      {{- with $.Values.rqcron.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if $.Values.rqcron.topologySpreadConstraints }}
+      topologySpreadConstraints: {{- include "tplvalues.render" (dict "value" $.Values.rqcron.topologySpreadConstraints "context" $) | nindent 8 }}
+      {{- end }}
+      dnsPolicy: {{ $.Values.rqcron.dnsPolicy }}
+      enableServiceLinks: {{ $.Values.rqcron.enableServiceLinks }}
+      shareProcessNamespace: {{ $.Values.rqcron.shareProcessNamespace }}
+      {{- with $.Values.rqcron.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.rqcron.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if $.Values.rqcron.hostAliases }}
+      hostAliases: {{- include "tplvalues.render" (dict "value" $.Values.rqcron.hostAliases "context" $) | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: data
+          {{- if and $.Values.global.persistence.enabled (eq $.Values.global.persistence.type "volume") }}
+          persistentVolumeClaim:
+            claimName: {{ include "ls-pvc.claimName" $ }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- if and $.Values.global.persistence.enabled (eq $.Values.global.persistence.type "gcs") }}
+        {{- if or $.Values.global.persistence.config.gcs.applicationCredentialsJSON (and $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecretKey) }}
+        - name: gcs-storage-credentials
+          secret:
+            {{- if and $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecretKey }}
+            secretName: {{ $.Values.global.persistence.config.gcs.applicationCredentialsJSONExistingSecret }}
+            {{- else }}
+            secretName: {{ include "ls-secrets.fullname" $ }}
+            {{- end }}
+        {{- end }}
+        {{- end }}
+        {{- if $.Values.global.pgConfig.ssl.pgSslSecretName }}
+        - name: pg-ssl-certs
+          secret:
+            secretName: {{ include "tplvalues.render" ( dict "value" $.Values.global.pgConfig.ssl.pgSslSecretName "context" $) }}
+            defaultMode: 0640
+        {{- end }}
+        {{- if $.Values.global.redisConfig.ssl.redisSslSecretName }}
+        - name: redis-ssl-certs
+          secret:
+            secretName: {{ include "tplvalues.render" ( dict "value" $.Values.global.redisConfig.ssl.redisSslSecretName "context" $) }}
+            defaultMode: 0640
+        {{- end }}
+        {{- if $.Values.rqcron.extraVolumes -}}
+          {{- toYaml $.Values.rqcron.extraVolumes | nindent 8 }}
+        {{- end }}
+        - name: opt-heartex
+          emptyDir: {}
+        - name: tmp-dir
+          emptyDir: {}
+{{- end }}

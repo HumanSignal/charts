@@ -1,0 +1,26 @@
+{{- if and .Values.enterprise.enabled .Values.rqcron.enabled .Values.rqcron.pdb.create -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "ls-rqcron.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "ls-rqcron.labels" . | nindent 4 }}
+    {{- if .Values.rqcron.podLabels }}
+    {{- toYaml .Values.rqcron.podLabels | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.rqcron.pdb.minAvailable }}
+  minAvailable: {{ .Values.rqcron.pdb.minAvailable }}
+  {{- end }}
+  {{- if or .Values.rqcron.pdb.maxUnavailable (not .Values.rqcron.pdb.minAvailable) }}
+  maxUnavailable: {{ .Values.rqcron.pdb.maxUnavailable | default 1 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "ls-rqcron.name" . }}
+      {{- include "ls-rqcron.selectorLabels" . | nindent 6 }}
+      {{- if .Values.rqcron.podLabels }}
+      {{- toYaml .Values.rqcron.podLabels | nindent 6 }}
+      {{- end }}
+{{- end }}

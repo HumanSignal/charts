@@ -1,0 +1,21 @@
+{{- if .Values.rqcron.rbac.create }}
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "ls-rqcron.fullname" . }}-role
+  namespace: {{ .Release.Namespace | quote }}
+  labels:
+    {{- include "ls-rqcron.labels" . | nindent 4 }}
+rules:
+  - apiGroups:
+      - security.openshift.io
+    resourceNames:
+      - nonroot
+    resources:
+      - securitycontextconstraints
+    verbs:
+      - use
+  {{- if .Values.rqcron.rbac.rules -}}
+    {{- toYaml .Values.rqcron.rbac.rules | nindent 2 }}
+  {{- end }}
+{{- end }}

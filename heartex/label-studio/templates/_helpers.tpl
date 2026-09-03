@@ -7,6 +7,9 @@ Expand the name
 {{- define "ls-rqworker.name" -}}
 {{- default "ls-rqworker" .Values.rqworker.NameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
+{{- define "ls-rqcron.name" -}}
+{{- default "ls-rqcron" .Values.rqcron.NameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
 {{- define "ls-pvc.name" -}}
 {{- "ls-pvc" | trunc 63 | trimSuffix "-" }}
 {{- end }}
@@ -61,6 +64,19 @@ If release name contains chart name it will be used as a full name.
 {{- .Values.rqworker.FullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- $name := default "ls-rqworker" .Values.rqworker.FullnameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "ls-rqcron.fullname" -}}
+{{- if .Values.rqcron.FullnameOverride }}
+{{- .Values.rqcron.FullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default "ls-rqcron" .Values.rqcron.FullnameOverride }}
 {{- if contains $name .Release.Name }}
 {{- .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -184,6 +200,26 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Common labels for ls-rqcron
+*/}}
+{{- define "ls-rqcron.labels" -}}
+helm.sh/chart: {{ include "ls.chart" . }}
+{{ include "ls-rqcron.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels for ls-rqcron
+*/}}
+{{- define "ls-rqcron.selectorLabels" -}}
+app.kubernetes.io/part-of: label-studio
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Common labels for ls-cronjob
 */}}
 {{- define "ls-cronjob.labels" -}}
@@ -222,6 +258,17 @@ Create the name of the rqworker service account to use
 {{- default (include "ls-rqworker.fullname" .) .Values.rqworker.serviceAccount.name }}
 {{- else }}
 {{- default "rqworker" .Values.rqworker.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+{{/*
+Create the name of the rqcron service account to use
+*/}}
+{{- define "ls-rqcron.serviceAccountName" -}}
+{{- if .Values.rqcron.serviceAccount.create }}
+{{- default (include "ls-rqcron.fullname" .) .Values.rqcron.serviceAccount.name }}
+{{- else }}
+{{- default "rqcron" .Values.rqcron.serviceAccount.name }}
 {{- end }}
 {{- end }}
 

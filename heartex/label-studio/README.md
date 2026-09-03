@@ -41,6 +41,7 @@ helm install labelstudio heartex/label-studio
         - [Global parameters](#global-parameters)
         - [Label Studio Service Parameters](#label-studio-parameters)
         - [Rqworker parameters](#rqworker-parameters)
+        - [Rqcron parameters](#rqcron-parameters)
         - [Label Studio Enterprise parameters](#label-studio-enterprise-parameters)
         - [Sub-charts parameters](#sub-charts-parameters)
         - [Other parameters](#other-parameters)
@@ -407,6 +408,63 @@ Supported only in LabelStudio Enterprise
 | `rqworker.pdb.create`                            | Enable/disable a Pod Disruption Budget creation                                                                                                                  | `true`         |
 | `rqworker.pdb.minAvailable`                      | Minimum number/percentage of pods that should remain scheduled                                                                                                   | `""`           |
 | `rqworker.pdb.maxUnavailable`                    | Maximum number/percentage of pods that may be made unavailable. Defaults to `1` if both `rqworker.pdb.minAvailable` and `rqworker.pdb.maxUnavailable` are empty. | `""`           |
+
+### Rqcron parameters
+
+Supported only in LabelStudio Enterprise. Runs the `rqcron` scheduler (`manage.py rqcron htx.cron_config`) that enqueues recurring jobs into the rqworker queues. Keep it at a single replica.
+
+| Parameter                                      | Description                                                                                                                                                  | Default        |
+|------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|
+| `rqcron.enabled`                               | Enable rqcron pod                                                                                                                                            | `false`        |
+| `rqcron.NameOverride`                          | String to partially override release template name                                                                                                           | `""`           |
+| `rqcron.FullnameOverride`                      | String to fully override release template name                                                                                                               | `""`           |
+| `rqcron.replicas`                              | Rqcron replicas amount                                                                                                                                       | `1`            |
+| `rqcron.deploymentStrategy.type`               | Deployment strategy type                                                                                                                                     | `Recreate`     |
+| `rqcron.resources`                             | Rqcron resources                                                                                                                                             | `{}`           |
+| `rqcron.extraEnvironmentVars`                  | A map of extra environment variables to set                                                                                                                  | `{}`           |
+| `rqcron.extraEnvironmentSecrets`               | A map of extra environment secrets to set                                                                                                                    | `{}`           |
+| `rqcron.nodeSelector`                          | labels for pod assignment, formatted as a multi-line string or YAML map                                                                                      | `{}`           |
+| `rqcron.annotations`                           | k8s annotations to attach to the rqcron pods                                                                                                                 | `{}`           |
+| `rqcron.extraLabels`                           | extra k8s labels to attach                                                                                                                                   | `{}`           |
+| `rqcron.affinity`                              | Affinity for pod assignment                                                                                                                                  | `{}`           |
+| `rqcron.tolerations`                           | Toleration settings for pod                                                                                                                                  | `[]`           |
+| `rqcron.hostAliases`                           | Set pod host aliases                                                                                                                                         | `[]`           |
+| `rqcron.dnsPolicy`                             | Pod DNS policy                                                                                                                                               | `ClusterFirst` |
+| `rqcron.enableServiceLinks`                    | Service environment variables                                                                                                                                | `false`        |
+| `rqcron.shareProcessNamespace`                 | Enable shared process namespace in a pod                                                                                                                     | `false`        |
+| `rqcron.automountServiceAccountToken`          | Automount service account token for the server service account                                                                                               | `true`         |
+| `rqcron.readinessProbe.enabled`                | Enable redinessProbe                                                                                                                                         | `false`        |
+| `rqcron.readinessProbe.path`                   | Path for reasinessProbe                                                                                                                                      | `/version`     |
+| `rqcron.readinessProbe.failureThreshold`       | When a probe fails, Kubernetes will try failureThreshold times before giving up                                                                              | `2`            |
+| `rqcron.readinessProbe.initialDelaySeconds`    | Number of seconds after the container has started before probe initiates                                                                                     | `60`           |
+| `rqcron.readinessProbe.periodSeconds`          | How often (in seconds) to perform the probe                                                                                                                  | `5`            |
+| `rqcron.readinessProbe.successThreshold`       | Minimum consecutive successes for the probe to be considered successful after having failed                                                                  | `1`            |
+| `rqcron.readinessProbe.timeoutSeconds`         | Number of seconds after which the probe times out                                                                                                            | `3`            |
+| `rqcron.livenessProbe.enabled`                 | Enable livenessProbe                                                                                                                                         | `false`        |
+| `rqcron.livenessProbe.path`                    | Path for livenessProbe                                                                                                                                       | `/health`      |
+| `rqcron.livenessProbe.failureThreshold`        | When a probe fails, Kubernetes will try failureThreshold times before giving up                                                                              | `2`            |
+| `rqcron.livenessProbe.initialDelaySeconds`     | Number of seconds after the container has started before probe initiates                                                                                     | `60`           |
+| `rqcron.livenessProbe.periodSeconds`           | How often (in seconds) to perform the probe                                                                                                                  | `5`            |
+| `rqcron.livenessProbe.successThreshold`        | Minimum consecutive successes for the probe to be considered successful after having failed                                                                  | `1`            |
+| `rqcron.livenessProbe.timeoutSeconds`          | Number of seconds after which the probe times out                                                                                                            | `3`            |
+| `rqcron.serviceAccount.create`                 | Enable the creation of a ServiceAccount for rqcron pod                                                                                                       | `true`         |
+| `rqcron.serviceAccount.name`                   | Name of the created ServiceAccount                                                                                                                           | `""`           |
+| `rqcron.serviceAccount.annotations`            | Custom annotations for rqcron ServiceAccount                                                                                                                 | `{}`           |
+| `rqcron.podSecurityContext.enabled`            | Enable pod Security Context                                                                                                                                  | `true`         |
+| `rqcron.podSecurityContext.fsGroup`            | Group ID for the pod                                                                                                                                         | `1001`         |
+| `rqcron.containerSecurityContext.enabled`      | Enable container security context                                                                                                                            | `true`         |
+| `rqcron.containerSecurityContext.runAsUser`    | User ID for the container                                                                                                                                    | `1001`         |
+| `rqcron.containerSecurityContext.runAsNonRoot` | Avoid privelege escalation to root user                                                                                                                      | `true`         |
+| `rqcron.extraVolumes`                          | Array to add extra volumes                                                                                                                                   | `[]`           |
+| `rqcron.extraVolumeMounts`                     | Array to add extra mounts (normally used with extraVolumes)                                                                                                  | `[]`           |
+| `rqcron.topologySpreadConstraints`             | Topology Spread Constraints for pod assignment                                                                                                               | `[]`           |
+| `rqcron.rbac.create`                           | Specifies whether RBAC resources should be created for rqcron service                                                                                        | `false`        |
+| `rqcron.rbac.rules`                            | Custom RBAC rules to set for rqcron service                                                                                                                  | `[]`           |
+| `rqcron.cmdWrapper`                            | Additional commands to run prior to starting App. Useful to run wrappers before startup command                                                              | `""`           |
+| `rqcron.terminationGracePeriodSeconds`         | Seconds rqcron pod needs to terminate gracefully                                                                                                             | `30`           |
+| `rqcron.pdb.create`                            | Enable/disable a Pod Disruption Budget creation                                                                                                              | `false`        |
+| `rqcron.pdb.minAvailable`                      | Minimum number/percentage of pods that should remain scheduled                                                                                               | `""`           |
+| `rqcron.pdb.maxUnavailable`                    | Maximum number/percentage of pods that may be made unavailable. Defaults to `1` if both `rqcron.pdb.minAvailable` and `rqcron.pdb.maxUnavailable` are empty. | `""`           |
 
 ### Label Studio Enterprise parameters
 

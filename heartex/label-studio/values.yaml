@@ -760,6 +760,179 @@ rqworker:
   # Seconds rqworker pod needs to terminate gracefully
   terminationGracePeriodSeconds: 30
 
+rqcron:
+  enabled: false
+
+  NameOverride: ""
+  FullnameOverride: ""
+  labels: {}
+  podLabels: {}
+
+  # rqcron schedules recurring jobs from htx.cron_config into the rq queues.
+  # Keep a single replica: multiple schedulers would enqueue duplicate jobs.
+  replicas: 1
+
+  deploymentStrategy:
+    type: Recreate
+
+  deploymentAnnotations: { }
+
+  resources:
+    requests: {}
+      ## memory: "256Mi"
+      ## cpu: "250m"
+    limits: {}
+      ## Example:
+      ## memory: "1500Mi"
+      ## cpu: "1"
+
+  pdb:
+    create: false
+    minAvailable: ""
+    maxUnavailable: ""
+
+  # extraEnvironmentVars is a list of extra environment variables to set in the
+  # rqcron deployment.
+  extraEnvironmentVars: { }
+  # KUBERNETES_SERVICE_HOST: kubernetes.default.svc
+
+  # extraEnvironmentSecrets is a list of extra environment variables to set in the
+  # rqcron deployment.
+  extraEnvironmentSecrets: { }
+  # MYSQL_PASSWORD:
+  #   secretName: mysql_secret
+  #   secretKey: password
+
+  # nodeSelector labels for pod assignment, formatted as a multi-line string or YAML map.
+  # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+  # Example:
+  # nodeSelector:
+  #   beta.kubernetes.io/arch: amd64
+  nodeSelector: { }
+
+  topologySpreadConstraints: [ ]
+
+  dnsPolicy: "ClusterFirst"
+
+  enableServiceLinks: false
+
+  shareProcessNamespace: false
+
+  automountServiceAccountToken: true
+
+  # Extra k8s annotations to attach to the rqcron pods
+  # This can either be YAML or a YAML-formatted multi-line templated string map
+  # of the annotations to apply to the rqcron pods
+  annotations: { }
+
+  # Extra k8s labels to attach to the rqcron
+  # This should be a YAML map of the labels to apply to the rqcron
+  extraLabels: { }
+
+  affinity: { }
+
+  # Toleration Settings for rqcron pods
+  # Provide either a multi-line string or YAML matching the Toleration array
+  # in a PodSpec.
+  tolerations: []
+
+  ## @param rqcron.hostAliases Set pod host aliases
+  ## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+  ##
+  hostAliases: []
+
+  # Used to define custom readinessProbe settings
+  readinessProbe:
+    enabled: false
+    path: /version
+    # When a probe fails, Kubernetes will try failureThreshold times before giving up
+    failureThreshold: 2
+    # Number of seconds after the container has started before probe initiates
+    initialDelaySeconds: 60
+    # How often (in seconds) to perform the probe
+    periodSeconds: 5
+    # Minimum consecutive successes for the probe to be considered successful after having failed
+    successThreshold: 1
+    # Number of seconds after which the probe times out.
+    timeoutSeconds: 3
+  # Used to enable a livenessProbe for the pods
+  livenessProbe:
+    enabled: false
+    path: "/health"
+    # When a probe fails, Kubernetes will try failureThreshold times before giving up
+    failureThreshold: 2
+    # Number of seconds after the container has started before probe initiates
+    initialDelaySeconds: 60
+    # How often (in seconds) to perform the probe
+    periodSeconds: 5
+    # Minimum consecutive successes for the probe to be considered successful after having failed
+    successThreshold: 1
+    # Number of seconds after which the probe times out.
+    timeoutSeconds: 3
+
+  # Definition of the serviceAccount used to run rqcron for Label Studio Enterprise
+  serviceAccount:
+    # Specifies whether to create a service account
+    create: true
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # Extra k8s annotations for the serviceAccount definition. This can either be
+    # YAML or a YAML-formatted multi-line templated string map of the
+    # k8s annotations to apply to the serviceAccount.
+    annotations: { }
+
+  # Array to add extra volumes
+  extraVolumes: [ ]
+  # Array to add extra mounts (normally used with extraVolumes)
+  extraVolumeMounts: [ ]
+
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+  ## @param rqcron.podSecurityContext.enabled Enable pod Security Context
+  ##
+  podSecurityContext:
+    enabled: true
+    fsGroup: 1001
+
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+  ## @param containerSecurityContext.enabled Enable container Security Context
+  ## @param containerSecurityContext.runAsNonRoot Avoid running as root User
+  ## @param containerSecurityContext.allowPrivilegeEscalation Controls whether a process can gain more privileges than its parent process
+  ##
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 1001
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+
+  ## RBAC configuration
+  ##
+  rbac:
+    ## @param rbac.create Specifies whether RBAC resources should be created
+    ##
+    create: false
+    ## @param rqcron.rbac.rules Custom RBAC rules to set
+    ## e.g:
+    ## rules:
+    ##   - apiGroups:
+    ##       - ""
+    ##     resources:
+    ##       - pods
+    ##     verbs:
+    ##       - get
+    ##       - list
+    ##
+    rules: []
+
+  ## @param rqcron.cmdWrapper Additional commands to run prior to starting App. Useful to run wrappers before startup command
+  ## e.g:
+  ## cmdWrapper: "newrelic-admin run-program"
+  ##
+  cmdWrapper: ""
+
+  # Seconds rqcron pod needs to terminate gracefully
+  terminationGracePeriodSeconds: 30
+
 #  [Enterprise Only]
 enterprise:
   enabled: false

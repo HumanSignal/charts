@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.8
+- Add `rqcron` component (wip).
+- Fix example values.
+
 ## 2.0.7
 - Add a `startupProbe` to the app container to gate readiness/liveness checks until the app has started, replacing the fixed `initialDelaySeconds` on `app.readinessProbe`.
 - Add an optional `nginx-prometheus-exporter` sidecar to the app pod, enabled via `app.nginx.metrics.enabled`. When enabled it exposes nginx metrics on port `9113` (service port `nginxmetrics`) and is scraped by the ServiceMonitor (which still requires `metrics.enabled` and `metrics.serviceMonitor.enabled`).

@@ -13,7 +13,7 @@ global:
   # extraEnvironmentSecrets is a list of extra environment secrets to set in the deployment, empty by default
   extraEnvironmentSecrets: {}
 
-enterpriseLicense:
+enterprise:
   enabled: true
   enterpriseLicense:
     secretName: "lse-license"
@@ -50,8 +50,6 @@ rqworker:
     default:
       replicas: 2
     critical:
-      replicas: 2
-    all:
       replicas: 2
 
 postgresql:
