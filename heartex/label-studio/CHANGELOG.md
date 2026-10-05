@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.11
+- Mount `app.extraVolumeMounts` in the `streamer` sidecar.
+
 ## 2.0.8
 - Add `rqcron` component (wip).
 - Fix example values.
