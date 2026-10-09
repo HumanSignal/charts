@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.12
+- `rqcron` now runs `manage.py rqcron_scheduler htx.cron_config`. When `rqcron.enabled` is true, rqworkers are started without `--with-scheduler`.
+
 ## 2.0.11
 - Mount `app.extraVolumeMounts` in the `streamer` sidecar.
 

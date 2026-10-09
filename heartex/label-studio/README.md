@@ -411,7 +411,7 @@ Supported only in LabelStudio Enterprise
 
 ### Rqcron parameters
 
-Supported only in LabelStudio Enterprise. Runs the `rqcron` scheduler (`manage.py rqcron htx.cron_config`) that enqueues recurring jobs into the rqworker queues. Keep it at a single replica.
+Supported only in LabelStudio Enterprise. Runs the `rqcron` scheduler (`manage.py rqcron_scheduler htx.cron_config`) that enqueues recurring jobs into the rqworker queues. When enabled, rqworkers are started without `--with-scheduler`. Keep it at a single replica.
 
 | Parameter                                      | Description                                                                                                                                                  | Default        |
 |------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|

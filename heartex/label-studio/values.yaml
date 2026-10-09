@@ -768,7 +768,8 @@ rqcron:
   labels: {}
   podLabels: {}
 
-  # rqcron schedules recurring jobs from htx.cron_config into the rq queues.
+  # rqcron schedules recurring jobs into the rq queues from htx.cron_config (manage.py rqcron_scheduler).
+  # When enabled, rqworkers are started without --with-scheduler.
   # Keep a single replica: multiple schedulers would enqueue duplicate jobs.
   replicas: 1
 

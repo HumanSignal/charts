@@ -49,7 +49,7 @@ spec:
       containers:
         - name: rqcron
           image: "{{ $.Values.global.image.registry | default "docker.io" }}/{{ $.Values.global.image.repository }}:{{ $.Values.global.image.tag | default $.Chart.AppVersion }}"
-          args: [ "python3", "/label-studio-enterprise/label_studio_enterprise/manage.py", "rqcron", "htx.cron_config" ]
+          args: [ "python3", "/label-studio-enterprise/label_studio_enterprise/manage.py", "rqcron_scheduler", "htx.cron_config" ]
           imagePullPolicy: {{ $.Values.global.image.pullPolicy }}
           {{- if $.Values.rqcron.containerSecurityContext.enabled }}
           securityContext: {{- omit $.Values.rqcron.containerSecurityContext "enabled" | toYaml | nindent 12 }}
