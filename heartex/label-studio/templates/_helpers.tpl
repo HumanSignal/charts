@@ -85,6 +85,34 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
+{{/*
+Fullname of the olap-db (ClickHouse) sub-chart, mirrors "clickhouse.fullname" from that chart
+*/}}
+{{- define "ls-olap-db.fullname" -}}
+{{- if (index .Values "olap-db").fullnameOverride }}
+{{- (index .Values "olap-db").fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default "olap-db" (index .Values "olap-db").nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+Return the name of the secret holding the olap-db credentials (keys: username, password),
+mirrors "clickhouse.authSecretName" from the sub-chart
+*/}}
+{{- define "ls-olap-db.secretName" -}}
+{{- if (index .Values "olap-db").clickhouse.auth.secretName }}
+{{- (index .Values "olap-db").clickhouse.auth.secretName }}
+{{- else }}
+{{- printf "%s-auth" (include "ls-olap-db.fullname" .) }}
+{{- end }}
+{{- end }}
+
 {{- define "ls-pvc.fullname" -}}
 {{- $name := "ls-pvc" }}
 {{- if contains $name .Release.Name }}
@@ -378,6 +406,24 @@ Set's common environment variables
       name: {{ include "tplvalues.render" ( dict "value" .Values.global.redisConfig.password.secretName "context" $) }}
       key: {{ include "tplvalues.render" ( dict "value" .Values.global.redisConfig.password.secretKey "context" $) }}
 {{- end }}
+{{- end }}
+{{- if (index .Values "olap-db").enabled }}
+- name: OLAP_DB_HOST
+  value: {{ include "ls-olap-db.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
+- name: OLAP_DB_PORT
+  value: {{ dig "ports" "clickhouse" "http" 8123 (index .Values "olap-db") | quote }}
+- name: OLAP_DB_DATABASE
+  value: {{ (index .Values "olap-db").clickhouse.database.name | quote }}
+- name: OLAP_DB_USER
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "ls-olap-db.secretName" . }}
+      key: username
+- name: OLAP_DB_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "ls-olap-db.secretName" . }}
+      key: password
 {{- end }}
 - name: PYTHONUNBUFFERED
   value: "1"

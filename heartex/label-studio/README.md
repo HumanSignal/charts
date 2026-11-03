@@ -44,6 +44,7 @@ helm install labelstudio heartex/label-studio
         - [Rqcron parameters](#rqcron-parameters)
         - [Label Studio Enterprise parameters](#label-studio-enterprise-parameters)
         - [Sub-charts parameters](#sub-charts-parameters)
+        - [OLAP database parameters](#olap-database-parameters)
         - [Other parameters](#other-parameters)
 - [Label Studio Enterprise Parameters](#label-studio-enterprise-parameters)
     - [Label Studio Enterprise Overview](#label-studio-enterprise-overview)
@@ -487,6 +488,27 @@ Supported only in LabelStudio Enterprise. Runs the `rqcron` scheduler (`manage.p
 | `redis.enabled`            | Enable Redis sub-chart                                                                                 | `false`       |
 | `redis.architecture`       | Redis architecture. Allowed values: `standalone` or `replication`                                      | `standalone`  |
 | `redis.auth.enabled`       | Enable password authentication                                                                         | `false`       |
+
+### OLAP database parameters
+
+> **PoC only.** The `olap-db` component is a proof of concept. Its settings may change in future releases without notice; do not rely on it in production.
+
+Deploys ClickHouse with the [clickhouse](https://github.com/korax-dev/clickhouse-k8s) sub-chart, used by Label Studio Enterprise for analytical queries. Any value of that chart can be set under `olap-db`. When enabled, `OLAP_DB_HOST`, `OLAP_DB_PORT`, `OLAP_DB_DATABASE`, `OLAP_DB_USER` and `OLAP_DB_PASSWORD` are set in all Label Studio containers.
+
+Authentication is always enabled. Credentials live in a secret managed by this chart (`olap-db.clickhouse.auth.createSecret` must stay `false`); the password is generated on first install and kept across upgrades, or you can bring your own secret via `olap-db.clickhouse.auth.secretName`.
+
+| Parameter                                  | Description                                                                                                                                                   | Default           |
+|--------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+| `olap-db.enabled`                          | Deploy ClickHouse via the [clickhouse](https://github.com/korax-dev/clickhouse-k8s) sub-chart and inject `OLAP_DB_*` env vars into Label Studio containers | `false`           |
+| `olap-db.nameOverride`                     | Name used for sub-chart resources (`<release>-<name>`)                                                                                                        | `""`              |
+| `olap-db.clickhouse.image.tag`             | ClickHouse image tag                                                                                                                                          | `26.8-alpine`     |
+| `olap-db.clickhouse.auth.secretName`       | Existing secret with `username` and `password` keys. If empty, `<release>-olap-db-auth` is created by this chart                                           | `""`              |
+| `olap-db.clickhouse.auth.username`         | ClickHouse user (ignored if `auth.secretName` is set)                                                                                                         | `labelstudio`     |
+| `olap-db.clickhouse.auth.password`         | ClickHouse password (ignored if `auth.secretName` is set). Generated and preserved across upgrades if empty                                                   | `""`              |
+| `olap-db.clickhouse.database.name`         | Database created on startup                                                                                                                                   | `labelstudio`     |
+| `olap-db.clickhouse.resources`             | ClickHouse resources                                                                                                                                          | see `values.yaml` |
+| `olap-db.clickhouse.persistentVolume.size` | Size of the data PVC                                                                                                                                          | `20Gi`            |
+| `olap-db.clickhouse.customConfig`          | ClickHouse server config merged on top of the defaults                                                                                                        | see `values.yaml` |
 
 ### Cronjob parameters
 

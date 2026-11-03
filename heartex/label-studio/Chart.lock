@@ -5,5 +5,8 @@ dependencies:
 - name: postgresql
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 16.7.27
-digest: sha256:46ec1839a4a1961ed0ad07d32a41d044042da2cdbf5af7029fb8bf1b80c18d6f
-generated: "2026-01-07T19:31:28.000285Z"
+- name: clickhouse
+  repository: https://korax-dev.github.io/clickhouse-k8s
+  version: 0.5.6
+digest: sha256:648fef10e65f775eabf5dbfce8ee4e808bf7fa9b146309a15766af65bc5b8440
+generated: "2026-10-27T17:07:24.633868Z"

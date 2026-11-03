@@ -1016,6 +1016,54 @@ redis:
     security:
       allowInsecureImages: true
 
+# [PoC] OLAP database (ClickHouse) used by Label Studio Enterprise for analytical queries
+# This is a proof-of-concept option: its settings may change in future releases without notice.
+# (e.g. task.data filters in the Data Manager).
+# Deployed with the clickhouse sub-chart (https://github.com/korax-dev/clickhouse-k8s);
+# any of its values can be set here under `olap-db`.
+# When enabled, OLAP_DB_* env vars are injected into all Label Studio containers.
+olap-db:
+  enabled: false
+  # Resources are named <release>-olap-db
+  nameOverride: ""
+  clickhouse:
+    image:
+      tag: 26.8-alpine
+
+    # Credentials are kept in the <release>-olap-db-auth secret (keys: username, password),
+    # created by this chart (not the sub-chart) so the password can be generated and preserved.
+    auth:
+      enabled: true
+      # Must stay false: the secret is managed by this chart
+      createSecret: false
+      # Name of an existing secret with `username` and `password` keys. When set, no secret is created
+      # and username/password below are ignored.
+      secretName: ""
+      username: "labelstudio"
+      # Generated (and kept across upgrades) when empty
+      password: ""
+
+    database:
+      name: "labelstudio"
+
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      limits:
+        memory: 4Gi
+
+    persistentVolume:
+      enabled: true
+      storageClass: ""
+      size: 20Gi
+
+    customConfig:
+      max_server_memory_usage_to_ram_ratio: 0.8
+      mark_cache_size: 268435456
+      uncompressed_cache_size: 0
+      index_mark_cache_size: 134217728
+
 ci: false
 clusterDomain: cluster.local
 

@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.13
+- Add optional `olap-db` component (ClickHouse), enabled via `olap-db.enabled`. PoC only: settings may change in future releases.
+
 ## 2.0.12
 - `rqcron` now runs `manage.py rqcron_scheduler htx.cron_config`. When `rqcron.enabled` is true, rqworkers are started without `--with-scheduler`.
 
