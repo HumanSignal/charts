@@ -322,9 +322,9 @@ spec:
               {{ toYaml .Values.app.extraVolumeMounts | nindent 12 }}
             {{- end }}
             - mountPath: /opt/heartex/instance-data/etc
-              name: opt-heartex-app
+              name: opt-heartex-streamer
             - mountPath: /tmp
-              name: tmp-dir-app
+              name: tmp-dir-streamer
         {{- end }}
         {{- if and .Values.metrics.enabled .Values.metrics.uwsgiExporter.enabled }}
         - name: uwsgi-exporter
@@ -401,6 +401,12 @@ spec:
           emptyDir: { }
         - name: opt-heartex-nginx
           emptyDir: { }
+        {{- if .Values.app.streamer.enabled }}
+        - name: opt-heartex-streamer
+          emptyDir: { }
+        - name: tmp-dir-streamer
+          emptyDir: { }
+        {{- end }}
         - name: opt-heartex-init
           emptyDir: { }
         - name: tmp-dir-app

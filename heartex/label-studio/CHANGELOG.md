@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.14
+- Give the `streamer` sidecar its own `/opt/heartex/instance-data/etc` and `/tmp` emptyDirs instead of sharing the app's.
+
 ## 2.0.13
 - Add optional `olap-db` component (ClickHouse), enabled via `olap-db.enabled`. PoC only: settings may change in future releases.
 
